@@ -6,6 +6,7 @@ interface TagProps {
   size?: 'sm' | 'md';
   className?: string;
   onRemove?: () => void;
+  style?: React.CSSProperties;
 }
 
 export const Tag: React.FC<TagProps> = ({
@@ -14,6 +15,7 @@ export const Tag: React.FC<TagProps> = ({
   size = 'md',
   className = '',
   onRemove,
+  style,
 }) => {
   const variantStyles = {
     default: 'bg-sage/10 text-sage-dark border-sage/20',
@@ -37,6 +39,7 @@ export const Tag: React.FC<TagProps> = ({
         ${sizeStyles[size]}
         ${className}
       `}
+      style={style}
     >
       {children}
       {onRemove && (

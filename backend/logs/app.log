@@ -1863,3 +1863,8 @@ message: "API key not valid. Please pass a valid API key."
 2026-01-20 17:53:53 - app.services.gemini - INFO - Successfully parsed 20 ingredients
 2026-01-20 17:53:53 - app.api.v1.endpoints.scans - INFO - SUCCESS: Found 20 ingredients
 2026-01-20 17:53:53 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: completed ===
+2026-01-20 18:27:32 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 18:27:32 - app.config - INFO - ENV file exists: True
+2026-01-20 18:27:32 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 18:27:33 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 18:27:33 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads

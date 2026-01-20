@@ -9,6 +9,7 @@ interface CardProps {
   compact?: boolean;
   header?: React.ReactNode;
   headerIcon?: React.ReactNode;
+  style?: React.CSSProperties;
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -20,6 +21,7 @@ export const Card: React.FC<CardProps> = ({
   compact = false,
   header,
   headerIcon,
+  style,
 }) => {
   const variantStyles = {
     default: 'bg-cream border border-cream-darker shadow-soft',
@@ -50,6 +52,7 @@ export const Card: React.FC<CardProps> = ({
         ${className}
       `}
       onClick={onClick}
+      style={style}
       tabIndex={onClick ? 0 : undefined}
       role={onClick ? 'button' : undefined}
       onKeyDown={onClick ? (e) => e.key === 'Enter' && onClick() : undefined}
