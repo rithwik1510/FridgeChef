@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fraunces font - Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap');
+
+/* Source Serif 4 - Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
+
+/* JetBrains Mono - Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+:root {
+  --font-fraunces: 'Fraunces', serif;
+  --font-source-serif: 'Source Serif 4', serif;
+  --cream-lightest: #FFFCF7;
+  --cream: #FBF8F3;
+  --cream-dark: #F0E9DC;
+  --cream-darker: #E5DBC8;
+  --charcoal: #2D2A26;
+  --terracotta: #C4704B;
+  --terracotta-light: #D98B6A;
+  --sage: #7D8B6E;
+}
+
+@layer base {
+  * {
+    @apply border-charcoal/10;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-cream-lightest text-charcoal font-source-serif text-base antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-fraunces font-semibold;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl leading-tight;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl leading-tight;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl leading-snug;
+  }
+
+  h4 {
+    @apply text-xl md:text-2xl leading-snug;
+  }
+
+  h5 {
+    @apply text-lg md:text-xl leading-normal;
+  }
+
+  h6 {
+    @apply text-base md:text-lg leading-normal;
+  }
+
+  p {
+    @apply leading-relaxed mb-4;
+  }
+
+  a {
+    @apply text-terracotta hover:text-terracotta-dark transition-colors duration-200;
+  }
+
+  button {
+    @apply transition-all duration-200;
+  }
+
+  input, textarea, select {
+    @apply transition-all duration-200;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--cream-dark);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--terracotta-light);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--terracotta);
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--terracotta-light) var(--cream-dark);
+  }
+}
+
+@layer components {
+  /* Glass Card Effect */
+  .glass-card {
+    @apply bg-cream/70 backdrop-blur-md border border-charcoal/10 shadow-soft;
+  }
+
+  /* Gradient Backgrounds */
+  .gradient-header {
+    background: linear-gradient(180deg, var(--cream-dark) 0%, var(--cream) 100%);
+  }
+
+  .gradient-cta {
+    background: linear-gradient(135deg, var(--terracotta) 0%, #A85938 100%);
+  }
+
+  .gradient-progress {
+    background: linear-gradient(90deg, var(--sage) 0%, #5F6C52 100%);
+  }
+
+  /* Noise Texture Overlay */
+  .texture-noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* Interactive Card Lift */
+  .card-lift {
+    @apply transition-all duration-200;
+  }
+
+  .card-lift:hover {
+    @apply -translate-y-1 shadow-medium;
+  }
+
+  .card-lift:active {
+    @apply translate-y-0 shadow-soft;
+    transform: scale(0.98);
+  }
+
+  /* Button Press Effect */
+  .btn-press:active {
+    transform: scale(0.98);
+  }
+
+  /* Ripple Effect Container */
+  .ripple-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Shimmer Effect */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--cream-dark) 0%,
+      var(--cream) 50%,
+      var(--cream-dark) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite linear;
+  }
+
+  /* Stagger Animation Delays */
+  .stagger-1 { animation-delay: 50ms; }
+  .stagger-2 { animation-delay: 100ms; }
+  .stagger-3 { animation-delay: 150ms; }
+  .stagger-4 { animation-delay: 200ms; }
+  .stagger-5 { animation-delay: 250ms; }
+  .stagger-6 { animation-delay: 300ms; }
+  .stagger-7 { animation-delay: 350ms; }
+  .stagger-8 { animation-delay: 400ms; }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Focus Ring */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-terracotta focus:ring-offset-2 focus:ring-offset-cream;
+  }
+
+  /* Hide Scrollbar but Keep Functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

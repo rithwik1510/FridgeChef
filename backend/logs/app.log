@@ -1,0 +1,1865 @@
+2026-01-20 17:08:47 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:08:47 - app.config - INFO - ENV file exists: True
+2026-01-20 17:08:47 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:08:51 - app.services.gemini - INFO - API key configured (length: 28)
+2026-01-20 17:08:51 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:09:35 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:09:35 - app.config - INFO - ENV file exists: True
+2026-01-20 17:09:35 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:09:38 - app.services.gemini - INFO - API key configured (length: 28)
+2026-01-20 17:09:38 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:09:42 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:09:42 - app.services.image - INFO - Saving to: uploads\d795f034-d686-4aff-8449-574f1d33aee3.png
+2026-01-20 17:09:42 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - INFO - Image saved to: d795f034-d686-4aff-8449-574f1d33aee3.png
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 2be7772e-9379-4f12-a8e3-062ce2f26af1
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:09:42 - app.services.gemini - INFO - Loading image from: uploads\d795f034-d686-4aff-8449-574f1d33aee3.png
+2026-01-20 17:09:42 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 17:09:42 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 17:09:42 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 17:09:42 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 17:09:42 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:09:42 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 53, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - INFO - File name: test.txt
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - INFO - Content type: text/plain
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:09:42 - app.services.image - INFO - Starting file upload for: test.txt
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - ERROR - === SCAN FAILED ===
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - ERROR - Error: 400: Invalid file type 'txt'. Allowed types: jpg, jpeg, png, heic, webp
+2026-01-20 17:09:42 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 34, in create_scan
+    image_path = await save_upload_file(file)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\image.py", line 52, in save_upload_file
+    validate_image(file)
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\image.py", line 28, in validate_image
+    raise HTTPException(
+fastapi.exceptions.HTTPException: 400: Invalid file type 'txt'. Allowed types: jpg, jpeg, png, heic, webp
+
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:09:43 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:09:43 - app.services.image - INFO - Saving to: uploads\05372c10-bea8-4e40-bbe1-5a294488b0d8.png
+2026-01-20 17:09:43 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - Image saved to: 05372c10-bea8-4e40-bbe1-5a294488b0d8.png
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - Scan created with ID: a7f4b53d-b4a1-4d4e-9c6a-0a0e3cfb54e8
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:09:43 - app.services.gemini - INFO - Loading image from: uploads\05372c10-bea8-4e40-bbe1-5a294488b0d8.png
+2026-01-20 17:09:43 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 17:09:43 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 17:09:43 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 17:09:43 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 17:09:43 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:09:43 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 53, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:09:43 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:09:43 - app.services.image - INFO - Saving to: uploads\f4bc2cbb-88f7-4315-aefb-ca75c5a4084e.png
+2026-01-20 17:09:43 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - Image saved to: f4bc2cbb-88f7-4315-aefb-ca75c5a4084e.png
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 3836660f-062c-4c1d-8c21-2fd17e1b3c7e
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:09:43 - app.services.gemini - INFO - Loading image from: uploads\f4bc2cbb-88f7-4315-aefb-ca75c5a4084e.png
+2026-01-20 17:09:43 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 17:09:43 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 17:09:43 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 17:09:43 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 17:09:43 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:09:43 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 53, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:09:43 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 17:10:35 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:10:35 - app.config - INFO - ENV file exists: True
+2026-01-20 17:10:35 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:10:38 - app.services.gemini - INFO - API key configured (length: 28)
+2026-01-20 17:10:38 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:10:43 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:10:43 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:10:43 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:10:43 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:10:43 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:10:43 - app.services.image - INFO - Saving to: uploads\38a93997-6f58-4412-aabe-7dbad8a9670b.png
+2026-01-20 17:10:43 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:10:43 - app.api.v1.endpoints.scans - INFO - Image saved to: 38a93997-6f58-4412-aabe-7dbad8a9670b.png
+2026-01-20 17:10:43 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:10:43 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 9f7f3633-4b1c-457b-8ff6-cdba08faba41
+2026-01-20 17:10:43 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:10:43 - app.services.gemini - INFO - Loading image from: uploads\38a93997-6f58-4412-aabe-7dbad8a9670b.png
+2026-01-20 17:10:43 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 17:10:43 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 17:10:43 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 17:10:43 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 17:10:43 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:10:43 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:10:43 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:10:43 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 53, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:10:43 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:10:44 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:10:44 - app.services.image - INFO - Saving to: uploads\be242ec0-12a0-46ef-aca5-5a0edc186e81.png
+2026-01-20 17:10:44 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - INFO - Image saved to: be242ec0-12a0-46ef-aca5-5a0edc186e81.png
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - INFO - Scan created with ID: b4b8dcd7-2a34-4004-9e23-75c826d79733
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:10:44 - app.services.gemini - INFO - Loading image from: uploads\be242ec0-12a0-46ef-aca5-5a0edc186e81.png
+2026-01-20 17:10:44 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 17:10:44 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 17:10:44 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 17:10:44 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 17:10:44 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:10:44 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 53, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - INFO - File name: test.txt
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - INFO - Content type: text/plain
+2026-01-20 17:10:44 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:10:44 - app.services.image - INFO - Starting file upload for: test.txt
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:10:45 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:10:45 - app.services.image - INFO - Saving to: uploads\e4306057-ec6d-40c9-a97e-1600b6c39d2a.png
+2026-01-20 17:10:45 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - Image saved to: e4306057-ec6d-40c9-a97e-1600b6c39d2a.png
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - Scan created with ID: b1360e06-aeb9-4478-8847-e67e9fb0b305
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:10:45 - app.services.gemini - INFO - Loading image from: uploads\e4306057-ec6d-40c9-a97e-1600b6c39d2a.png
+2026-01-20 17:10:45 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 17:10:45 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 17:10:45 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 17:10:45 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 17:10:45 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:10:45 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 53, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:10:45 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:10:45 - app.services.image - INFO - Saving to: uploads\e0864f45-76a7-4f0d-9fb3-5c6fe4479dc6.png
+2026-01-20 17:10:45 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - Image saved to: e0864f45-76a7-4f0d-9fb3-5c6fe4479dc6.png
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 2d62cca2-e5d4-4f2b-892f-6483b58271f7
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:10:45 - app.services.gemini - INFO - Loading image from: uploads\e0864f45-76a7-4f0d-9fb3-5c6fe4479dc6.png
+2026-01-20 17:10:45 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 17:10:45 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 17:10:45 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 17:10:45 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 17:10:45 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:10:45 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 53, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:10:45 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 17:11:24 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:11:24 - app.config - INFO - ENV file exists: True
+2026-01-20 17:11:24 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:11:26 - app.services.gemini - INFO - API key configured (length: 28)
+2026-01-20 17:11:26 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:11:30 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:11:30 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:11:30 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:11:30 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:11:30 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:11:30 - app.services.image - INFO - Saving to: uploads\7d13e506-9e13-4026-8576-6fa1ebf83e4b.png
+2026-01-20 17:11:30 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:11:30 - app.api.v1.endpoints.scans - INFO - Image saved to: 7d13e506-9e13-4026-8576-6fa1ebf83e4b.png
+2026-01-20 17:11:30 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:11:30 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 5557bf7b-8d9c-4023-a8e1-fe8b8d065f95
+2026-01-20 17:11:30 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:11:30 - app.api.v1.endpoints.scans - INFO - SUCCESS: Found 1 ingredients
+2026-01-20 17:11:30 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: completed ===
+2026-01-20 17:11:31 - app.services.gemini - ERROR - Error generating recipes: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:11:32 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:11:32 - app.services.image - INFO - Saving to: uploads\a4b705d7-880e-4fcc-a89c-76ad28b2020a.png
+2026-01-20 17:11:32 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - INFO - Image saved to: a4b705d7-880e-4fcc-a89c-76ad28b2020a.png
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 584791a2-0a5d-403f-98d0-af07610ec7b4
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:11:32 - app.services.gemini - INFO - Loading image from: uploads\a4b705d7-880e-4fcc-a89c-76ad28b2020a.png
+2026-01-20 17:11:32 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 17:11:32 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 17:11:32 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 17:11:32 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 17:11:32 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:11:32 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 53, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - INFO - File name: test.txt
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - INFO - Content type: text/plain
+2026-01-20 17:11:32 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:11:32 - app.services.image - INFO - Starting file upload for: test.txt
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:11:33 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:11:33 - app.services.image - INFO - Saving to: uploads\7c080852-7d28-4161-a23a-a604dfcb7447.png
+2026-01-20 17:11:33 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - Image saved to: 7c080852-7d28-4161-a23a-a604dfcb7447.png
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 1b45bceb-49cb-4dd2-8859-37fab2a3da30
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:11:33 - app.services.gemini - INFO - Loading image from: uploads\7c080852-7d28-4161-a23a-a604dfcb7447.png
+2026-01-20 17:11:33 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 17:11:33 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 17:11:33 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 17:11:33 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 17:11:33 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:11:33 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 53, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:11:33 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:11:33 - app.services.image - INFO - Saving to: uploads\6f85ab30-f135-4d2f-853e-105d667c8c46.png
+2026-01-20 17:11:33 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - Image saved to: 6f85ab30-f135-4d2f-853e-105d667c8c46.png
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 8695293e-2876-4679-8b2f-90b3a032c2bf
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:11:33 - app.services.gemini - INFO - Loading image from: uploads\6f85ab30-f135-4d2f-853e-105d667c8c46.png
+2026-01-20 17:11:33 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 17:11:33 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 17:11:33 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 17:11:33 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 17:11:33 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:11:33 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 53, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:11:33 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 17:11:56 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:11:56 - app.config - INFO - ENV file exists: True
+2026-01-20 17:11:56 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:11:59 - app.services.gemini - INFO - API key configured (length: 28)
+2026-01-20 17:11:59 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:12:03 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:12:03 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:12:03 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:12:03 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:12:03 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:12:03 - app.services.image - INFO - Saving to: uploads\4c962647-945d-4baf-8b8e-bec8e9c0352f.png
+2026-01-20 17:12:03 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:12:03 - app.api.v1.endpoints.scans - INFO - Image saved to: 4c962647-945d-4baf-8b8e-bec8e9c0352f.png
+2026-01-20 17:12:03 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:12:03 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 4da1f18e-ab2a-4063-9185-6981bf2d1406
+2026-01-20 17:12:03 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:12:03 - app.api.v1.endpoints.scans - INFO - SUCCESS: Found 1 ingredients
+2026-01-20 17:12:03 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: completed ===
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:12:04 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:12:04 - app.services.image - INFO - Saving to: uploads\16f55d31-f1ed-4703-97d9-c1d26205d200.png
+2026-01-20 17:12:04 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - Image saved to: 16f55d31-f1ed-4703-97d9-c1d26205d200.png
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 53e1607f-e38d-43db-b18b-313ce8cbed96
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:12:04 - app.services.gemini - INFO - Loading image from: uploads\16f55d31-f1ed-4703-97d9-c1d26205d200.png
+2026-01-20 17:12:04 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 17:12:04 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 17:12:04 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 17:12:04 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 17:12:04 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:12:04 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 53, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - File name: test.txt
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - Content type: text/plain
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:12:04 - app.services.image - INFO - Starting file upload for: test.txt
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:12:04 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:12:04 - app.services.image - INFO - Saving to: uploads\162e2b10-3223-462f-ac09-00920e64b7d8.png
+2026-01-20 17:12:04 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - Image saved to: 162e2b10-3223-462f-ac09-00920e64b7d8.png
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - Scan created with ID: c43938aa-c616-4413-9dd8-6e70a1e78e5a
+2026-01-20 17:12:04 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:12:04 - app.services.gemini - INFO - Loading image from: uploads\162e2b10-3223-462f-ac09-00920e64b7d8.png
+2026-01-20 17:12:04 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 17:12:04 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 17:12:04 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 17:12:04 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 17:12:05 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:12:05 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:12:05 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:12:05 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 53, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:12:05 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 17:12:05 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:12:05 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 17:12:05 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 17:12:05 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:12:05 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 17:12:05 - app.services.image - INFO - Saving to: uploads\974e195c-f969-427b-a613-4452c0e333ca.png
+2026-01-20 17:12:05 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:12:05 - app.api.v1.endpoints.scans - INFO - Image saved to: 974e195c-f969-427b-a613-4452c0e333ca.png
+2026-01-20 17:12:05 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:12:05 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 4a36b33f-a8ca-4a99-87c1-90d963f6271d
+2026-01-20 17:12:05 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:12:05 - app.services.gemini - INFO - Loading image from: uploads\974e195c-f969-427b-a613-4452c0e333ca.png
+2026-01-20 17:12:05 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 17:12:05 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 17:12:05 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 17:12:05 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 17:12:05 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:12:05 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:12:05 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+2026-01-20 17:12:05 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 331, in generate_content
+    response = self._client.generate_content(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 835, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.InvalidArgument: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 53, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 400 API key not valid. Please pass a valid API key. [reason: "API_KEY_INVALID"
+domain: "googleapis.com"
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, locale: "en-US"
+message: "API key not valid. Please pass a valid API key."
+]
+
+2026-01-20 17:12:05 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 17:24:48 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:24:48 - app.config - INFO - ENV file exists: True
+2026-01-20 17:24:48 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:24:50 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 17:24:50 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:28:01 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:28:01 - app.config - INFO - ENV file exists: True
+2026-01-20 17:28:01 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:28:03 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 17:28:03 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:32:55 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:32:55 - app.config - INFO - ENV file exists: True
+2026-01-20 17:32:55 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:32:56 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 17:32:56 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:34:17 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:34:17 - app.config - INFO - ENV file exists: True
+2026-01-20 17:34:17 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:34:19 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 17:34:19 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:36:07 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:36:07 - app.config - INFO - ENV file exists: True
+2026-01-20 17:36:07 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:36:08 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 17:36:08 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:36:51 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:36:51 - app.config - INFO - ENV file exists: True
+2026-01-20 17:36:51 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:36:52 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 17:36:52 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:40:34 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:40:34 - app.config - INFO - ENV file exists: True
+2026-01-20 17:40:34 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:40:35 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 17:40:35 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:40:49 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:40:49 - app.config - INFO - ENV file exists: True
+2026-01-20 17:40:49 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:40:50 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 17:40:50 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:41:24 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:41:24 - app.config - INFO - ENV file exists: True
+2026-01-20 17:41:24 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:41:25 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 17:41:25 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:44:12 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 17:44:12 - app.config - INFO - ENV file exists: True
+2026-01-20 17:44:12 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 17:44:12 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 17:44:12 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 17:53:47 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 17:53:47 - app.api.v1.endpoints.scans - INFO - File name: open-fridge-full-of-different-food-TBH37N.jpg
+2026-01-20 17:53:47 - app.api.v1.endpoints.scans - INFO - Content type: image/jpeg
+2026-01-20 17:53:47 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 17:53:47 - app.services.image - INFO - Starting file upload for: open-fridge-full-of-different-food-TBH37N.jpg
+2026-01-20 17:53:47 - app.services.image - INFO - Saving to: uploads\ce9e3378-87c8-40af-9389-7f270a737f80.jpg
+2026-01-20 17:53:47 - app.services.image - INFO - File saved successfully!
+2026-01-20 17:53:47 - app.api.v1.endpoints.scans - INFO - Image saved to: ce9e3378-87c8-40af-9389-7f270a737f80.jpg
+2026-01-20 17:53:47 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 17:53:47 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 44e94269-1ba1-4ac3-9635-3f63d4097a7d
+2026-01-20 17:53:47 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 17:53:47 - app.services.gemini - INFO - Loading image from: uploads\ce9e3378-87c8-40af-9389-7f270a737f80.jpg
+2026-01-20 17:53:47 - app.services.gemini - INFO - Detected mime type: image/jpeg
+2026-01-20 17:53:47 - app.services.gemini - INFO - Image loaded, size: 145121 bytes
+2026-01-20 17:53:47 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 17:53:47 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 17:53:53 - app.services.gemini - INFO - Response received from Gemini API
+2026-01-20 17:53:53 - app.services.gemini - INFO - Successfully parsed 20 ingredients
+2026-01-20 17:53:53 - app.api.v1.endpoints.scans - INFO - SUCCESS: Found 20 ingredients
+2026-01-20 17:53:53 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: completed ===

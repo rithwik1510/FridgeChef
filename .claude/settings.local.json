@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(.venvScriptspython.exe -c \"from app.config import settings; print\\(''Config OK''\\); print\\(f''API Key: {bool\\(settings.GOOGLE_API_KEY\\)}''\\)\")",
+      "Skill(frontend-design)",
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(dir /s /b *.test.*)",
+      "Bash(ls:*)",
+      "Bash(netstat:*)",
+      "Bash(python check_endpoints.py:*)",
+      "Bash(python check_connection.py:*)",
+      "Bash(python:*)"
+    ]
+  }
+}

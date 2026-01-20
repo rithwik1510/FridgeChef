@@ -1,0 +1,241 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { listsApi } from '@/lib/api';
+import { Button, IconButton } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { SkeletonCard, SkeletonList } from '@/components/ui/Skeleton';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { ProgressBar } from '@/components/ui/ProgressBar';
+import { useToast } from '@/components/ui/Toast';
+import { ShoppingCart, Check, Trash, ListChecks } from '@phosphor-icons/react';
+
+export default function ShoppingListsPage() {
+  const { addToast } = useToast();
+  const [lists, setLists] = useState<any[]>([]);
+  const [selectedList, setSelectedList] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    loadLists();
+  }, []);
+
+  const loadLists = async () => {
+    try {
+      const data = await listsApi.list();
+      setLists(data);
+      if (data.length > 0 && !selectedList) {
+        setSelectedList(data[0]);
+      }
+    } catch (error) {
+      console.error('Error loading shopping lists:', error);
+      addToast({
+        type: 'error',
+        title: 'Error loading lists',
+        message: 'Could not load your shopping lists.',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleToggleItem = async (itemIndex: number) => {
+    if (!selectedList) return;
+
+    const updatedItems = selectedList.items.map((item: any, index: number) => {
+      if (index === itemIndex) {
+        return { ...item, checked: !item.checked };
+      }
+      return item;
+    });
+
+    try {
+      const updated = await listsApi.update(selectedList.id, updatedItems);
+      setSelectedList(updated);
+      setLists(lists.map(list => list.id === updated.id ? updated : list));
+    } catch (error) {
+      console.error('Error updating shopping list:', error);
+      addToast({ type: 'error', title: 'Failed to update item' });
+    }
+  };
+
+  const handleDeleteList = async (listId: string) => {
+    if (!confirm('Are you sure you want to delete this shopping list?')) return;
+
+    try {
+      await listsApi.delete(listId);
+      const newLists = lists.filter(list => list.id !== listId);
+      setLists(newLists);
+      if (selectedList?.id === listId) {
+        setSelectedList(newLists[0] || null);
+      }
+      addToast({ type: 'success', title: 'List deleted' });
+    } catch (error) {
+      console.error('Error deleting shopping list:', error);
+      addToast({ type: 'error', title: 'Failed to delete list' });
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <div className="shimmer h-10 w-48 rounded-lg mb-2" />
+          <div className="shimmer h-5 w-24 rounded-lg" />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="space-y-4">
+            <SkeletonCard hasImage={false} />
+            <SkeletonCard hasImage={false} />
+          </div>
+          <div className="lg:col-span-2">
+            <SkeletonList count={5} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const checkedCount = selectedList?.items?.filter((item: any) => item.checked).length || 0;
+  const totalCount = selectedList?.items?.length || 0;
+  const progress = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="animate-fade-in">
+        <h1 className="text-3xl md:text-4xl mb-1">Shopping Lists</h1>
+        <p className="text-charcoal/70">
+          {lists.length} list{lists.length !== 1 ? 's' : ''}
+        </p>
+      </div>
+
+      {lists.length > 0 ? (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* Lists Sidebar */}
+          <div className="lg:col-span-1 space-y-3">
+            {lists.map((list, index) => {
+              const listCheckedCount = list.items?.filter((item: any) => item.checked).length || 0;
+              const listTotalCount = list.items?.length || 0;
+              const listProgress = listTotalCount > 0 ? Math.round((listCheckedCount / listTotalCount) * 100) : 0;
+
+              return (
+                <Card
+                  key={list.id}
+                  variant={selectedList?.id === list.id ? 'elevated' : 'default'}
+                  hover
+                  compact
+                  onClick={() => setSelectedList(list)}
+                  className={`animate-fade-in ${
+                    selectedList?.id === list.id ? 'ring-2 ring-terracotta' : ''
+                  }`}
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex items-center gap-2">
+                      <ListChecks size={18} className="text-terracotta" weight="duotone" />
+                      <h3 className="font-semibold">{list.name}</h3>
+                    </div>
+                    <IconButton
+                      icon={<Trash size={16} weight="bold" />}
+                      label="Delete list"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteList(list.id);
+                      }}
+                      className="text-charcoal/40 hover:text-red-500"
+                    />
+                  </div>
+                  <p className="text-xs text-charcoal/60 mb-2">
+                    {listCheckedCount} of {listTotalCount} items
+                  </p>
+                  <ProgressBar value={listProgress} size="sm" variant="gradient" />
+                </Card>
+              );
+            })}
+          </div>
+
+          {/* Selected List Detail */}
+          {selectedList && (
+            <div className="lg:col-span-2 animate-fade-in">
+              <Card variant="elevated">
+                <div className="mb-5">
+                  <h2 className="text-xl font-semibold mb-3">{selectedList.name}</h2>
+                  <ProgressBar
+                    value={progress}
+                    size="md"
+                    variant="gradient"
+                    showLabel
+                    label={`${checkedCount} of ${totalCount} items`}
+                  />
+                </div>
+
+                {/* Group items by category */}
+                {selectedList.items && selectedList.items.length > 0 ? (
+                  <div className="space-y-5">
+                    {Object.entries(
+                      selectedList.items.reduce((acc: any, item: any, index: number) => {
+                        const category = item.category || 'Other';
+                        if (!acc[category]) acc[category] = [];
+                        acc[category].push({ ...item, index });
+                        return acc;
+                      }, {})
+                    ).map(([category, items]: [string, any], catIndex) => (
+                      <div key={category} className="animate-fade-in" style={{ animationDelay: `${catIndex * 50}ms` }}>
+                        <h3 className="text-sm font-semibold text-charcoal/60 uppercase tracking-wide mb-2">
+                          {category}
+                        </h3>
+                        <ul className="space-y-1">
+                          {items.map((item: any, itemIndex: number) => (
+                            <li
+                              key={item.index}
+                              className="flex items-center gap-3 p-3 rounded-xl hover:bg-cream-dark cursor-pointer transition-all duration-200 animate-fade-in"
+                              style={{ animationDelay: `${itemIndex * 30}ms` }}
+                              onClick={() => handleToggleItem(item.index)}
+                            >
+                              <div
+                                className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all duration-200 ${
+                                  item.checked
+                                    ? 'bg-sage border-sage scale-110'
+                                    : 'border-charcoal/30 hover:border-sage'
+                                }`}
+                              >
+                                {item.checked && (
+                                  <Check size={14} weight="bold" className="text-cream" />
+                                )}
+                              </div>
+                              <span
+                                className={`flex-1 transition-all duration-200 ${
+                                  item.checked
+                                    ? 'line-through text-charcoal/40'
+                                    : 'text-charcoal'
+                                }`}
+                              >
+                                {item.name}
+                              </span>
+                              <span className="text-sm text-charcoal/50">{item.amount}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-center text-charcoal/60 py-8">No items in this list</p>
+                )}
+              </Card>
+            </div>
+          )}
+        </div>
+      ) : (
+        <Card variant="elevated" className="animate-fade-in">
+          <EmptyState
+            variant="no-lists"
+            onAction={() => {}}
+          />
+        </Card>
+      )}
+    </div>
+  );
+}
