@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { UploadSimple, Image as ImageIcon } from '@phosphor-icons/react';
+import { UploadSimple, Image as ImageIcon, Camera } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/Button';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 
 interface ImageUploaderProps {
   onUpload: (file: File) => void;
@@ -10,9 +11,11 @@ interface ImageUploaderProps {
 }
 
 export const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isLoading = false }) => {
+  const isMobile = useIsMobile();
   const [dragActive, setDragActive] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -69,6 +72,15 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isLoadin
         ref={inputRef}
         type="file"
         accept="image/*"
+        onChange={handleChange}
+        className="hidden"
+        disabled={isLoading}
+      />
+      <input
+        ref={cameraRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
         onChange={handleChange}
         className="hidden"
         disabled={isLoading}
@@ -133,17 +145,36 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isLoadin
               </p>
             </div>
 
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleButtonClick();
-              }}
-              disabled={isLoading}
-            >
-              Choose Image
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto items-center justify-center">
+              {/* Camera button - prominent on mobile */}
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={(e) => {
+                    e.stopPropagation();
+                    cameraRef.current?.click();
+                }}
+                iconLeft={<Camera size={20} />}
+                className="sm:hidden w-full"
+                disabled={isLoading}
+              >
+                Take Photo
+              </Button>
+
+              {/* Gallery button */}
+              <Button
+                variant={isMobile ? 'outline' : 'primary'}
+                size="lg"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleButtonClick();
+                }}
+                disabled={isLoading}
+                className={isMobile ? "w-full" : ""}
+              >
+                {isMobile ? 'Choose from Gallery' : 'Choose Image'}
+              </Button>
+            </div>
           </div>
         </div>
       )}

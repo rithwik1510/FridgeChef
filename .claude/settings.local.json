@@ -11,7 +11,12 @@
       "Bash(netstat:*)",
       "Bash(python check_endpoints.py:*)",
       "Bash(python check_connection.py:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(find:*)",
+      "Bash(npm run build:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }

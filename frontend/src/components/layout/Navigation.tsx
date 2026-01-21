@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Camera, ForkKnife, ShoppingCart, House, Gear } from '@phosphor-icons/react';
+import { useIsLandscape, useIsMobile } from '@/hooks/useMediaQuery';
 
 const navItems = [
   { href: '/dashboard', label: 'Home', icon: House },
@@ -13,12 +14,21 @@ const navItems = [
 
 export const Navigation = () => {
   const pathname = usePathname();
+  const isLandscape = useIsLandscape();
+  const isMobile = useIsMobile();
+  const isMobileLandscape = isLandscape && isMobile;
 
   return (
     <>
       {/* Mobile Bottom Navigation - Only shown on mobile/tablet */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-cream border-t border-charcoal/10 shadow-medium z-40">
-        <div className="flex justify-around items-center h-16 px-2">
+      <nav className={`
+        lg:hidden fixed bottom-0 left-0 right-0
+        bg-cream border-t border-charcoal/10 shadow-medium z-40
+        ${isMobileLandscape ? 'h-12' : 'h-16'}
+        safe-bottom
+      `}>
+        <div className={`flex justify-around items-center h-full px-2
+                         ${isMobileLandscape ? 'max-w-md mx-auto' : ''}`}>
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href ||
@@ -29,9 +39,10 @@ export const Navigation = () => {
                 key={item.href}
                 href={item.href}
                 className={`
-                  flex flex-col items-center justify-center
-                  py-2 px-3 rounded-xl min-w-[64px]
+                  flex items-center justify-center
+                  py-2 px-3 rounded-xl
                   transition-all duration-200
+                  ${isMobileLandscape ? 'flex-row gap-2 min-h-[40px]' : 'flex-col min-h-[44px] min-w-[64px]'}
                   ${
                     isActive
                       ? 'text-terracotta'
@@ -40,11 +51,14 @@ export const Navigation = () => {
                 `}
               >
                 <Icon
-                  size={24}
+                  size={isMobileLandscape ? 20 : 24}
                   weight={isActive ? 'fill' : 'regular'}
-                  className={`mb-1 ${isActive ? 'animate-bounce-subtle' : ''}`}
+                  className={`${!isMobileLandscape ? 'mb-1' : ''} ${isActive ? 'animate-bounce-subtle' : ''}`}
                 />
-                <span className={`text-xs ${isActive ? 'font-semibold' : 'font-medium'}`}>
+                <span className={`
+                    ${isMobileLandscape ? 'text-sm' : 'text-xs'}
+                    ${isActive ? 'font-semibold' : 'font-medium'}
+                `}>
                   {item.label}
                 </span>
               </Link>

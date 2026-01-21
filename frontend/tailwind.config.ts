@@ -69,6 +69,12 @@ const config: Config = {
         'shimmer': 'shimmer 2s infinite linear',
         'bounce-subtle': 'bounceSubtle 0.4s ease-out',
         'spin-slow': 'spin 2s linear infinite',
+        'slide-in-left': 'slideInLeft 0.3s ease-out forwards',
+        'slide-in-right': 'slideInRight 0.3s ease-out forwards',
+        'slide-in-bottom': 'slideInBottom 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        'slide-out-bottom': 'slideOutBottom 0.3s ease-in forwards',
+        'spring-scale': 'springScale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        'tap-feedback': 'tapFeedback 0.15s ease-out',
       },
       keyframes: {
         fadeIn: {
@@ -98,6 +104,28 @@ const config: Config = {
         bounceSubtle: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-4px)' },
+        },
+        slideInLeft: {
+          '0%': { transform: 'translateX(-100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        slideInRight: {
+          '0%': { transform: 'translateX(100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        slideInBottom: {
+          '0%': { transform: 'translateY(100%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        springScale: {
+          '0%': { transform: 'scale(0.8)', opacity: '0' },
+          '50%': { transform: 'scale(1.05)' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        tapFeedback: {
+          '0%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(0.95)' },
+          '100%': { transform: 'scale(1)' },
         },
       },
       backgroundImage: {

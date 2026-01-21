@@ -4,10 +4,12 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
   helperText?: string;
+  inputMode?: 'none' | 'text' | 'decimal' | 'numeric' | 'tel' | 'search' | 'email' | 'url';
+  enterKeyHint?: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send';
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, helperText, className = '', ...props }, ref) => {
+  ({ label, error, helperText, className = '', inputMode, enterKeyHint, ...props }, ref) => {
     return (
       <div className="w-full">
         {label && (
@@ -17,8 +19,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         <input
           ref={ref}
+          inputMode={inputMode}
+          enterKeyHint={enterKeyHint}
           className={`
-            w-full px-4 py-3
+            w-full px-4 py-3 text-base
             bg-cream-dark text-charcoal
             border-2 border-transparent rounded-xl
             focus:outline-none focus:border-terracotta focus:ring-2 focus:ring-terracotta/20

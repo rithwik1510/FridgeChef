@@ -28,8 +28,8 @@ export default function DashboardPage() {
         setRecentScans(scans);
         setRecentRecipes(recipes);
       } catch (error: any) {
-        // Ignore 401 errors as they are handled by the interceptor
-        if (error.response?.status === 401) {
+        // Ignore 401/403 errors as they are handled by the interceptor
+        if (error.response?.status === 401 || error.response?.status === 403) {
           return;
         }
         console.error('Error loading dashboard data:', error);

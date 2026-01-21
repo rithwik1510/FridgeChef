@@ -83,7 +83,7 @@ export default function ShoppingListsPage() {
           <div className="shimmer h-10 w-48 rounded-lg mb-2" />
           <div className="shimmer h-5 w-24 rounded-lg" />
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="space-y-4">
             <SkeletonCard hasImage={false} />
             <SkeletonCard hasImage={false} />
@@ -111,7 +111,7 @@ export default function ShoppingListsPage() {
       </div>
 
       {lists.length > 0 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Lists Sidebar */}
           <div className="lg:col-span-1 space-y-3">
             {lists.map((list, index) => {

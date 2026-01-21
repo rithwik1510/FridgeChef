@@ -66,7 +66,13 @@ const ToastContainer: React.FC<{
   if (toasts.length === 0) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm">
+    <div className="
+      fixed z-50 flex flex-col gap-2 max-w-sm
+      bottom-20 right-4 left-4
+      sm:left-auto
+      lg:bottom-4
+      safe-bottom
+    ">
       {toasts.map((toast, index) => (
         <ToastItem
           key={toast.id}

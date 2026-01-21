@@ -53,7 +53,7 @@ export default function RecipesPage() {
         </div>
 
         {/* Grid skeleton */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1, 2, 3, 4].map((i) => (
             <SkeletonCard key={i} hasImage={false} />
           ))}
@@ -84,7 +84,7 @@ export default function RecipesPage() {
 
       {/* Recipe Grid */}
       {recipes.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {recipes.map((recipe, index) => (
             <div
               key={recipe.id}

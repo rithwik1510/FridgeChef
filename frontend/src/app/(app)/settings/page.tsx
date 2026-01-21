@@ -5,6 +5,7 @@ import { userApi } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Tag } from '@/components/ui/Tag';
+import { Slider } from '@/components/ui/Slider';
 import { Input } from '@/components/ui/Input';
 import { SkeletonCard } from '@/components/ui/Skeleton';
 import { useToast } from '@/components/ui/Toast';
@@ -274,27 +275,15 @@ export default function SettingsPage() {
 
           {/* Max Cook Time */}
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Clock size={16} className="text-charcoal/60" />
-              <label className="text-sm font-medium text-charcoal/70">
-                Maximum Cooking Time: <span className="text-terracotta font-semibold">{preferences.max_cook_time || 60} min</span>
-              </label>
-            </div>
-            <input
-              type="range"
-              min="15"
-              max="180"
-              step="15"
+            <Slider
+              min={15}
+              max={180}
+              step={15}
               value={preferences.max_cook_time || 60}
-              onChange={(e) =>
-                setPreferences({ ...preferences, max_cook_time: parseInt(e.target.value) })
-              }
-              className="w-full h-2 bg-cream-darker rounded-lg appearance-none cursor-pointer accent-terracotta"
+              onChange={(v) => setPreferences({ ...preferences, max_cook_time: v })}
+              label="Maximum Cooking Time"
+              valueLabel={(v) => `${v} min`}
             />
-            <div className="flex justify-between text-xs text-charcoal/50 mt-1">
-              <span>15 min</span>
-              <span>3 hours</span>
-            </div>
           </div>
 
           {/* Default Servings */}

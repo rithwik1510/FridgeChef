@@ -1868,3 +1868,386 @@ message: "API key not valid. Please pass a valid API key."
 2026-01-20 18:27:32 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
 2026-01-20 18:27:33 - app.services.gemini - INFO - API key configured (length: 39)
 2026-01-20 18:27:33 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 18:27:34 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 18:27:34 - app.config - INFO - ENV file exists: True
+2026-01-20 18:27:34 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 18:27:34 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 18:27:34 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 21:50:14 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 21:50:14 - app.config - INFO - ENV file exists: True
+2026-01-20 21:50:14 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 21:50:18 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 21:50:18 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 21:50:29 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 21:50:29 - app.config - INFO - ENV file exists: True
+2026-01-20 21:50:29 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 21:50:31 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 21:50:31 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 21:50:35 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 21:50:35 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 21:50:35 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 21:50:35 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 21:50:35 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 21:50:35 - app.services.image - INFO - Saving to: uploads\3e68ef0b-ad06-424a-8c10-feb8d57fde9a.png
+2026-01-20 21:50:35 - app.services.image - INFO - File saved successfully!
+2026-01-20 21:50:35 - app.api.v1.endpoints.scans - INFO - Image saved to: 3e68ef0b-ad06-424a-8c10-feb8d57fde9a.png
+2026-01-20 21:50:35 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 21:50:35 - app.api.v1.endpoints.scans - INFO - Scan created with ID: ea232791-8d7c-4239-b7c1-d2ae9269eb1f
+2026-01-20 21:50:35 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 21:50:35 - app.api.v1.endpoints.scans - INFO - SUCCESS: Found 1 ingredients
+2026-01-20 21:50:35 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: completed ===
+2026-01-20 21:50:36 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 21:50:36 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 21:50:36 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 21:50:36 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 21:50:36 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 21:50:36 - app.services.image - INFO - Saving to: uploads\321b7bd6-f537-423e-a3ce-56b0d84d4a0d.png
+2026-01-20 21:50:36 - app.services.image - INFO - File saved successfully!
+2026-01-20 21:50:36 - app.api.v1.endpoints.scans - INFO - Image saved to: 321b7bd6-f537-423e-a3ce-56b0d84d4a0d.png
+2026-01-20 21:50:36 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 21:50:36 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 57f0feeb-d7e8-4826-bd8b-bcd362ddc887
+2026-01-20 21:50:36 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 21:50:36 - app.services.gemini - INFO - Loading image from: uploads\321b7bd6-f537-423e-a3ce-56b0d84d4a0d.png
+2026-01-20 21:50:36 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 21:50:36 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 21:50:36 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 21:50:36 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 21:50:37 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 403 Your API key was reported as leaked. Please use another API key.
+2026-01-20 21:50:37 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 248, in generate_content
+    response = self._client.generate_content(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 566, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.PermissionDenied: 403 Your API key was reported as leaked. Please use another API key.
+
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 403 Your API key was reported as leaked. Please use another API key.
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 248, in generate_content
+    response = self._client.generate_content(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 566, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.PermissionDenied: 403 Your API key was reported as leaked. Please use another API key.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 58, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 403 Your API key was reported as leaked. Please use another API key.
+
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - INFO - File name: test.txt
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - INFO - Content type: text/plain
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 21:50:37 - app.services.image - INFO - Starting file upload for: test.txt
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 21:50:37 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 21:50:37 - app.services.image - INFO - Saving to: uploads\d7364359-91b2-4bc4-898e-289905db22c7.png
+2026-01-20 21:50:37 - app.services.image - INFO - File saved successfully!
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - INFO - Image saved to: d7364359-91b2-4bc4-898e-289905db22c7.png
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - INFO - Scan created with ID: f2d95b0d-be45-4850-b121-514a1f264573
+2026-01-20 21:50:37 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 21:50:37 - app.services.gemini - INFO - Loading image from: uploads\d7364359-91b2-4bc4-898e-289905db22c7.png
+2026-01-20 21:50:37 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 21:50:37 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 21:50:37 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 21:50:37 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 21:50:38 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 403 Your API key was reported as leaked. Please use another API key.
+2026-01-20 21:50:38 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 248, in generate_content
+    response = self._client.generate_content(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 566, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.PermissionDenied: 403 Your API key was reported as leaked. Please use another API key.
+
+2026-01-20 21:50:38 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 403 Your API key was reported as leaked. Please use another API key.
+2026-01-20 21:50:38 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 248, in generate_content
+    response = self._client.generate_content(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 566, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.PermissionDenied: 403 Your API key was reported as leaked. Please use another API key.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 58, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 403 Your API key was reported as leaked. Please use another API key.
+
+2026-01-20 21:50:38 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 21:50:38 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 21:50:38 - app.api.v1.endpoints.scans - INFO - File name: test.png
+2026-01-20 21:50:38 - app.api.v1.endpoints.scans - INFO - Content type: image/png
+2026-01-20 21:50:38 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 21:50:38 - app.services.image - INFO - Starting file upload for: test.png
+2026-01-20 21:50:38 - app.services.image - INFO - Saving to: uploads\e40e71f3-945f-4e8e-92e7-eefc13a7c260.png
+2026-01-20 21:50:38 - app.services.image - INFO - File saved successfully!
+2026-01-20 21:50:38 - app.api.v1.endpoints.scans - INFO - Image saved to: e40e71f3-945f-4e8e-92e7-eefc13a7c260.png
+2026-01-20 21:50:38 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 21:50:38 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 38cc91dc-d8cc-4bf9-b83c-c558e234e5fc
+2026-01-20 21:50:38 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 21:50:38 - app.services.gemini - INFO - Loading image from: uploads\e40e71f3-945f-4e8e-92e7-eefc13a7c260.png
+2026-01-20 21:50:38 - app.services.gemini - INFO - Detected mime type: image/png
+2026-01-20 21:50:38 - app.services.gemini - INFO - Image loaded, size: 215 bytes
+2026-01-20 21:50:38 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 21:50:38 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 21:50:38 - app.services.gemini - ERROR - Error in detect_ingredients_from_image: 403 Your API key was reported as leaked. Please use another API key.
+2026-01-20 21:50:38 - app.services.gemini - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 248, in generate_content
+    response = self._client.generate_content(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 566, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.PermissionDenied: 403 Your API key was reported as leaked. Please use another API key.
+
+2026-01-20 21:50:38 - app.api.v1.endpoints.scans - ERROR - ERROR detecting ingredients: Failed to detect ingredients: 403 Your API key was reported as leaked. Please use another API key.
+2026-01-20 21:50:38 - app.api.v1.endpoints.scans - ERROR - Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 83, in detect_ingredients_from_image
+    response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\generativeai\generative_models.py", line 248, in generate_content
+    response = self._client.generate_content(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\ai\generativelanguage_v1beta\services\generative_service\client.py", line 566, in generate_content
+    response = rpc(
+               ^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\gapic_v1\method.py", line 131, in __call__
+    return wrapped_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+           ^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+                 ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_base.py", line 214, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+             ^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\timeout.py", line 130, in func_with_timeout
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\AppData\Local\Programs\Python\Python312\Lib\site-packages\google\api_core\grpc_helpers.py", line 78, in error_remapped_callable
+    raise exceptions.from_grpc_error(exc) from exc
+google.api_core.exceptions.PermissionDenied: 403 Your API key was reported as leaked. Please use another API key.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\api\v1\endpoints\scans.py", line 58, in create_scan
+    ingredients = detect_ingredients_from_image(image_path)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\app\services\gemini.py", line 142, in detect_ingredients_from_image
+    raise Exception(f"Failed to detect ingredients: {str(e)}")
+Exception: Failed to detect ingredients: 403 Your API key was reported as leaked. Please use another API key.
+
+2026-01-20 21:50:38 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: failed ===
+2026-01-20 21:56:48 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 21:56:48 - app.config - INFO - ENV file exists: True
+2026-01-20 21:56:48 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 21:56:51 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 21:56:51 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 22:00:42 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 22:00:42 - app.config - INFO - ENV file exists: True
+2026-01-20 22:00:42 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 22:00:50 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 22:00:50 - app.config - INFO - ENV file exists: True
+2026-01-20 22:00:50 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 22:02:28 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 22:02:28 - app.config - INFO - ENV file exists: True
+2026-01-20 22:02:28 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 22:03:20 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 22:03:20 - app.config - INFO - ENV file exists: True
+2026-01-20 22:03:20 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 22:03:20 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 22:03:20 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 22:07:37 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 22:07:37 - app.config - INFO - ENV file exists: True
+2026-01-20 22:07:37 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 22:07:37 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 22:07:37 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 22:08:08 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 22:08:08 - app.config - INFO - ENV file exists: True
+2026-01-20 22:08:08 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 22:08:09 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 22:08:09 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 22:08:44 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 22:08:44 - app.config - INFO - ENV file exists: True
+2026-01-20 22:08:44 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 22:08:44 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 22:08:44 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 22:10:00 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 22:10:00 - app.config - INFO - ENV file exists: True
+2026-01-20 22:10:00 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 22:10:01 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 22:10:01 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 22:10:57 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 22:10:57 - app.config - INFO - ENV file exists: True
+2026-01-20 22:10:57 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 22:12:15 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 22:12:15 - app.config - INFO - ENV file exists: True
+2026-01-20 22:12:15 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 22:12:16 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 22:12:16 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-20 22:13:03 - app.api.v1.endpoints.scans - INFO - === SCAN UPLOAD STARTED ===
+2026-01-20 22:13:03 - app.api.v1.endpoints.scans - INFO - File name: open-fridge-full-of-different-food-TBH37N.jpg
+2026-01-20 22:13:03 - app.api.v1.endpoints.scans - INFO - Content type: image/jpeg
+2026-01-20 22:13:03 - app.api.v1.endpoints.scans - INFO - Saving uploaded image...
+2026-01-20 22:13:03 - app.services.image - INFO - Starting file upload for: open-fridge-full-of-different-food-TBH37N.jpg
+2026-01-20 22:13:03 - app.services.image - INFO - Saving to: uploads\a123e5df-3a21-4495-9128-0057b4c123e0.jpg
+2026-01-20 22:13:03 - app.services.image - INFO - File saved successfully!
+2026-01-20 22:13:03 - app.api.v1.endpoints.scans - INFO - Image saved to: a123e5df-3a21-4495-9128-0057b4c123e0.jpg
+2026-01-20 22:13:03 - app.api.v1.endpoints.scans - INFO - Creating scan record...
+2026-01-20 22:13:03 - app.api.v1.endpoints.scans - INFO - Scan created with ID: 0ee80179-f9e2-4a16-b279-3865ed53897b
+2026-01-20 22:13:03 - app.api.v1.endpoints.scans - INFO - Calling Gemini to detect ingredients...
+2026-01-20 22:13:03 - app.services.gemini - INFO - Loading image from: uploads\a123e5df-3a21-4495-9128-0057b4c123e0.jpg
+2026-01-20 22:13:03 - app.services.gemini - INFO - Detected mime type: image/jpeg
+2026-01-20 22:13:03 - app.services.gemini - INFO - Image loaded, size: 145121 bytes
+2026-01-20 22:13:03 - app.services.gemini - INFO - Creating model: gemini-2.0-flash
+2026-01-20 22:13:03 - app.services.gemini - INFO - Sending request to Gemini API...
+2026-01-20 22:13:08 - app.services.gemini - INFO - Response received from Gemini API
+2026-01-20 22:13:08 - app.services.gemini - INFO - Successfully parsed 20 ingredients
+2026-01-20 22:13:08 - app.api.v1.endpoints.scans - INFO - SUCCESS: Found 20 ingredients
+2026-01-20 22:13:08 - app.api.v1.endpoints.scans - INFO - === SCAN COMPLETED: completed ===
+2026-01-20 22:53:36 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-20 22:53:36 - app.config - INFO - ENV file exists: True
+2026-01-20 22:53:36 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-20 22:53:37 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-20 22:53:37 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-21 15:53:19 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-21 15:53:19 - app.config - INFO - ENV file exists: True
+2026-01-21 15:53:19 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-21 15:53:23 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-21 15:53:23 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads

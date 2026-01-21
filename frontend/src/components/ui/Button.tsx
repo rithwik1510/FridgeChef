@@ -66,9 +66,9 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const sizeStyles = {
-    sm: 'px-4 py-2 text-sm min-h-[36px] gap-1.5',
-    md: 'px-5 py-2.5 text-base min-h-[44px] gap-2',
-    lg: 'px-6 py-3 text-lg min-h-[52px] gap-2.5',
+    sm: 'px-4 py-2.5 text-sm min-h-[44px] gap-1.5',
+    md: 'px-5 py-3 text-base min-h-[48px] gap-2',
+    lg: 'px-6 py-3.5 text-lg min-h-[52px] gap-2.5',
   };
 
   const glowStyles = glow && !disabled ? 'animate-pulse-glow' : '';
@@ -143,8 +143,8 @@ export const IconButton: React.FC<IconButtonProps> = ({
   ...props
 }) => {
   const sizeStyles = {
-    sm: 'w-8 h-8',
-    md: 'w-10 h-10',
+    sm: 'w-10 h-10',
+    md: 'w-11 h-11',
     lg: 'w-12 h-12',
   };
 

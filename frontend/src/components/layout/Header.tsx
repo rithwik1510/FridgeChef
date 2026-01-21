@@ -7,12 +7,14 @@ import { useAuthStore } from '@/store/auth';
 import { Button } from '@/components/ui/Button';
 import { Logo } from '@/components/ui/Logo';
 import { Avatar } from '@/components/ui/Avatar';
-import { SignOut, User, Gear, CaretDown } from '@phosphor-icons/react';
+import { SignOut, User, Gear, CaretDown, List } from '@phosphor-icons/react';
+import { MobileDrawer } from './MobileDrawer';
 
 export const Header = () => {
   const router = useRouter();
   const { user, logout } = useAuthStore();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = () => {
@@ -36,10 +38,19 @@ export const Header = () => {
     <header className="gradient-header border-b border-charcoal/10 sticky top-0 z-50 shadow-soft relative texture-noise">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/dashboard" className="hover:opacity-90 transition-opacity">
-            <Logo size="md" />
-          </Link>
+          {/* Logo & Mobile Menu */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsDrawerOpen(true)}
+              className="lg:hidden p-2 rounded-xl hover:bg-cream-dark/50 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+              aria-label="Open menu"
+            >
+              <List size={24} weight="bold" />
+            </button>
+            <Link href="/dashboard" className="hover:opacity-90 transition-opacity">
+              <Logo size="md" />
+            </Link>
+          </div>
 
           {/* User Info and Dropdown */}
           <div className="relative" ref={dropdownRef}>
@@ -90,6 +101,7 @@ export const Header = () => {
           </div>
         </div>
       </div>
+      <MobileDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
     </header>
   );
 };
