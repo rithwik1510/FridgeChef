@@ -54,8 +54,8 @@ def detect_ingredients_from_image(image_path: str) -> List[Dict]:
         logger.info(f"Image loaded, size: {len(image_data)} bytes")
 
         # Create the model
-        logger.info("Creating model: gemini-2.0-flash")
-        model = genai.GenerativeModel('gemini-2.0-flash')
+        logger.info("Creating model: gemini-1.5-flash")
+        model = genai.GenerativeModel('gemini-1.5-flash')
 
         # Create the prompt
         prompt = """
@@ -98,6 +98,14 @@ def detect_ingredients_from_image(image_path: str) -> List[Dict]:
         try:
             # Extract JSON from response
             response_text = response.text.strip()
+            
+            # Clean markdown code blocks if present
+            if "```json" in response_text:
+                response_text = response_text.replace("```json", "").replace("```", "")
+            elif "```" in response_text:
+                response_text = response_text.replace("```", "")
+                
+            response_text = response_text.strip()
             logger.debug(f"Raw response length: {len(response_text)}")
 
             # Robust JSON extraction
@@ -127,6 +135,10 @@ def detect_ingredients_from_image(image_path: str) -> List[Dict]:
                     })
 
             logger.info(f"Successfully parsed {len(cleaned_ingredients)} ingredients")
+            
+            if not cleaned_ingredients:
+                raise Exception(f"Gemini returned no ingredients. Raw text: {response_text[:200]}")
+
             return cleaned_ingredients
 
         except json.JSONDecodeError as e:
@@ -153,7 +165,7 @@ def generate_recipes(
     """
     try:
         # Create the model
-        model = genai.GenerativeModel('gemini-2.0-flash')
+        model = genai.GenerativeModel('gemini-1.5-flash')
 
         # Format ingredients list
         ingredients_list = [f"{ing['name']} ({ing.get('quantity', 'some')})" for ing in available_ingredients]
