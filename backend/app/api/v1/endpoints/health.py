@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from app.database import get_db
 from app.utils.logger import setup_logger
 
@@ -20,7 +21,7 @@ async def database_health_check(db: Session = Depends(get_db)):
     """Database connectivity health check."""
     try:
         # Execute simple query
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         return {
             "status": "healthy",
             "database": "connected"
@@ -44,7 +45,7 @@ async def full_health_check(db: Session = Depends(get_db)):
 
     # Check database
     try:
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         checks["database"] = "healthy"
     except Exception as e:
         logger.error(f"Database check failed: {e}")
@@ -68,3 +69,44 @@ async def full_health_check(db: Session = Depends(get_db)):
         "checks": checks,
         "version": "1.0.0"
     }
+
+
+@router.get("/health/gemini")
+async def gemini_api_test():
+    """
+    Test if Gemini API is actually working.
+    Makes a real API call to verify the key is valid.
+    """
+    from app.config import settings
+
+    result = {
+        "api_key_set": bool(settings.GOOGLE_API_KEY),
+        "api_key_length": len(settings.GOOGLE_API_KEY) if settings.GOOGLE_API_KEY else 0,
+        "test_call": "not_attempted",
+        "error": None
+    }
+
+    if not settings.GOOGLE_API_KEY:
+        result["test_call"] = "skipped"
+        result["error"] = "GOOGLE_API_KEY environment variable is not set"
+        return result
+
+    # Try a simple API call
+    try:
+        import google.generativeai as genai
+        genai.configure(api_key=settings.GOOGLE_API_KEY)
+        model = genai.GenerativeModel('gemini-1.5-flash')
+
+        # Simple test prompt
+        response = model.generate_content("Say 'API working' in exactly 2 words")
+
+        result["test_call"] = "success"
+        result["response_preview"] = response.text[:100] if response.text else "empty response"
+        logger.info(f"Gemini API test successful: {response.text[:50]}")
+
+    except Exception as e:
+        result["test_call"] = "failed"
+        result["error"] = str(e)
+        logger.error(f"Gemini API test failed: {e}")
+
+    return result
