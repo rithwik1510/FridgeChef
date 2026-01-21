@@ -46,15 +46,23 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   checkAuth: async () => {
-    // Simulate successful login for testing with real token
-    const testToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3OGVhNjE4My05OWUxLTQyZWYtYTM3YS0xNzQ0MWFlZGU0ZDYiLCJleHAiOjE3Njk1MTYzNzJ9.3HQ7njSqNpBgl5i17frKHjFVloNsPJBivsrOQkLXgFE';
-    localStorage.setItem('auth_token', testToken);
+    const token = localStorage.getItem('auth_token');
+
+    if (!token) {
+      set({
+        user: null,
+        token: null,
+        isAuthenticated: false,
+        isLoading: false
+      });
+      return;
+    }
 
     try {
       const user = await authApi.getMe();
       set({
         user,
-        token: testToken,
+        token,
         isAuthenticated: true,
         isLoading: false
       });
