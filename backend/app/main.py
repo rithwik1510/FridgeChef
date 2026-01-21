@@ -42,12 +42,15 @@ app.add_exception_handler(Exception, generic_exception_handler)
 app.add_exception_handler(SQLAlchemyError, database_exception_handler)
 app.add_exception_handler(ValueError, validation_exception_handler)
 
-# CORS middleware - Allow all origins without credentials
-# Note: allow_origins=["*"] and allow_credentials=True don't work together
+# CORS middleware
+# Using explicit allowed origins is required for allow_credentials=True
+# which is needed for authenticated requests (even with Bearer tokens in some contexts)
+logger.info(f"Configuring CORS with allowed origins: {settings.allowed_origins_list}")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,  # Must be False when using "*"
+    allow_origins=settings.allowed_origins_list,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
