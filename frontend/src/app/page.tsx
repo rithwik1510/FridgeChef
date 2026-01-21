@@ -45,11 +45,26 @@ export default function Home() {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Link href="/dashboard">
-            <Button size="lg" variant="primary" className="w-full sm:w-auto">
-              Go to Dashboard
-            </Button>
-          </Link>
+          {isAuthenticated ? (
+            <Link href="/dashboard">
+              <Button size="lg" variant="primary" className="w-full sm:w-auto">
+                Go to Dashboard
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link href="/register">
+                <Button size="lg" variant="primary" className="w-full sm:w-auto font-fraunces">
+                  Join the Kitchen
+                </Button>
+              </Link>
+              <Link href="/login">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto font-fraunces">
+                  Sign In
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Features */}
