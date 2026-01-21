@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/v1/:path*",
-      "destination": "https://fridgechef-backend.onrender.com/api/v1/:path*"
+      "destination": "https://fridgechef-9zb2.onrender.com/api/v1/:path*"
     }
   ]
 }
