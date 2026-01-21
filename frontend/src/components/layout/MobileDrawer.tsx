@@ -127,9 +127,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose }) =
                         className={`
                             flex items-center gap-3 px-3 py-3 rounded-xl
                             transition-all duration-200 touch-target
+                            border-l-4
                             ${isActive
-                                ? 'bg-terracotta/10 text-terracotta font-semibold'
-                                : 'text-charcoal/70 hover:bg-cream-dark hover:text-charcoal'
+                                ? 'bg-terracotta/10 text-terracotta font-semibold border-terracotta'
+                                : 'text-charcoal/70 border-transparent hover:bg-cream-dark hover:text-charcoal'
                             }
                         `}
                     >

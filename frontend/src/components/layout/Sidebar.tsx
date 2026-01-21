@@ -43,10 +43,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
               className={`
                 group flex items-center gap-3 px-3 py-3 rounded-xl
                 transition-all duration-200
+                border-l-4
                 animate-fade-in
                 ${isActive
-                  ? 'bg-terracotta/10 text-terracotta border-l-4 border-terracotta -ml-[4px] pl-[16px]'
-                  : 'text-charcoal/70 hover:bg-cream hover:text-charcoal'
+                  ? 'bg-terracotta/10 text-terracotta border-terracotta'
+                  : 'text-charcoal/70 border-transparent hover:bg-cream hover:text-charcoal'
                 }
               `}
               style={{ animationDelay: `${index * 50}ms` }}

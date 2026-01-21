@@ -133,7 +133,7 @@ const ToastItem: React.FC<{
       <div className="flex-1 min-w-0">
         <p className="font-medium">{toast.title}</p>
         {toast.message && (
-          <p className={`text-sm mt-1 opacity-90`}>{toast.message}</p>
+          <p className={`text-sm mt-1 opacity-90 break-words leading-snug`}>{toast.message}</p>
         )}
       </div>
 
