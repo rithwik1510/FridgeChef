@@ -95,7 +95,7 @@ async def gemini_api_test():
     try:
         import google.generativeai as genai
         genai.configure(api_key=settings.GOOGLE_API_KEY)
-        model = genai.GenerativeModel('gemini-2.0-flash')
+        model = genai.GenerativeModel('gemini-1.5-flash')
 
         # Simple test prompt
         response = model.generate_content("Say 'API working' in exactly 2 words")
