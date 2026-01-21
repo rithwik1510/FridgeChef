@@ -37,6 +37,8 @@ class Settings(BaseSettings):
 
     # CORS
     ALLOWED_ORIGINS: str = "http://localhost:3000,http://127.0.0.1:3000"
+    # Regex to match any Vercel deployment URL (e.g. https://fridge-chef-*.vercel.app)
+    CORS_ORIGIN_REGEX: str = r"https://.*\.vercel\.app"
 
     model_config = SettingsConfigDict(
         env_file=str(ENV_FILE),
