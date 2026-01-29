@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 interface CardProps {
@@ -10,6 +12,7 @@ interface CardProps {
   header?: React.ReactNode;
   headerIcon?: React.ReactNode;
   style?: React.CSSProperties;
+  shine?: boolean;
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -22,6 +25,7 @@ export const Card: React.FC<CardProps> = ({
   header,
   headerIcon,
   style,
+  shine = false,
 }) => {
   const variantStyles = {
     default: 'bg-cream border border-cream-darker shadow-soft',
@@ -33,22 +37,29 @@ export const Card: React.FC<CardProps> = ({
   const paddingStyles = compact ? 'p-4' : 'p-5';
 
   const hoverStyles = hover
-    ? 'hover:shadow-medium hover:-translate-y-1 cursor-pointer active:translate-y-0 active:shadow-soft active:scale-[0.98]'
-    : '';
+    ? `
+      hover:shadow-medium hover:-translate-y-1 cursor-pointer
+      active:translate-y-0 active:shadow-soft active:scale-[0.98]
+      hover:border-terracotta/20
+      transition-all duration-200
+    `
+    : 'transition-all duration-200';
 
   const interactiveStyles = onClick
     ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-terracotta focus:ring-offset-2 focus:ring-offset-cream-lightest'
     : '';
 
+  const shineStyles = shine ? 'card-shine' : '';
+
   return (
     <div
       className={`
         rounded-2xl
-        transition-all duration-200
         ${variantStyles[variant]}
         ${paddingStyles}
         ${hoverStyles}
         ${interactiveStyles}
+        ${shineStyles}
         ${className}
       `}
       onClick={onClick}
@@ -60,7 +71,9 @@ export const Card: React.FC<CardProps> = ({
       {(header || headerIcon) && (
         <div className="flex items-center gap-3 mb-4">
           {headerIcon && (
-            <div className="text-terracotta">{headerIcon}</div>
+            <div className="text-terracotta transition-transform duration-200 group-hover:scale-110">
+              {headerIcon}
+            </div>
           )}
           {header && (
             <div className="font-semibold text-charcoal">{header}</div>
@@ -106,4 +119,20 @@ export const CardFooter: React.FC<{
   className?: string;
 }> = ({ children, className = '' }) => (
   <div className={`mt-4 pt-4 border-t border-charcoal/10 ${className}`}>{children}</div>
+);
+
+// Interactive card with built-in hover animations
+export const InteractiveCard: React.FC<{
+  children: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
+}> = ({ children, onClick, className = '' }) => (
+  <Card
+    hover
+    shine
+    onClick={onClick}
+    className={`group interactive-layer ${className}`}
+  >
+    {children}
+  </Card>
 );

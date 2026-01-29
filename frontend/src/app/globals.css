@@ -196,6 +196,97 @@
   .stagger-6 { animation-delay: 300ms; }
   .stagger-7 { animation-delay: 350ms; }
   .stagger-8 { animation-delay: 400ms; }
+  .stagger-9 { animation-delay: 450ms; }
+  .stagger-10 { animation-delay: 500ms; }
+
+  /* Animation Fill Mode Utilities */
+  .animate-fill-backwards { animation-fill-mode: backwards; }
+  .animate-fill-forwards { animation-fill-mode: forwards; }
+  .animate-fill-both { animation-fill-mode: both; }
+
+  /* Visual Hierarchy - Depth Layers */
+  .depth-1 {
+    @apply bg-cream shadow-soft;
+  }
+  .depth-2 {
+    @apply bg-cream-dark shadow-medium;
+  }
+  .depth-3 {
+    @apply bg-cream-darker shadow-strong;
+  }
+
+  /* Text Hierarchy */
+  .text-primary-content {
+    @apply text-charcoal;
+  }
+  .text-secondary-content {
+    @apply text-charcoal/80;
+  }
+  .text-tertiary-content {
+    @apply text-charcoal/60;
+  }
+  .text-muted-content {
+    @apply text-charcoal/40;
+  }
+
+  /* Interactive Layer - Hover Overlay Effect */
+  .interactive-layer {
+    @apply relative overflow-hidden;
+  }
+  .interactive-layer::after {
+    content: '';
+    @apply absolute inset-0 bg-charcoal/0 transition-colors duration-200 pointer-events-none;
+  }
+  .interactive-layer:hover::after {
+    @apply bg-charcoal/5;
+  }
+
+  /* Ripple Effect for Buttons */
+  .ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(0);
+    animation: ripple 0.6s ease-out forwards;
+    pointer-events: none;
+  }
+
+  /* Card Shine Effect */
+  .card-shine {
+    @apply relative overflow-hidden;
+  }
+  .card-shine::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+  .card-shine:hover::before {
+    animation: shine 0.6s ease-out;
+  }
+
+  /* Steam Effect Container */
+  .steam-container {
+    position: relative;
+  }
+  .steam-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(196, 112, 75, 0.3);
+    filter: blur(2px);
+  }
 }
 
 @layer utilities {

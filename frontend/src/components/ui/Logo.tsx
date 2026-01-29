@@ -1,18 +1,28 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 
 interface LogoProps {
   variant?: 'full' | 'icon';
   size?: 'sm' | 'md' | 'lg';
   className?: string;
+  onSecretUnlock?: () => void;
 }
+
+const SECRET_CLICK_COUNT = 7;
+const SECRET_CLICK_TIMEOUT = 2000; // 2 seconds to complete the sequence
 
 export const Logo: React.FC<LogoProps> = ({
   variant = 'full',
   size = 'md',
   className = '',
+  onSecretUnlock,
 }) => {
+  const [clickCount, setClickCount] = useState(0);
+  const [isWiggling, setIsWiggling] = useState(false);
+  const [showSecret, setShowSecret] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const sizes = {
     sm: { icon: 28, text: 'text-lg' },
     md: { icon: 42, text: 'text-2xl' },
@@ -22,6 +32,37 @@ export const Logo: React.FC<LogoProps> = ({
   const iconSize = sizes[size].icon;
   const textSize = sizes[size].text;
 
+  const handleClick = useCallback(() => {
+    // Clear existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    const newCount = clickCount + 1;
+    setClickCount(newCount);
+
+    // Add wiggle on each click
+    setIsWiggling(true);
+    setTimeout(() => setIsWiggling(false), 300);
+
+    if (newCount >= SECRET_CLICK_COUNT) {
+      // Easter egg unlocked!
+      setShowSecret(true);
+      setClickCount(0);
+      onSecretUnlock?.();
+
+      // Hide secret message after 3 seconds
+      setTimeout(() => {
+        setShowSecret(false);
+      }, 3000);
+    } else {
+      // Reset count after timeout
+      timeoutRef.current = setTimeout(() => {
+        setClickCount(0);
+      }, SECRET_CLICK_TIMEOUT);
+    }
+  }, [clickCount, onSecretUnlock]);
+
   const LogoIcon = () => (
     <svg
       width={iconSize}
@@ -29,7 +70,11 @@ export const Logo: React.FC<LogoProps> = ({
       viewBox="0 0 48 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="transition-transform duration-300 group-hover:scale-105"
+      className={`
+        transition-transform duration-300
+        group-hover:scale-105
+        ${isWiggling ? 'animate-wiggle' : ''}
+      `}
     >
       {/* Chef's Hat */}
       <g className="transition-transform duration-300 origin-bottom group-hover:-translate-y-1">
@@ -71,21 +116,68 @@ export const Logo: React.FC<LogoProps> = ({
     </svg>
   );
 
+  // Progress indicator for clicks
+  const ClickProgress = () => {
+    if (clickCount === 0) return null;
+
+    return (
+      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 flex gap-0.5">
+        {Array.from({ length: SECRET_CLICK_COUNT }).map((_, i) => (
+          <div
+            key={i}
+            className={`
+              w-1 h-1 rounded-full transition-all duration-150
+              ${i < clickCount ? 'bg-terracotta scale-125' : 'bg-charcoal/20'}
+            `}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  // Secret message overlay
+  const SecretMessage = () => {
+    if (!showSecret) return null;
+
+    return (
+      <div className="
+        absolute -bottom-10 left-1/2 -translate-x-1/2
+        whitespace-nowrap
+        bg-terracotta text-cream px-3 py-1.5 rounded-lg
+        text-sm font-medium
+        animate-spring-scale
+        shadow-medium
+      ">
+        You found the secret chef! 👨‍🍳✨
+      </div>
+    );
+  };
+
   if (variant === 'icon') {
     return (
-      <div className={`group inline-flex items-center ${className}`}>
+      <div
+        className={`group inline-flex items-center relative cursor-pointer select-none ${className}`}
+        onClick={handleClick}
+      >
         <LogoIcon />
+        <ClickProgress />
+        <SecretMessage />
       </div>
     );
   }
 
   return (
-    <div className={`group inline-flex items-center gap-2 ${className}`}>
+    <div
+      className={`group inline-flex items-center gap-2 relative cursor-pointer select-none ${className}`}
+      onClick={handleClick}
+    >
       <LogoIcon />
       <span className={`font-fraunces font-bold ${textSize}`}>
         <span className="text-charcoal">Fridge</span>
         <span className="text-terracotta">Chef</span>
       </span>
+      <ClickProgress />
+      <SecretMessage />
     </div>
   );
 };

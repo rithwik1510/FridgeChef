@@ -9,11 +9,13 @@ import { SkeletonCard } from '@/components/ui/Skeleton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Camera, ForkKnife, ShoppingCart, ArrowRight, Clock, ChefHat } from '@phosphor-icons/react';
 import { useToast } from '@/components/ui/Toast';
+import { useSeasonalSurprise } from '@/hooks/useSeasonalSurprise';
 import Link from 'next/link';
 
 export default function DashboardPage() {
   const router = useRouter();
   const { addToast } = useToast();
+  const { greeting, emoji, suggestion } = useSeasonalSurprise();
   const [recentScans, setRecentScans] = useState<any[]>([]);
   const [recentRecipes, setRecentRecipes] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -70,9 +72,10 @@ export default function DashboardPage() {
     <div className="space-y-8">
       {/* Welcome Section */}
       <div className="text-center py-6 animate-fade-in">
-        <h1 className="text-3xl md:text-4xl mb-3">Welcome to FridgeChef</h1>
+        <div className="text-4xl mb-2">{emoji}</div>
+        <h1 className="text-3xl md:text-4xl mb-3">{greeting}</h1>
         <p className="text-lg text-charcoal/70 mb-6">
-          What would you like to cook today?
+          {suggestion || 'What would you like to cook today?'}
         </p>
 
         <Link href="/scan">

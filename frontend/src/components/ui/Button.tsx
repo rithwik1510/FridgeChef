@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useRef, useCallback } from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
@@ -22,14 +24,47 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   className = '',
   disabled,
+  onClick,
   ...props
 }) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Ripple effect handler
+  const createRipple = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    const button = buttonRef.current;
+    if (!button || disabled || isLoading) return;
+
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = event.clientX - rect.left - size / 2;
+    const y = event.clientY - rect.top - size / 2;
+
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple-effect';
+    ripple.style.width = ripple.style.height = `${size}px`;
+    ripple.style.left = `${x}px`;
+    ripple.style.top = `${y}px`;
+
+    button.appendChild(ripple);
+
+    // Remove ripple after animation
+    setTimeout(() => {
+      ripple.remove();
+    }, 600);
+  }, [disabled, isLoading]);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    createRipple(event);
+    onClick?.(event);
+  };
+
   const baseStyles = `
+    relative overflow-hidden
     inline-flex items-center justify-center font-medium rounded-xl
     transition-all duration-200
     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-cream-lightest
     disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
-    active:scale-[0.98]
+    active:scale-[0.98] active:brightness-95
   `;
 
   const variantStyles = {
@@ -74,31 +109,18 @@ export const Button: React.FC<ButtonProps> = ({
   const glowStyles = glow && !disabled ? 'animate-pulse-glow' : '';
   const widthStyles = fullWidth ? 'w-full' : '';
 
-  const LoadingSpinner = () => (
-    <svg
-      className="animate-spin h-5 w-5"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-    >
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      />
-      <path
-        className="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-      />
-    </svg>
+  // Animated loading dots
+  const LoadingDots = () => (
+    <span className="flex items-center gap-1">
+      <span className="w-1.5 h-1.5 bg-current rounded-full animate-bounce-dot" />
+      <span className="w-1.5 h-1.5 bg-current rounded-full animate-bounce-dot-delay-1" />
+      <span className="w-1.5 h-1.5 bg-current rounded-full animate-bounce-dot-delay-2" />
+    </span>
   );
 
   return (
     <button
+      ref={buttonRef}
       className={`
         ${baseStyles}
         ${variantStyles[variant]}
@@ -108,12 +130,13 @@ export const Button: React.FC<ButtonProps> = ({
         ${className}
       `}
       disabled={disabled || isLoading}
+      onClick={handleClick}
       {...props}
     >
       {isLoading ? (
         <>
-          <LoadingSpinner />
-          <span>Loading...</span>
+          <LoadingDots />
+          <span>Loading</span>
         </>
       ) : (
         <>
@@ -140,8 +163,39 @@ export const IconButton: React.FC<IconButtonProps> = ({
   size = 'md',
   label,
   className = '',
+  onClick,
   ...props
 }) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Ripple effect handler
+  const createRipple = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    const button = buttonRef.current;
+    if (!button) return;
+
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = event.clientX - rect.left - size / 2;
+    const y = event.clientY - rect.top - size / 2;
+
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple-effect';
+    ripple.style.width = ripple.style.height = `${size}px`;
+    ripple.style.left = `${x}px`;
+    ripple.style.top = `${y}px`;
+
+    button.appendChild(ripple);
+
+    setTimeout(() => {
+      ripple.remove();
+    }, 600);
+  }, []);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    createRipple(event);
+    onClick?.(event);
+  };
+
   const sizeStyles = {
     sm: 'w-10 h-10',
     md: 'w-11 h-11',
@@ -157,16 +211,19 @@ export const IconButton: React.FC<IconButtonProps> = ({
 
   return (
     <button
+      ref={buttonRef}
       className={`
+        relative overflow-hidden
         inline-flex items-center justify-center rounded-xl
         transition-all duration-200
         focus:outline-none focus:ring-2 focus:ring-terracotta focus:ring-offset-2
-        active:scale-95
+        active:scale-95 active:brightness-95
         ${sizeStyles[size]}
         ${variantStyles[variant]}
         ${className}
       `}
       aria-label={label}
+      onClick={handleClick}
       {...props}
     >
       {icon}

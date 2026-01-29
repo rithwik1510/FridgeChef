@@ -78,42 +78,106 @@ const ToastContainer: React.FC<{
           key={toast.id}
           toast={toast}
           onClose={() => removeToast(toast.id)}
-          style={{ animationDelay: `${index * 50}ms` }}
+          index={index}
         />
       ))}
     </div>
   );
 };
 
+// Animated success checkmark icon
+const AnimatedCheckIcon: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <svg
+    className={`w-6 h-6 ${className}`}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    {/* Background circle */}
+    <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.2" />
+    {/* Expanding ring animation */}
+    <circle
+      cx="12"
+      cy="12"
+      r="10"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      opacity="0.3"
+      className="animate-success-ring origin-center"
+    />
+    {/* Checkmark */}
+    <path
+      d="M7 12.5L10.5 16L17 9"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      fill="none"
+      style={{
+        strokeDasharray: 20,
+        strokeDashoffset: 20,
+        animation: 'successCheck 0.4s ease-out 0.1s forwards',
+      }}
+    />
+  </svg>
+);
+
+// Animated error icon
+const AnimatedErrorIcon: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <svg
+    className={`w-6 h-6 ${className}`}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    {/* Background circle */}
+    <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.2" />
+    {/* X mark */}
+    <path
+      d="M8 8L16 16M16 8L8 16"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      fill="none"
+      className="animate-fade-in"
+    />
+  </svg>
+);
+
 const ToastItem: React.FC<{
   toast: Toast;
   onClose: () => void;
-  style?: React.CSSProperties;
-}> = ({ toast, onClose, style }) => {
+  index: number;
+}> = ({ toast, onClose, index }) => {
   const typeStyles = {
     success: {
       bg: 'bg-sage',
-      icon: CheckCircle,
+      icon: AnimatedCheckIcon,
       iconColor: 'text-cream',
+      animation: '',
     },
     error: {
       bg: 'bg-terracotta',
-      icon: WarningCircle,
+      icon: AnimatedErrorIcon,
       iconColor: 'text-cream',
+      animation: 'animate-error-shake',
     },
     info: {
       bg: 'bg-butter',
-      icon: Info,
+      icon: () => <Info size={24} weight="fill" className="text-charcoal" />,
       iconColor: 'text-charcoal',
+      animation: '',
     },
     warning: {
       bg: 'bg-butter-dark',
-      icon: Warning,
+      icon: () => <Warning size={24} weight="fill" className="text-charcoal" />,
       iconColor: 'text-charcoal',
+      animation: '',
     },
   };
 
-  const { bg, icon: Icon, iconColor } = typeStyles[toast.type];
+  const { bg, icon: Icon, iconColor, animation } = typeStyles[toast.type];
   const textColor = toast.type === 'info' || toast.type === 'warning' ? 'text-charcoal' : 'text-cream';
 
   return (
@@ -122,13 +186,16 @@ const ToastItem: React.FC<{
         ${bg} ${textColor}
         rounded-xl shadow-medium
         p-4 min-w-[280px]
-        animate-slide-up
+        animate-slide-in-bottom
         flex items-start gap-3
+        ${animation}
       `}
-      style={style}
+      style={{ animationDelay: `${index * 50}ms` }}
       role="alert"
     >
-      <Icon size={24} weight="fill" className={`${iconColor} flex-shrink-0 mt-0.5`} />
+      <div className={`${iconColor} flex-shrink-0 mt-0.5`}>
+        <Icon className={iconColor} />
+      </div>
 
       <div className="flex-1 min-w-0">
         <p className="font-medium">{toast.title}</p>
@@ -143,6 +210,8 @@ const ToastItem: React.FC<{
           ${textColor} opacity-70 hover:opacity-100
           transition-opacity p-1 -m-1
           flex-shrink-0
+          hover:scale-110 active:scale-95
+          transition-transform duration-150
         `}
         aria-label="Close"
       >

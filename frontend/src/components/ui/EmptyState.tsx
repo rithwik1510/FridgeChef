@@ -218,7 +218,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <div className={`flex flex-col items-center justify-center py-12 px-4 text-center ${className}`}>
       {Illustration && (
-        <div className="mb-6 animate-fade-in">
+        <div className="mb-6 animate-fade-in animate-float">
           <Illustration />
         </div>
       )}
