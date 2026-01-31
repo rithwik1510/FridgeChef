@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Header } from '@/components/layout/Header';
 import { Navigation } from '@/components/layout/Navigation';
 import { Sidebar } from '@/components/layout/Sidebar';
@@ -13,11 +14,12 @@ export default function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { isLoading, checkAuth } = useAuthStore();
+  const router = useRouter();
+  const { isLoading, isAuthenticated, checkAuth } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
-  }, [checkAuth]);
+  }, []);
 
   // Show loading state while checking auth
   if (isLoading) {
@@ -29,6 +31,12 @@ export default function AppLayout({
         </div>
       </div>
     );
+  }
+
+  // Redirect to login if not authenticated
+  if (!isAuthenticated) {
+    router.push('/login');
+    return null;
   }
 
   return (
