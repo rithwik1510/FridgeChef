@@ -84,8 +84,26 @@ export const Navigation = () => {
               ))}
             </div>
 
-            {/* Center spacer for scan button */}
-            <div className="w-16" />
+            {/* Center - Scan label (aligned with other labels) */}
+            <Link
+              href={scanItem.href}
+              className={`
+                flex items-center justify-center
+                ${isMobileLandscape
+                  ? 'flex-row gap-1.5 px-2 py-1.5'
+                  : 'flex-col py-2 px-3 min-w-[60px]'
+                }
+              `}
+            >
+              {/* Invisible spacer matching icon size */}
+              <div className={isMobileLandscape ? 'w-[18px] h-[18px]' : 'w-[22px] h-[22px]'} />
+              <span className={`
+                ${isMobileLandscape ? 'text-xs' : 'text-[10px]'}
+                ${isScanActive ? 'text-terracotta font-semibold' : 'text-charcoal/50 font-medium'}
+              `}>
+                Scan
+              </span>
+            </Link>
 
             {/* Right nav items */}
             <div className="flex items-center justify-evenly flex-1">
@@ -96,13 +114,12 @@ export const Navigation = () => {
           </div>
         </nav>
 
-        {/* Floating Scan Button - fixed position for stability */}
+        {/* Floating Scan Button Circle - fixed position for stability */}
         <Link
           href={scanItem.href}
           className={`
             lg:hidden fixed left-1/2 -translate-x-1/2 z-50
-            flex flex-col items-center
-            ${isMobileLandscape ? 'bottom-[6px]' : 'bottom-[10px]'}
+            ${isMobileLandscape ? 'bottom-[18px]' : 'bottom-[22px]'}
           `}
           style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
         >
@@ -125,12 +142,6 @@ export const Navigation = () => {
               weight={isScanActive ? 'fill' : 'bold'}
             />
           </div>
-          <span className={`
-            mt-0.5 text-[10px] font-medium whitespace-nowrap
-            ${isScanActive ? 'text-terracotta font-semibold' : 'text-charcoal/50'}
-          `}>
-            {scanItem.label}
-          </span>
         </Link>
       </div>
 
