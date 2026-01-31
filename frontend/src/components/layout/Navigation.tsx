@@ -66,67 +66,59 @@ export const Navigation = () => {
     <>
       {/* Mobile Bottom Navigation */}
       <nav className={`
-        lg:hidden fixed bottom-0 left-0 right-0
-        bg-cream border-t border-charcoal/10 z-40
-        ${isMobileLandscape ? 'h-14' : 'h-20'}
+        lg:hidden fixed bottom-0 left-0 right-0 z-40
+        ${isMobileLandscape ? 'h-14' : 'h-16'}
         safe-bottom
       `}>
-        {/* Curved notch background for scan button */}
-        <div className="absolute left-1/2 -translate-x-1/2 -top-4 w-20 h-8 bg-cream rounded-t-full" />
+        {/* Nav bar background - starts below the button */}
+        <div className="absolute inset-x-0 bottom-0 h-16 bg-cream border-t border-charcoal/10" />
 
         <div className={`
-          flex items-end justify-around h-full px-1 pb-1
+          relative flex items-end justify-around h-full px-1
           ${isMobileLandscape ? 'max-w-lg mx-auto' : ''}
         `}>
           {/* Left nav items */}
-          <div className="flex items-center justify-around flex-1">
+          <div className="flex items-center justify-around flex-1 h-16">
             {leftNavItems.map((item) => (
               <NavItem key={item.href} item={item} compact={isMobileLandscape} />
             ))}
           </div>
 
           {/* Center Scan Button - Protruding */}
-          <div className="relative flex items-center justify-center -mt-6">
+          <div className="relative flex flex-col items-center justify-end pb-1" style={{ marginTop: '-16px' }}>
             <Link
               href={scanItem.href}
               className={`
                 relative flex items-center justify-center
-                w-16 h-16 rounded-full
+                w-14 h-14 rounded-full
                 bg-terracotta text-cream
                 shadow-medium
-                transition-all duration-300 ease-out
+                transition-all duration-200 ease-out
                 active:scale-95
                 ${isScanActive
-                  ? 'shadow-glow ring-4 ring-terracotta/20'
+                  ? 'shadow-glow'
                   : 'hover:shadow-glow hover:scale-105'
                 }
               `}
             >
-              {/* Pulse ring animation when active */}
-              {isScanActive && (
-                <span className="absolute inset-0 rounded-full bg-terracotta/30 animate-ping" />
-              )}
-
               {/* Icon */}
               <Camera
-                size={28}
+                size={26}
                 weight={isScanActive ? 'fill' : 'bold'}
-                className="relative z-10"
               />
             </Link>
 
             {/* Label below */}
             <span className={`
-              absolute -bottom-5 left-1/2 -translate-x-1/2
-              text-[10px] font-semibold whitespace-nowrap
-              ${isScanActive ? 'text-terracotta' : 'text-charcoal/60'}
+              mt-1 text-[10px] font-medium whitespace-nowrap
+              ${isScanActive ? 'text-terracotta font-semibold' : 'text-charcoal/50'}
             `}>
               {scanItem.label}
             </span>
           </div>
 
           {/* Right nav items */}
-          <div className="flex items-center justify-around flex-1">
+          <div className="flex items-center justify-around flex-1 h-16">
             {rightNavItems.map((item) => (
               <NavItem key={item.href} item={item} compact={isMobileLandscape} />
             ))}
