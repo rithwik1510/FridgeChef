@@ -114,12 +114,12 @@ export const Navigation = () => {
           </div>
         </nav>
 
-        {/* Floating Scan Button Circle - fixed position for stability */}
+        {/* Floating Scan Button Circle - positioned above the label */}
         <Link
           href={scanItem.href}
           className={`
             lg:hidden fixed left-1/2 -translate-x-1/2 z-50
-            ${isMobileLandscape ? 'bottom-[18px]' : 'bottom-[22px]'}
+            ${isMobileLandscape ? 'bottom-[34px]' : 'bottom-[40px]'}
           `}
           style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
         >
