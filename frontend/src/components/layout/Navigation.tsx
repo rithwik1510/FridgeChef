@@ -119,7 +119,7 @@ export const Navigation = () => {
           href={scanItem.href}
           className={`
             lg:hidden fixed left-1/2 -translate-x-1/2 z-50
-            ${isMobileLandscape ? 'bottom-[34px]' : 'bottom-[40px]'}
+            ${isMobileLandscape ? 'bottom-[26px]' : 'bottom-[30px]'}
           `}
           style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
         >
