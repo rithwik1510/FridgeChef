@@ -53,8 +53,8 @@ def detect_ingredients_from_image(image_path: str) -> List[Dict]:
             image_data = image_file.read()
         logger.info(f"Image loaded, size: {len(image_data)} bytes")
 
-        # Create the model - using gemini-1.5-flash (current model name as of 2024)
-        model_name = 'gemini-1.5-flash'
+        # Create the model - using gemini-2.0-flash (latest free tier model)
+        model_name = 'gemini-2.0-flash'
         logger.info(f"Creating model: {model_name}")
         model = genai.GenerativeModel(model_name)
 
@@ -166,7 +166,7 @@ def generate_recipes(
     """
     try:
         # Create the model
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-2.0-flash')
 
         # Format ingredients list
         ingredients_list = [f"{ing['name']} ({ing.get('quantity', 'some')})" for ing in available_ingredients]
