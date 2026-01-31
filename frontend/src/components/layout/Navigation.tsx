@@ -24,12 +24,12 @@ export const Navigation = () => {
 
   return (
     <>
-      {/* Mobile Bottom Navigation */}
+      {/* Mobile Bottom Navigation - taller to fit scan circle */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 safe-bottom bg-cream border-t border-charcoal/10">
         <div
           className={`
-            flex items-center justify-around h-full
-            ${isMobileLandscape ? 'h-14 max-w-lg mx-auto' : 'h-16'}
+            flex items-end justify-around pb-2
+            ${isMobileLandscape ? 'h-16 max-w-lg mx-auto' : 'h-20'}
           `}
         >
           {navItems.map((item) => {
@@ -42,12 +42,8 @@ export const Navigation = () => {
                 key={item.href}
                 href={item.href}
                 className={`
-                  flex items-center justify-center
-                  transition-all duration-200
-                  ${isMobileLandscape
-                    ? 'flex-row gap-1.5 px-2 py-1.5'
-                    : 'flex-col py-2 px-3 min-w-[60px]'
-                  }
+                  flex flex-col items-center justify-end
+                  transition-all duration-200 px-3
                   ${isCenter
                     ? ''
                     : active
@@ -56,38 +52,32 @@ export const Navigation = () => {
                   }
                 `}
               >
-                {/* Fixed height icon container for alignment */}
-                <div className={`
-                  flex items-center justify-center
-                  ${isMobileLandscape ? 'w-[18px] h-[18px]' : 'w-[22px] h-[22px]'}
-                `}>
-                  {isCenter ? (
-                    /* Center Scan button with terracotta circle */
-                    <div
-                      className={`
-                        flex items-center justify-center
-                        rounded-full bg-terracotta text-cream
-                        transition-all duration-200
-                        active:scale-95
-                        ${isMobileLandscape ? 'w-9 h-9' : 'w-10 h-10'}
-                        ${active ? 'shadow-glow' : 'hover:shadow-glow'}
-                      `}
-                    >
-                      <Icon
-                        size={isMobileLandscape ? 16 : 20}
-                        weight={active ? 'fill' : 'bold'}
-                      />
-                    </div>
-                  ) : (
+                {isCenter ? (
+                  <div
+                    className={`
+                      flex items-center justify-center
+                      rounded-full bg-terracotta text-cream
+                      transition-all duration-200
+                      active:scale-95 mb-1
+                      ${isMobileLandscape ? 'w-10 h-10' : 'w-12 h-12'}
+                      ${active ? 'shadow-glow' : 'hover:shadow-glow'}
+                    `}
+                  >
                     <Icon
-                      size={isMobileLandscape ? 18 : 22}
-                      weight={active ? 'fill' : 'regular'}
+                      size={isMobileLandscape ? 20 : 24}
+                      weight={active ? 'fill' : 'bold'}
                     />
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <Icon
+                    size={isMobileLandscape ? 22 : 26}
+                    weight={active ? 'fill' : 'regular'}
+                    className="mb-1"
+                  />
+                )}
                 <span
                   className={`
-                    ${isMobileLandscape ? 'text-xs' : 'text-[10px]'}
+                    text-[10px]
                     ${isCenter
                       ? active
                         ? 'text-terracotta font-semibold'
