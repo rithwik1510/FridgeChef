@@ -96,14 +96,15 @@ export const Navigation = () => {
           </div>
         </nav>
 
-        {/* Floating Scan Button - positioned to protrude slightly above nav */}
+        {/* Floating Scan Button - fixed position for stability */}
         <Link
           href={scanItem.href}
           className={`
-            absolute left-1/2 -translate-x-1/2 bottom-2
+            lg:hidden fixed left-1/2 -translate-x-1/2 z-50
             flex flex-col items-center
-            transition-all duration-200 ease-out
+            ${isMobileLandscape ? 'bottom-[6px]' : 'bottom-[10px]'}
           `}
+          style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
         >
           <div
             className={`
