@@ -96,11 +96,11 @@ export const Navigation = () => {
           </div>
         </nav>
 
-        {/* Floating Scan Button - positioned above the nav */}
+        {/* Floating Scan Button - positioned to protrude slightly above nav */}
         <Link
           href={scanItem.href}
           className={`
-            absolute left-1/2 -translate-x-1/2 bottom-10
+            absolute left-1/2 -translate-x-1/2 bottom-2
             flex flex-col items-center
             transition-all duration-200 ease-out
           `}
@@ -125,7 +125,7 @@ export const Navigation = () => {
             />
           </div>
           <span className={`
-            mt-1 text-[10px] font-medium whitespace-nowrap
+            mt-0.5 text-[10px] font-medium whitespace-nowrap
             ${isScanActive ? 'text-terracotta font-semibold' : 'text-charcoal/50'}
           `}>
             {scanItem.label}
