@@ -102,7 +102,7 @@ export default function SettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-3xl mx-auto flex items-center justify-center py-12 page-transition">
+      <div className="max-w-3xl mx-auto flex items-center justify-center py-12">
         <div className="flex gap-1">
           <div className="w-2 h-2 bg-terracotta rounded-full animate-bounce-dot" />
           <div className="w-2 h-2 bg-terracotta rounded-full animate-bounce-dot-delay-1" />
@@ -113,7 +113,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6 page-transition">
+    <div className="max-w-3xl mx-auto space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-3xl md:text-4xl mb-1">Settings</h1>

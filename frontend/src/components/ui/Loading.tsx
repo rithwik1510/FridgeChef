@@ -159,14 +159,12 @@ export const Loading: React.FC<LoadingProps> = ({
 
   return (
     <div className="flex flex-col items-center justify-center py-12">
-      <div className="animate-fade-in">
+      <div>
         {renderLoader()}
       </div>
       <p
         className={`
           mt-4 text-charcoal/60 ${sizeStyles[size].text}
-          transition-opacity duration-300
-          animate-fade-in
         `}
         key={currentMessage}
       >

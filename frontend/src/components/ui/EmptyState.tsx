@@ -218,21 +218,21 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <div className={`flex flex-col items-center justify-center py-12 px-4 text-center ${className}`}>
       {Illustration && (
-        <div className="mb-6 animate-fade-in animate-float">
+        <div className="mb-6">
           <Illustration />
         </div>
       )}
 
-      <h3 className="text-xl font-semibold text-charcoal mb-2 animate-fade-in" style={{ animationDelay: '100ms' }}>
+      <h3 className="text-xl font-semibold text-charcoal mb-2">
         {displayTitle}
       </h3>
 
-      <p className="text-charcoal/70 max-w-sm mb-6 animate-fade-in" style={{ animationDelay: '200ms' }}>
+      <p className="text-charcoal/70 max-w-sm mb-6">
         {displayDescription}
       </p>
 
       {onAction && displayActionLabel && (
-        <div className="animate-fade-in" style={{ animationDelay: '300ms' }}>
+        <div>
           <Button variant="primary" onClick={onAction}>
             {displayActionLabel}
           </Button>

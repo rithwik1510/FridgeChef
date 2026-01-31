@@ -126,8 +126,7 @@ export const SkeletonList: React.FC<{
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className="flex items-center gap-4 p-4 bg-cream rounded-xl animate-fade-in"
-          style={{ animationDelay: `${i * 50}ms` }}
+          className="flex items-center gap-4 p-4 bg-cream rounded-xl"
         >
           <Skeleton variant="circular" width={48} height={48} />
           <div className="flex-1 space-y-2">
