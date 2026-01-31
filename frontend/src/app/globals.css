@@ -175,7 +175,7 @@
     overflow: hidden;
   }
 
-  /* Shimmer Effect */
+  /* Shimmer Effect - Only for actual loading states, not page transitions */
   .shimmer {
     background: linear-gradient(
       90deg,
@@ -187,17 +187,33 @@
     animation: shimmer 2s infinite linear;
   }
 
-  /* Stagger Animation Delays */
-  .stagger-1 { animation-delay: 50ms; }
-  .stagger-2 { animation-delay: 100ms; }
-  .stagger-3 { animation-delay: 150ms; }
-  .stagger-4 { animation-delay: 200ms; }
-  .stagger-5 { animation-delay: 250ms; }
-  .stagger-6 { animation-delay: 300ms; }
-  .stagger-7 { animation-delay: 350ms; }
-  .stagger-8 { animation-delay: 400ms; }
-  .stagger-9 { animation-delay: 450ms; }
-  .stagger-10 { animation-delay: 500ms; }
+  /* Page Transition - Smooth crossfade */
+  .page-transition {
+    animation: pageTransition 0.2s ease-in-out;
+  }
+
+  @keyframes pageTransition {
+    0% {
+      opacity: 0.7;
+      transform: translateY(4px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Stagger Animation Delays - Faster cascade for snappier feel */
+  .stagger-1 { animation-delay: 20ms; }
+  .stagger-2 { animation-delay: 40ms; }
+  .stagger-3 { animation-delay: 60ms; }
+  .stagger-4 { animation-delay: 80ms; }
+  .stagger-5 { animation-delay: 100ms; }
+  .stagger-6 { animation-delay: 120ms; }
+  .stagger-7 { animation-delay: 140ms; }
+  .stagger-8 { animation-delay: 160ms; }
+  .stagger-9 { animation-delay: 180ms; }
+  .stagger-10 { animation-delay: 200ms; }
 
   /* Animation Fill Mode Utilities */
   .animate-fill-backwards { animation-fill-mode: backwards; }

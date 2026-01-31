@@ -21,21 +21,15 @@ export default function AppLayout({
     checkAuth();
   }, []);
 
-  // Show loading state while checking auth
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-cream-lightest flex items-center justify-center">
-        <div className="text-center">
-          <div className="shimmer h-8 w-32 mx-auto rounded-lg mb-4" />
-          <p className="text-charcoal/60">Loading...</p>
-        </div>
-      </div>
-    );
-  }
+  // Redirect to login if not authenticated (no loading shimmer shown)
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.push('/login');
+    }
+  }, [isLoading, isAuthenticated, router]);
 
-  // Redirect to login if not authenticated
-  if (!isAuthenticated) {
-    router.push('/login');
+  // Don't render anything while checking auth or if not authenticated
+  if (isLoading || !isAuthenticated) {
     return null;
   }
 
@@ -47,13 +41,14 @@ export default function AppLayout({
           <Navigation />
           <Sidebar />
 
-          {/* Main Content Area */}
+          {/* Main Content Area with smooth page transitions */}
           <main className="
             lg:ml-sidebar
             px-4 sm:px-6 lg:px-8
             py-6 lg:py-8
             pb-24 lg:pb-8
             min-h-[calc(100vh-64px)]
+            page-transition
           ">
             <div className="max-w-5xl mx-auto">
               {children}
