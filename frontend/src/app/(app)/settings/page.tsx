@@ -7,7 +7,6 @@ import { Card } from '@/components/ui/Card';
 import { Tag } from '@/components/ui/Tag';
 import { Slider } from '@/components/ui/Slider';
 import { Input } from '@/components/ui/Input';
-import { SkeletonCard } from '@/components/ui/Skeleton';
 import { useToast } from '@/components/ui/Toast';
 import { Plus, Leaf, Warning, Globe, ChefHat, Clock, Users, FloppyDisk } from '@phosphor-icons/react';
 
@@ -103,22 +102,20 @@ export default function SettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-3xl mx-auto space-y-6">
-        <div>
-          <div className="shimmer h-10 w-32 rounded-lg mb-2" />
-          <div className="shimmer h-5 w-56 rounded-lg" />
+      <div className="max-w-3xl mx-auto flex items-center justify-center py-12 page-transition">
+        <div className="flex gap-1">
+          <div className="w-2 h-2 bg-terracotta rounded-full animate-bounce-dot" />
+          <div className="w-2 h-2 bg-terracotta rounded-full animate-bounce-dot-delay-1" />
+          <div className="w-2 h-2 bg-terracotta rounded-full animate-bounce-dot-delay-2" />
         </div>
-        <SkeletonCard hasImage={false} />
-        <SkeletonCard hasImage={false} />
-        <SkeletonCard hasImage={false} />
       </div>
     );
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-3xl mx-auto space-y-6 page-transition">
       {/* Header */}
-      <div className="animate-fade-in">
+      <div>
         <h1 className="text-3xl md:text-4xl mb-1">Settings</h1>
         <p className="text-charcoal/70">
           Customize your recipe recommendations

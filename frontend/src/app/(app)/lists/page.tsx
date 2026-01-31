@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { listsApi } from '@/lib/api';
-import { Button, IconButton } from '@/components/ui/Button';
+import { IconButton } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { SkeletonCard, SkeletonList } from '@/components/ui/Skeleton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useToast } from '@/components/ui/Toast';
@@ -76,41 +75,29 @@ export default function ShoppingListsPage() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <div>
-          <div className="shimmer h-10 w-48 rounded-lg mb-2" />
-          <div className="shimmer h-5 w-24 rounded-lg" />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="space-y-4">
-            <SkeletonCard hasImage={false} />
-            <SkeletonCard hasImage={false} />
-          </div>
-          <div className="lg:col-span-2">
-            <SkeletonList count={5} />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   const checkedCount = selectedList?.items?.filter((item: any) => item.checked).length || 0;
   const totalCount = selectedList?.items?.length || 0;
   const progress = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 page-transition">
       {/* Header */}
-      <div className="animate-fade-in">
+      <div>
         <h1 className="text-3xl md:text-4xl mb-1">Shopping Lists</h1>
         <p className="text-charcoal/70">
           {lists.length} list{lists.length !== 1 ? 's' : ''}
         </p>
       </div>
 
-      {lists.length > 0 ? (
+      {isLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="flex gap-1">
+            <div className="w-2 h-2 bg-terracotta rounded-full animate-bounce-dot" />
+            <div className="w-2 h-2 bg-terracotta rounded-full animate-bounce-dot-delay-1" />
+            <div className="w-2 h-2 bg-terracotta rounded-full animate-bounce-dot-delay-2" />
+          </div>
+        </div>
+      ) : lists.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Lists Sidebar */}
           <div className="lg:col-span-1 space-y-3">

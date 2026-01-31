@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { scansApi, recipesApi } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { SkeletonCard } from '@/components/ui/Skeleton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Camera, ForkKnife, ShoppingCart, ArrowRight, Clock, ChefHat } from '@phosphor-icons/react';
 import { useToast } from '@/components/ui/Toast';
@@ -48,30 +47,10 @@ export default function DashboardPage() {
     loadData();
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="space-y-8">
-        {/* Skeleton for welcome section */}
-        <div className="text-center py-6">
-          <div className="shimmer h-10 w-64 mx-auto rounded-lg mb-4" />
-          <div className="shimmer h-6 w-48 mx-auto rounded-lg mb-6" />
-          <div className="shimmer h-12 w-48 mx-auto rounded-xl" />
-        </div>
-
-        {/* Skeleton for quick actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <SkeletonCard hasImage={false} />
-          <SkeletonCard hasImage={false} />
-          <SkeletonCard hasImage={false} />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 page-transition">
       {/* Welcome Section */}
-      <div className="text-center py-6 animate-fade-in">
+      <div className="text-center py-6">
         <div className="text-4xl mb-2">{emoji}</div>
         <h1 className="text-3xl md:text-4xl mb-3">{greeting}</h1>
         <p className="text-lg text-charcoal/70 mb-6">
