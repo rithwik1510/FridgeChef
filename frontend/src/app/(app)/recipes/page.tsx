@@ -9,7 +9,6 @@ import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Heart } from '@phosphor-icons/react';
 import { useToast } from '@/components/ui/Toast';
-import Link from 'next/link';
 
 export default function RecipesPage() {
   const router = useRouter();
@@ -40,7 +39,7 @@ export default function RecipesPage() {
   };
 
   return (
-    <div className="space-y-6 page-transition">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -70,17 +69,12 @@ export default function RecipesPage() {
         </div>
       ) : recipes.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {recipes.map((recipe, index) => (
-            <div
+          {recipes.map((recipe) => (
+            <RecipeCard
               key={recipe.id}
-              className="animate-fade-in"
-              style={{ animationDelay: `${index * 20}ms` }}
-            >
-              <RecipeCard
-                recipe={recipe}
-                onClick={() => router.push(`/recipes/${recipe.id}`)}
-              />
-            </div>
+              recipe={recipe}
+              onClick={() => router.push(`/recipes/${recipe.id}`)}
+            />
           ))}
         </div>
       ) : (

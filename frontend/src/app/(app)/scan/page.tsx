@@ -145,7 +145,7 @@ export default function ScanPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       {/* Header */}
-      <div className="text-center animate-fade-in">
+      <div className="text-center">
         <h1 className="text-3xl md:text-4xl mb-2">Scan Your Fridge</h1>
         <p className="text-charcoal/70">
           Upload a photo and we'll detect what ingredients you have
@@ -153,7 +153,7 @@ export default function ScanPage() {
       </div>
 
       {/* Uploader */}
-      <div className="animate-fade-in stagger-1">
+      <div>
         <ImageUploader onUpload={handleUpload} isLoading={isUploading} />
       </div>
 
@@ -166,7 +166,7 @@ export default function ScanPage() {
 
       {/* Ingredients Result */}
       {!isDetecting && ingredients.length > 0 && (
-        <Card variant="elevated" className="animate-slide-up">
+        <Card variant="elevated">
           <div className="space-y-5">
             {/* Found ingredients header */}
             <div>
@@ -253,7 +253,7 @@ export default function ScanPage() {
 
       {/* No ingredients detected */}
       {!isDetecting && !isUploading && ingredients.length === 0 && scanId && (
-        <Card variant="elevated" className="animate-fade-in">
+        <Card variant="elevated">
           <EmptyState
             variant="error"
             title="No ingredients detected"

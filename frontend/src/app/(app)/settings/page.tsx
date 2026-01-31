@@ -123,7 +123,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Dietary Restrictions */}
-      <Card variant="elevated" className="animate-fade-in stagger-1">
+      <Card variant="elevated">
         <div className="flex items-center gap-2 mb-4">
           <div className="p-2 bg-sage/10 rounded-lg">
             <Leaf size={20} className="text-sage" weight="duotone" />
@@ -156,7 +156,7 @@ export default function SettingsPage() {
       </Card>
 
       {/* Allergies */}
-      <Card variant="elevated" className="animate-fade-in stagger-2">
+      <Card variant="elevated">
         <div className="flex items-center gap-2 mb-4">
           <div className="p-2 bg-butter/10 rounded-lg">
             <Warning size={20} className="text-butter-dark" weight="duotone" />
@@ -202,7 +202,7 @@ export default function SettingsPage() {
       </Card>
 
       {/* Preferred Cuisines */}
-      <Card variant="elevated" className="animate-fade-in stagger-3">
+      <Card variant="elevated">
         <div className="flex items-center gap-2 mb-4">
           <div className="p-2 bg-terracotta/10 rounded-lg">
             <Globe size={20} className="text-terracotta" weight="duotone" />
@@ -235,7 +235,7 @@ export default function SettingsPage() {
       </Card>
 
       {/* Cooking Preferences */}
-      <Card variant="elevated" className="animate-fade-in stagger-4">
+      <Card variant="elevated">
         <div className="flex items-center gap-2 mb-4">
           <div className="p-2 bg-sage/10 rounded-lg">
             <ChefHat size={20} className="text-sage" weight="duotone" />
@@ -306,7 +306,7 @@ export default function SettingsPage() {
       </Card>
 
       {/* Save Button */}
-      <div className="animate-fade-in stagger-5 pb-4">
+      <div className="pb-4">
         <Button
           variant="primary"
           size="lg"

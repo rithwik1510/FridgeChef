@@ -48,7 +48,7 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="space-y-8 page-transition">
+    <div className="space-y-8">
       {/* Welcome Section */}
       <div className="text-center py-6">
         <div className="text-4xl mb-2">{emoji}</div>
@@ -76,7 +76,6 @@ export default function DashboardPage() {
           hover
           compact
           onClick={() => router.push('/scan')}
-          className="animate-fade-in stagger-1"
         >
           <div className="flex items-start gap-4">
             <div className="p-3 bg-terracotta/10 rounded-xl">
@@ -96,7 +95,6 @@ export default function DashboardPage() {
           hover
           compact
           onClick={() => router.push('/recipes')}
-          className="animate-fade-in stagger-2"
         >
           <div className="flex items-start gap-4">
             <div className="p-3 bg-sage/10 rounded-xl">
@@ -116,7 +114,6 @@ export default function DashboardPage() {
           hover
           compact
           onClick={() => router.push('/lists')}
-          className="animate-fade-in stagger-3"
         >
           <div className="flex items-start gap-4">
             <div className="p-3 bg-butter/10 rounded-xl">
@@ -136,7 +133,7 @@ export default function DashboardPage() {
       {(recentScans.length > 0 || recentRecipes.length > 0) && (
         <div className="space-y-6">
           {recentScans.length > 0 && (
-            <div className="animate-fade-in stagger-4">
+            <div>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Recent Scans</h2>
                 <Link
@@ -147,13 +144,12 @@ export default function DashboardPage() {
                 </Link>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {recentScans.map((scan, index) => (
+                {recentScans.map((scan) => (
                   <Card
                     key={scan.id}
                     hover
                     compact
                     onClick={() => router.push(`/scan/${scan.id}`)}
-                    className={`animate-fade-in stagger-${index + 1}`}
                   >
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-terracotta/10 rounded-lg">
@@ -175,7 +171,7 @@ export default function DashboardPage() {
           )}
 
           {recentRecipes.length > 0 && (
-            <div className="animate-fade-in stagger-5">
+            <div>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Recent Recipes</h2>
                 <Link
@@ -186,13 +182,12 @@ export default function DashboardPage() {
                 </Link>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {recentRecipes.map((recipe, index) => (
+                {recentRecipes.map((recipe) => (
                   <Card
                     key={recipe.id}
                     hover
                     compact
                     onClick={() => router.push(`/recipes/${recipe.id}`)}
-                    className={`animate-fade-in stagger-${index + 1}`}
                   >
                     <h3 className="text-lg font-semibold mb-1">{recipe.title}</h3>
                     <p className="text-sm text-charcoal/70 mb-3 line-clamp-2">
@@ -221,7 +216,7 @@ export default function DashboardPage() {
       )}
 
       {recentScans.length === 0 && recentRecipes.length === 0 && (
-        <Card variant="elevated" className="animate-fade-in">
+        <Card variant="elevated">
           <EmptyState
             variant="no-scans"
             onAction={() => router.push('/scan')}

@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useToast } from '@/components/ui/Toast';
-import { ShoppingCart, Check, Trash, ListChecks } from '@phosphor-icons/react';
+import { Check, Trash, ListChecks } from '@phosphor-icons/react';
 
 export default function ShoppingListsPage() {
   const { addToast } = useToast();
@@ -80,7 +80,7 @@ export default function ShoppingListsPage() {
   const progress = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
 
   return (
-    <div className="space-y-6 page-transition">
+    <div className="space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-3xl md:text-4xl mb-1">Shopping Lists</h1>
@@ -101,7 +101,7 @@ export default function ShoppingListsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Lists Sidebar */}
           <div className="lg:col-span-1 space-y-3">
-            {lists.map((list, index) => {
+            {lists.map((list) => {
               const listCheckedCount = list.items?.filter((item: any) => item.checked).length || 0;
               const listTotalCount = list.items?.length || 0;
               const listProgress = listTotalCount > 0 ? Math.round((listCheckedCount / listTotalCount) * 100) : 0;
@@ -113,10 +113,7 @@ export default function ShoppingListsPage() {
                   hover
                   compact
                   onClick={() => setSelectedList(list)}
-                  className={`animate-fade-in ${
-                    selectedList?.id === list.id ? 'ring-2 ring-terracotta' : ''
-                  }`}
-                  style={{ animationDelay: `${index * 50}ms` }}
+                  className={selectedList?.id === list.id ? 'ring-2 ring-terracotta' : ''}
                 >
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex items-center gap-2">
@@ -145,7 +142,7 @@ export default function ShoppingListsPage() {
 
           {/* Selected List Detail */}
           {selectedList && (
-            <div className="lg:col-span-2 animate-fade-in">
+            <div className="lg:col-span-2">
               <Card variant="elevated">
                 <div className="mb-5">
                   <h2 className="text-xl font-semibold mb-3">{selectedList.name}</h2>
@@ -168,17 +165,16 @@ export default function ShoppingListsPage() {
                         acc[category].push({ ...item, index });
                         return acc;
                       }, {})
-                    ).map(([category, items]: [string, any], catIndex) => (
-                      <div key={category} className="animate-fade-in" style={{ animationDelay: `${catIndex * 50}ms` }}>
+                    ).map(([category, items]: [string, any]) => (
+                      <div key={category}>
                         <h3 className="text-sm font-semibold text-charcoal/60 uppercase tracking-wide mb-2">
                           {category}
                         </h3>
                         <ul className="space-y-1">
-                          {items.map((item: any, itemIndex: number) => (
+                          {items.map((item: any) => (
                             <li
                               key={item.index}
-                              className="flex items-center gap-3 p-3 rounded-xl hover:bg-cream-dark cursor-pointer transition-all duration-200 animate-fade-in"
-                              style={{ animationDelay: `${itemIndex * 30}ms` }}
+                              className="flex items-center gap-3 p-3 rounded-xl hover:bg-cream-dark cursor-pointer transition-all duration-200"
                               onClick={() => handleToggleItem(item.index)}
                             >
                               <div
@@ -216,7 +212,7 @@ export default function ShoppingListsPage() {
           )}
         </div>
       ) : (
-        <Card variant="elevated" className="animate-fade-in">
+        <Card variant="elevated">
           <EmptyState
             variant="no-lists"
             onAction={() => {}}

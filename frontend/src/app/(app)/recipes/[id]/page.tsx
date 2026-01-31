@@ -131,7 +131,7 @@ export default function RecipeDetailPage() {
   const missingIngredients = recipe.ingredients?.filter((ing: any) => !ing.available) || [];
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
+    <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
       <div>
         <div className="flex justify-between items-start gap-4 mb-4">
