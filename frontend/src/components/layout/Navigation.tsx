@@ -8,7 +8,7 @@ import { useIsLandscape, useIsMobile } from '@/hooks/useMediaQuery';
 const navItems = [
   { href: '/dashboard', label: 'Home', icon: House },
   { href: '/recipes', label: 'Recipes', icon: ForkKnife },
-  { href: '/scan', label: 'Scan', icon: Camera, isCenter: true },
+  { href: '/scan', label: '', icon: Camera, isCenter: true },
   { href: '/lists', label: 'Lists', icon: ShoppingCart },
   { href: '/settings', label: 'Settings', icon: Gear },
 ];
@@ -24,12 +24,12 @@ export const Navigation = () => {
 
   return (
     <>
-      {/* Mobile Bottom Navigation - taller to fit scan circle */}
+      {/* Mobile Bottom Navigation */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 safe-bottom bg-cream border-t border-charcoal/10">
         <div
           className={`
-            flex items-end justify-around pb-2
-            ${isMobileLandscape ? 'h-16 max-w-lg mx-auto' : 'h-20'}
+            flex items-center justify-around
+            ${isMobileLandscape ? 'h-14 max-w-lg mx-auto' : 'h-16'}
           `}
         >
           {navItems.map((item) => {
@@ -37,28 +37,20 @@ export const Navigation = () => {
             const active = isActive(item.href);
             const isCenter = item.isCenter;
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`
-                  flex flex-col items-center justify-end
-                  transition-all duration-200 px-3
-                  ${isCenter
-                    ? ''
-                    : active
-                      ? 'text-terracotta'
-                      : 'text-charcoal/50 hover:text-charcoal active:text-terracotta'
-                  }
-                `}
-              >
-                {isCenter ? (
+            if (isCenter) {
+              // Scan button - just the circle, no label
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="flex items-center justify-center px-3"
+                >
                   <div
                     className={`
                       flex items-center justify-center
                       rounded-full bg-terracotta text-cream
                       transition-all duration-200
-                      active:scale-95 mb-1
+                      active:scale-95
                       ${isMobileLandscape ? 'w-10 h-10' : 'w-12 h-12'}
                       ${active ? 'shadow-glow' : 'hover:shadow-glow'}
                     `}
@@ -68,24 +60,32 @@ export const Navigation = () => {
                       weight={active ? 'fill' : 'bold'}
                     />
                   </div>
-                ) : (
-                  <Icon
-                    size={isMobileLandscape ? 22 : 26}
-                    weight={active ? 'fill' : 'regular'}
-                    className="mb-1"
-                  />
-                )}
+                </Link>
+              );
+            }
+
+            // Regular nav items with icon + label
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`
+                  flex flex-col items-center justify-center
+                  transition-all duration-200 px-3 py-2
+                  ${active
+                    ? 'text-terracotta'
+                    : 'text-charcoal/50 hover:text-charcoal active:text-terracotta'
+                  }
+                `}
+              >
+                <Icon
+                  size={isMobileLandscape ? 20 : 22}
+                  weight={active ? 'fill' : 'regular'}
+                />
                 <span
                   className={`
-                    text-[10px]
-                    ${isCenter
-                      ? active
-                        ? 'text-terracotta font-semibold'
-                        : 'text-charcoal/50 font-medium'
-                      : active
-                        ? 'font-semibold'
-                        : 'font-medium'
-                    }
+                    text-[10px] mt-0.5
+                    ${active ? 'font-semibold' : 'font-medium'}
                   `}
                 >
                   {item.label}
@@ -123,7 +123,7 @@ export const Navigation = () => {
                   `}
                 >
                   <Icon size={20} weight={active ? 'fill' : 'regular'} />
-                  <span>{item.label}</span>
+                  <span>{isScan ? 'Scan' : item.label}</span>
                 </Link>
               );
             })}
