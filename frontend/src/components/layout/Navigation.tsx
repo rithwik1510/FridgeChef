@@ -56,29 +56,35 @@ export const Navigation = () => {
                   }
                 `}
               >
-                {isCenter ? (
-                  /* Center Scan button with terracotta circle */
-                  <div
-                    className={`
-                      flex items-center justify-center
-                      rounded-full bg-terracotta text-cream
-                      transition-all duration-200
-                      active:scale-95
-                      ${isMobileLandscape ? 'w-9 h-9' : 'w-11 h-11'}
-                      ${active ? 'shadow-glow' : 'hover:shadow-glow'}
-                    `}
-                  >
+                {/* Fixed height icon container for alignment */}
+                <div className={`
+                  flex items-center justify-center
+                  ${isMobileLandscape ? 'w-[18px] h-[18px]' : 'w-[22px] h-[22px]'}
+                `}>
+                  {isCenter ? (
+                    /* Center Scan button with terracotta circle */
+                    <div
+                      className={`
+                        flex items-center justify-center
+                        rounded-full bg-terracotta text-cream
+                        transition-all duration-200
+                        active:scale-95
+                        ${isMobileLandscape ? 'w-9 h-9' : 'w-10 h-10'}
+                        ${active ? 'shadow-glow' : 'hover:shadow-glow'}
+                      `}
+                    >
+                      <Icon
+                        size={isMobileLandscape ? 16 : 20}
+                        weight={active ? 'fill' : 'bold'}
+                      />
+                    </div>
+                  ) : (
                     <Icon
                       size={isMobileLandscape ? 18 : 22}
-                      weight={active ? 'fill' : 'bold'}
+                      weight={active ? 'fill' : 'regular'}
                     />
-                  </div>
-                ) : (
-                  <Icon
-                    size={isMobileLandscape ? 18 : 22}
-                    weight={active ? 'fill' : 'regular'}
-                  />
-                )}
+                  )}
+                </div>
                 <span
                   className={`
                     ${isMobileLandscape ? 'text-xs' : 'text-[10px]'}
