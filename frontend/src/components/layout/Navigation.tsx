@@ -38,7 +38,7 @@ export const Navigation = () => {
           transition-all duration-200
           ${compact
             ? 'flex-row gap-1.5 px-2 py-1.5'
-            : 'flex-col py-2 px-3 min-w-[56px]'
+            : 'flex-col py-2 px-3 min-w-[60px]'
           }
           ${active
             ? 'text-terracotta'
@@ -65,66 +65,73 @@ export const Navigation = () => {
   return (
     <>
       {/* Mobile Bottom Navigation */}
-      <nav className={`
-        lg:hidden fixed bottom-0 left-0 right-0 z-40
-        ${isMobileLandscape ? 'h-14' : 'h-16'}
-        safe-bottom
-      `}>
-        {/* Nav bar background - starts below the button */}
-        <div className="absolute inset-x-0 bottom-0 h-16 bg-cream border-t border-charcoal/10" />
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 safe-bottom">
+        {/* The actual nav bar */}
+        <nav
+          className={`
+            bg-cream border-t border-charcoal/10
+            ${isMobileLandscape ? 'h-14' : 'h-16'}
+          `}
+        >
+          <div className={`
+            flex items-center justify-between h-full px-2
+            ${isMobileLandscape ? 'max-w-lg mx-auto' : ''}
+          `}>
+            {/* Left nav items */}
+            <div className="flex items-center justify-evenly flex-1">
+              {leftNavItems.map((item) => (
+                <NavItem key={item.href} item={item} compact={isMobileLandscape} />
+              ))}
+            </div>
 
-        <div className={`
-          relative flex items-end justify-around h-full px-1
-          ${isMobileLandscape ? 'max-w-lg mx-auto' : ''}
-        `}>
-          {/* Left nav items */}
-          <div className="flex items-center justify-around flex-1 h-16">
-            {leftNavItems.map((item) => (
-              <NavItem key={item.href} item={item} compact={isMobileLandscape} />
-            ))}
+            {/* Center spacer for scan button */}
+            <div className="w-16" />
+
+            {/* Right nav items */}
+            <div className="flex items-center justify-evenly flex-1">
+              {rightNavItems.map((item) => (
+                <NavItem key={item.href} item={item} compact={isMobileLandscape} />
+              ))}
+            </div>
           </div>
+        </nav>
 
-          {/* Center Scan Button - Protruding */}
-          <div className="relative flex flex-col items-center justify-end pb-1" style={{ marginTop: '-16px' }}>
-            <Link
-              href={scanItem.href}
-              className={`
-                relative flex items-center justify-center
-                w-14 h-14 rounded-full
-                bg-terracotta text-cream
-                shadow-medium
-                transition-all duration-200 ease-out
-                active:scale-95
-                ${isScanActive
-                  ? 'shadow-glow'
-                  : 'hover:shadow-glow hover:scale-105'
-                }
-              `}
-            >
-              {/* Icon */}
-              <Camera
-                size={26}
-                weight={isScanActive ? 'fill' : 'bold'}
-              />
-            </Link>
-
-            {/* Label below */}
-            <span className={`
-              mt-1 text-[10px] font-medium whitespace-nowrap
-              ${isScanActive ? 'text-terracotta font-semibold' : 'text-charcoal/50'}
-            `}>
-              {scanItem.label}
-            </span>
+        {/* Floating Scan Button - positioned above the nav */}
+        <Link
+          href={scanItem.href}
+          className={`
+            absolute left-1/2 -translate-x-1/2 bottom-10
+            flex flex-col items-center
+            transition-all duration-200 ease-out
+          `}
+        >
+          <div
+            className={`
+              flex items-center justify-center
+              w-14 h-14 rounded-full
+              bg-terracotta text-cream
+              shadow-medium
+              transition-all duration-200 ease-out
+              active:scale-95
+              ${isScanActive
+                ? 'shadow-glow'
+                : 'hover:shadow-glow hover:scale-105'
+              }
+            `}
+          >
+            <Camera
+              size={26}
+              weight={isScanActive ? 'fill' : 'bold'}
+            />
           </div>
-
-          {/* Right nav items */}
-          <div className="flex items-center justify-around flex-1 h-16">
-            {rightNavItems.map((item) => (
-              <NavItem key={item.href} item={item} compact={isMobileLandscape} />
-            ))}
-          </div>
-        </div>
-      </nav>
+          <span className={`
+            mt-1 text-[10px] font-medium whitespace-nowrap
+            ${isScanActive ? 'text-terracotta font-semibold' : 'text-charcoal/50'}
+          `}>
+            {scanItem.label}
+          </span>
+        </Link>
+      </div>
 
       {/* Tablet Horizontal Navigation */}
       <nav className="hidden md:flex lg:hidden bg-cream-dark border-b border-charcoal/10">
