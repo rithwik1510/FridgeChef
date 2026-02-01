@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { scansApi, recipesApi } from '@/lib/api';
 import { ImageUploader } from '@/components/scan/ImageUploader';
@@ -12,10 +12,24 @@ import { CookingProgress, StepProgress } from '@/components/ui/ProgressBar';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { useToast } from '@/components/ui/Toast';
 import { Plus, Sparkle, ArrowRight } from '@phosphor-icons/react';
+import { useAuthStore } from '@/store/auth';
 
 export default function ScanPage() {
   const router = useRouter();
   const { addToast } = useToast();
+  const { isAuthenticated, hasHydrated, isLoading } = useAuthStore();
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (hasHydrated && !isLoading && !isAuthenticated) {
+      router.push('/login?redirect=/scan');
+    }
+  }, [hasHydrated, isLoading, isAuthenticated, router]);
+
+  // Show nothing while checking auth or if not authenticated
+  if (!hasHydrated || isLoading || !isAuthenticated) {
+    return null;
+  }
   const [scanId, setScanId] = useState<string | null>(null);
   const [ingredients, setIngredients] = useState<any[]>([]);
   const [isUploading, setIsUploading] = useState(false);

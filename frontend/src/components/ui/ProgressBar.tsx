@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { MagnifyingGlass, Carrot, ChefHat, ForkKnife } from '@phosphor-icons/react';
 
 interface ProgressBarProps {
   value: number; // 0-100
@@ -72,22 +73,48 @@ interface CookingProgressProps {
   className?: string;
 }
 
-const stages = {
-  detecting: { progress: 25, message: 'Peeking inside your fridge...', emoji: '🔍' },
-  analyzing: { progress: 50, message: 'Identifying ingredients...', emoji: '🥕' },
-  generating: { progress: 75, message: 'Cooking up recipe ideas...', emoji: '👨‍🍳' },
-  complete: { progress: 100, message: 'Recipes ready!', emoji: '🍽️' },
+const stageConfig = {
+  detecting: {
+    progress: 25,
+    message: 'Peeking inside your fridge...',
+    Icon: MagnifyingGlass,
+    color: 'text-terracotta',
+    bgColor: 'bg-terracotta/10',
+  },
+  analyzing: {
+    progress: 50,
+    message: 'Identifying ingredients...',
+    Icon: Carrot,
+    color: 'text-terracotta',
+    bgColor: 'bg-terracotta/10',
+  },
+  generating: {
+    progress: 75,
+    message: 'Cooking up recipe ideas...',
+    Icon: ChefHat,
+    color: 'text-sage',
+    bgColor: 'bg-sage/10',
+  },
+  complete: {
+    progress: 100,
+    message: 'Recipes ready!',
+    Icon: ForkKnife,
+    color: 'text-sage',
+    bgColor: 'bg-sage/10',
+  },
 };
 
 export const CookingProgress: React.FC<CookingProgressProps> = ({
   stage,
   className = '',
 }) => {
-  const { progress, message, emoji } = stages[stage];
+  const { progress, message, Icon, color, bgColor } = stageConfig[stage];
 
   return (
     <div className={`text-center ${className}`}>
-      <div className="text-4xl mb-4 animate-bounce-subtle">{emoji}</div>
+      <div className={`w-16 h-16 ${bgColor} rounded-2xl flex items-center justify-center mx-auto mb-4 animate-bounce-subtle`}>
+        <Icon size={32} className={color} weight="duotone" />
+      </div>
       <p className="text-lg text-charcoal/80 mb-4">{message}</p>
       <ProgressBar value={progress} variant="gradient" size="md" />
     </div>

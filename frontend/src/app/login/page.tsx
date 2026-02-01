@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -17,11 +17,13 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get('redirect') || '/dashboard';
   const { login } = useAuthStore();
   const [error, setError] = useState<string | null>(null);
-  
+
   const {
     register,
     handleSubmit,
@@ -34,7 +36,7 @@ export default function LoginPage() {
     setError(null);
     try {
       await login(data.email, data.password);
-      router.push('/dashboard');
+      router.push(redirectUrl);
     } catch (err: any) {
       // Handle different types of errors
       if (err.response?.status === 401) {
@@ -46,6 +48,69 @@ export default function LoginPage() {
   };
 
   return (
+    <div className="glass-card rounded-2xl p-8 backdrop-blur-xl">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+
+        {/* Error Alert */}
+        {error && (
+          <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm border border-red-100 flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 flex-shrink-0">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+            </svg>
+            {error}
+          </div>
+        )}
+
+        <Input
+          label="Email"
+          type="email"
+          placeholder="chef@example.com"
+          autoComplete="email"
+          {...register('email')}
+          error={errors.email?.message}
+        />
+
+        <Input
+          label="Password"
+          type="password"
+          placeholder="••••••••"
+          autoComplete="current-password"
+          {...register('password')}
+          error={errors.password?.message}
+        />
+
+        <div className="pt-2">
+          <Button
+            type="submit"
+            variant="primary"
+            fullWidth
+            size="lg"
+            isLoading={isSubmitting}
+            className="font-fraunces"
+          >
+            Sign In
+          </Button>
+        </div>
+      </form>
+
+      {/* Footer */}
+      <div className="mt-8 text-center text-charcoal/60">
+        <p>
+          Don't have an account?{' '}
+          <Link
+            href="/register"
+            className="text-terracotta font-semibold hover:text-terracotta-dark transition-colors"
+          >
+            Join the Kitchen
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
     <main className="min-h-screen flex items-center justify-center p-4 bg-cream-lightest bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cream-dark via-cream-lightest to-cream-lightest">
       <div className="w-full max-w-md">
         {/* Brand Header */}
@@ -55,66 +120,19 @@ export default function LoginPage() {
           <p className="text-charcoal/60 text-lg">Let's see what's in your fridge today.</p>
         </div>
 
-        {/* Login Card */}
-        <div className="glass-card rounded-2xl p-8 backdrop-blur-xl">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            
-            {/* Error Alert */}
-            {error && (
-              <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm border border-red-100 flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 flex-shrink-0">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
-                </svg>
-                {error}
-              </div>
-            )}
-
-            <Input
-              label="Email"
-              type="email"
-              placeholder="chef@example.com"
-              autoComplete="email"
-              {...register('email')}
-              error={errors.email?.message}
-            />
-
-            <Input
-              label="Password"
-              type="password"
-              placeholder="••••••••"
-              autoComplete="current-password"
-              {...register('password')}
-              error={errors.password?.message}
-            />
-
-            <div className="pt-2">
-              <Button
-                type="submit"
-                variant="primary"
-                fullWidth
-                size="lg"
-                isLoading={isSubmitting}
-                className="font-fraunces"
-              >
-                Sign In
-              </Button>
+        {/* Login Card - wrapped in Suspense for useSearchParams */}
+        <Suspense fallback={
+          <div className="glass-card rounded-2xl p-8 backdrop-blur-xl animate-pulse">
+            <div className="space-y-6">
+              <div className="h-10 bg-cream-darker rounded-lg" />
+              <div className="h-10 bg-cream-darker rounded-lg" />
+              <div className="h-12 bg-cream-darker rounded-lg" />
             </div>
-          </form>
-
-          {/* Footer */}
-          <div className="mt-8 text-center text-charcoal/60">
-            <p>
-              Don't have an account?{' '}
-              <Link 
-                href="/register" 
-                className="text-terracotta font-semibold hover:text-terracotta-dark transition-colors"
-              >
-                Join the Kitchen
-              </Link>
-            </p>
           </div>
-        </div>
-        
+        }>
+          <LoginForm />
+        </Suspense>
+
         {/* Back link */}
         <div className="text-center mt-6">
            <Link href="/" className="text-sm text-charcoal/40 hover:text-charcoal/80 transition-colors">

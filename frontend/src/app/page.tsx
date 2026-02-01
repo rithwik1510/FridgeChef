@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/auth';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
+import { Camera, CookingPot, ShoppingCart } from '@phosphor-icons/react';
 
 export default function Home() {
   const router = useRouter();
@@ -78,7 +79,9 @@ export default function Home() {
         {/* Features */}
         <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
           <div className="bg-cream-dark rounded-2xl p-6 shadow-soft">
-            <div className="text-4xl mb-4">📸</div>
+            <div className="w-14 h-14 bg-terracotta/10 rounded-2xl flex items-center justify-center mb-4">
+              <Camera size={28} className="text-terracotta" weight="duotone" />
+            </div>
             <h3 className="text-xl font-semibold mb-2 text-charcoal">Scan Your Fridge</h3>
             <p className="text-charcoal/70">
               Upload a photo and AI detects all your ingredients automatically
@@ -86,7 +89,9 @@ export default function Home() {
           </div>
 
           <div className="bg-cream-dark rounded-2xl p-6 shadow-soft">
-            <div className="text-4xl mb-4">🍳</div>
+            <div className="w-14 h-14 bg-sage/10 rounded-2xl flex items-center justify-center mb-4">
+              <CookingPot size={28} className="text-sage" weight="duotone" />
+            </div>
             <h3 className="text-xl font-semibold mb-2 text-charcoal">Get Recipes</h3>
             <p className="text-charcoal/70">
               Receive personalized recipe suggestions based on what you have
@@ -94,7 +99,9 @@ export default function Home() {
           </div>
 
           <div className="bg-cream-dark rounded-2xl p-6 shadow-soft">
-            <div className="text-4xl mb-4">🛒</div>
+            <div className="w-14 h-14 bg-terracotta/10 rounded-2xl flex items-center justify-center mb-4">
+              <ShoppingCart size={28} className="text-terracotta" weight="duotone" />
+            </div>
             <h3 className="text-xl font-semibold mb-2 text-charcoal">Shop Smart</h3>
             <p className="text-charcoal/70">
               Create shopping lists for missing ingredients with one click

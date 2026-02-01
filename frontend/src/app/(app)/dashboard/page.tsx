@@ -14,7 +14,7 @@ import Link from 'next/link';
 export default function DashboardPage() {
   const router = useRouter();
   const { addToast } = useToast();
-  const { greeting, emoji, suggestion } = useSeasonalSurprise();
+  const { greeting, Icon, iconColor, iconBgColor, suggestion } = useSeasonalSurprise();
   const [recentScans, setRecentScans] = useState<any[]>([]);
   const [recentRecipes, setRecentRecipes] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,7 +51,9 @@ export default function DashboardPage() {
     <div className="space-y-8">
       {/* Welcome Section */}
       <div className="text-center py-6">
-        <div className="text-4xl mb-2">{emoji}</div>
+        <div className={`w-16 h-16 ${iconBgColor} rounded-2xl flex items-center justify-center mx-auto mb-3`}>
+          <Icon size={32} className={iconColor} weight="duotone" />
+        </div>
         <h1 className="text-3xl md:text-4xl mb-3">{greeting}</h1>
         <p className="text-lg text-charcoal/70 mb-6">
           {suggestion || 'What would you like to cook today?'}

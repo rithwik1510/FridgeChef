@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { Header } from '@/components/layout/Header';
 import { Navigation } from '@/components/layout/Navigation';
 import { Sidebar } from '@/components/layout/Sidebar';
@@ -14,27 +13,17 @@ export default function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
-  const { isLoading, isAuthenticated, hasHydrated, checkAuth } = useAuthStore();
+  const { hasHydrated, checkAuth } = useAuthStore();
 
-  // Validate token with server after hydration
+  // Validate token with server after hydration (if user has a token)
   useEffect(() => {
     if (hasHydrated) {
       checkAuth();
     }
   }, [hasHydrated, checkAuth]);
 
-  // Redirect to login if not authenticated (only after hydration is complete)
-  useEffect(() => {
-    if (hasHydrated && !isLoading && !isAuthenticated) {
-      router.push('/login');
-    }
-  }, [hasHydrated, isLoading, isAuthenticated, router]);
-
-  // Wait for hydration and auth check before rendering
-  if (!hasHydrated || isLoading || !isAuthenticated) {
-    return null;
-  }
+  // Allow public browsing - render layout regardless of auth state
+  // Individual pages (like scan) will handle their own auth requirements
 
   return (
     <ToastProvider>

@@ -1,10 +1,28 @@
 'use client';
 
 import { useMemo } from 'react';
+import { ComponentType } from 'react';
+import {
+  Sun,
+  CloudSun,
+  SunHorizon,
+  Moon,
+  Tree,
+  Ghost,
+  Bird,
+  HeartStraight,
+  Confetti,
+  Clover,
+  Rabbit,
+  Flag,
+  IconProps,
+} from '@phosphor-icons/react';
 
 interface SeasonalGreeting {
   greeting: string;
-  emoji: string;
+  Icon: ComponentType<IconProps>;
+  iconColor: string;
+  iconBgColor: string;
   suggestion?: string;
 }
 
@@ -15,25 +33,33 @@ const getTimeBasedGreeting = (): SeasonalGreeting => {
   if (hour >= 5 && hour < 12) {
     return {
       greeting: 'Good morning, Chef!',
-      emoji: '☀️',
+      Icon: Sun,
+      iconColor: 'text-amber-500',
+      iconBgColor: 'bg-amber-500/10',
       suggestion: 'How about some breakfast recipes?',
     };
   } else if (hour >= 12 && hour < 17) {
     return {
       greeting: 'Good afternoon!',
-      emoji: '🌤️',
+      Icon: CloudSun,
+      iconColor: 'text-sky-500',
+      iconBgColor: 'bg-sky-500/10',
       suggestion: 'Time for a hearty lunch?',
     };
   } else if (hour >= 17 && hour < 21) {
     return {
       greeting: 'Good evening!',
-      emoji: '🌅',
+      Icon: SunHorizon,
+      iconColor: 'text-orange-500',
+      iconBgColor: 'bg-orange-500/10',
       suggestion: 'Time for dinner inspiration?',
     };
   } else {
     return {
       greeting: 'Late night cooking?',
-      emoji: '🌙',
+      Icon: Moon,
+      iconColor: 'text-indigo-400',
+      iconBgColor: 'bg-indigo-400/10',
       suggestion: 'How about a midnight snack?',
     };
   }
@@ -49,7 +75,9 @@ const getHolidayGreeting = (): SeasonalGreeting | null => {
   if (month === 12 && day >= 24 && day <= 26) {
     return {
       greeting: 'Merry Christmas!',
-      emoji: '🎄',
+      Icon: Tree,
+      iconColor: 'text-green-600',
+      iconBgColor: 'bg-green-600/10',
       suggestion: 'Time for some festive recipes!',
     };
   }
@@ -58,7 +86,9 @@ const getHolidayGreeting = (): SeasonalGreeting | null => {
   if (month === 10 && day === 31) {
     return {
       greeting: 'Happy Halloween!',
-      emoji: '🎃',
+      Icon: Ghost,
+      iconColor: 'text-purple-500',
+      iconBgColor: 'bg-purple-500/10',
       suggestion: 'Try some spooky treats!',
     };
   }
@@ -67,7 +97,9 @@ const getHolidayGreeting = (): SeasonalGreeting | null => {
   if (month === 11 && day >= 22 && day <= 28) {
     return {
       greeting: 'Happy Thanksgiving!',
-      emoji: '🦃',
+      Icon: Bird,
+      iconColor: 'text-amber-600',
+      iconBgColor: 'bg-amber-600/10',
       suggestion: 'Perfect time for a feast!',
     };
   }
@@ -76,7 +108,9 @@ const getHolidayGreeting = (): SeasonalGreeting | null => {
   if (month === 2 && day === 14) {
     return {
       greeting: "Happy Valentine's Day!",
-      emoji: '💝',
+      Icon: HeartStraight,
+      iconColor: 'text-rose-500',
+      iconBgColor: 'bg-rose-500/10',
       suggestion: 'Cook something special for your loved one!',
     };
   }
@@ -85,7 +119,9 @@ const getHolidayGreeting = (): SeasonalGreeting | null => {
   if (month === 1 && (day === 1 || day === 2)) {
     return {
       greeting: 'Happy New Year!',
-      emoji: '🎉',
+      Icon: Confetti,
+      iconColor: 'text-yellow-500',
+      iconBgColor: 'bg-yellow-500/10',
       suggestion: 'Start the year with healthy recipes!',
     };
   }
@@ -94,7 +130,9 @@ const getHolidayGreeting = (): SeasonalGreeting | null => {
   if (month === 3 && day === 17) {
     return {
       greeting: "Happy St. Patrick's Day!",
-      emoji: '☘️',
+      Icon: Clover,
+      iconColor: 'text-emerald-500',
+      iconBgColor: 'bg-emerald-500/10',
       suggestion: 'Try some Irish-inspired dishes!',
     };
   }
@@ -106,7 +144,9 @@ const getHolidayGreeting = (): SeasonalGreeting | null => {
     if (dayOfWeek === 0) { // Sunday in April
       return {
         greeting: 'Happy Easter!',
-        emoji: '🐰',
+        Icon: Rabbit,
+        iconColor: 'text-pink-400',
+        iconBgColor: 'bg-pink-400/10',
         suggestion: 'How about some spring recipes?',
       };
     }
@@ -116,7 +156,9 @@ const getHolidayGreeting = (): SeasonalGreeting | null => {
   if (month === 7 && day === 4) {
     return {
       greeting: 'Happy 4th of July!',
-      emoji: '🇺🇸',
+      Icon: Flag,
+      iconColor: 'text-blue-600',
+      iconBgColor: 'bg-blue-600/10',
       suggestion: 'Time for BBQ recipes!',
     };
   }
@@ -139,10 +181,10 @@ export const useSeasonalSurprise = () => {
   return greeting;
 };
 
-// Helper to get just the greeting message
+// Helper to get just the greeting message (for cases where icon is not needed)
 export const useGreetingMessage = () => {
-  const { greeting, emoji, suggestion } = useSeasonalSurprise();
-  return `${emoji} ${greeting}${suggestion ? ` ${suggestion}` : ''}`;
+  const { greeting, suggestion } = useSeasonalSurprise();
+  return `${greeting}${suggestion ? ` ${suggestion}` : ''}`;
 };
 
 export default useSeasonalSurprise;
