@@ -24,8 +24,11 @@ export default function Home() {
     }
   }, [hasHydrated, isAuthenticated, isLoading, router]);
 
-  // Wait for hydration before showing content
-  if (!hasHydrated || isLoading) {
+  // Show loading state while checking auth
+  // Note: On server, hasHydrated is false, so we show the page content
+  // On client, we wait for hydration before making redirect decisions
+  const isClient = typeof window !== 'undefined';
+  if (isClient && (!hasHydrated || isLoading)) {
     return null;
   }
 
