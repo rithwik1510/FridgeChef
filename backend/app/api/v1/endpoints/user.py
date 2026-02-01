@@ -37,15 +37,18 @@ async def update_preferences(
     """
     Update user preferences.
     """
-    current_prefs = current_user.preferences or {}
+    # Get current preferences (make a copy to avoid mutation detection issues)
+    current_prefs = dict(current_user.preferences or {})
 
     # Update with new values (only non-None values)
     update_data = preferences_update.model_dump(exclude_none=True)
-    current_prefs.update(update_data)
 
-    # Save to database
-    current_user.preferences = current_prefs
+    # Create a NEW dict to ensure SQLAlchemy detects the change
+    new_prefs = {**current_prefs, **update_data}
+
+    # Save to database - assigning a new dict ensures change detection works
+    current_user.preferences = new_prefs
     db.commit()
     db.refresh(current_user)
 
-    return UserPreferences(**current_prefs)
+    return UserPreferences(**new_prefs)
