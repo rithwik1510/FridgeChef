@@ -15,17 +15,21 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { isLoading, isAuthenticated, hasHydrated } = useAuthStore();
+  const { isLoading, isAuthenticated, checkAuth } = useAuthStore();
 
-  // Redirect to login if not authenticated (only after hydration is complete)
   useEffect(() => {
-    if (hasHydrated && !isLoading && !isAuthenticated) {
+    checkAuth();
+  }, []);
+
+  // Redirect to login if not authenticated (no loading shimmer shown)
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
       router.push('/login');
     }
-  }, [hasHydrated, isLoading, isAuthenticated, router]);
+  }, [isLoading, isAuthenticated, router]);
 
-  // Don't render anything while hydrating or checking auth or if not authenticated
-  if (!hasHydrated || isLoading || !isAuthenticated) {
+  // Don't render anything while checking auth or if not authenticated
+  if (isLoading || !isAuthenticated) {
     return null;
   }
 
