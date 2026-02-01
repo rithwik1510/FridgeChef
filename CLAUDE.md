@@ -12,8 +12,29 @@
 
 ### Colors (Tailwind Custom)
 - `terracotta` - Primary accent (orange-ish)
-- `cream` / `cream-dark` - Background colors
+- `sage` - Secondary accent (green-ish)
+- `butter` - Tertiary accent (yellow-ish)
+- `cream` / `cream-dark` / `cream-darker` / `cream-lightest` - Background colors
 - `charcoal` - Text color
+
+### Icon Styling Rules
+- **ALWAYS** use Phosphor Icons (not Heroicons, Lucide, or emojis)
+- **NEVER** use raw emojis in the UI - replace with styled icons
+- **Icon container pattern**:
+```tsx
+// Standard icon container with background
+<div className="w-14 h-14 bg-terracotta/10 rounded-2xl flex items-center justify-center">
+  <Camera size={28} className="text-terracotta" weight="duotone" />
+</div>
+
+// Smaller variant
+<div className="p-3 bg-sage/10 rounded-xl">
+  <ForkKnife size={28} weight="duotone" className="text-sage" />
+</div>
+```
+- Use `weight="duotone"` for feature icons
+- Use `weight="bold"` for action buttons
+- Match icon color to background: `bg-terracotta/10` + `text-terracotta`
 
 ### Navigation Bar Rules
 - **Mobile**: Bottom nav, height `h-16` (64px), landscape `h-14`
@@ -27,6 +48,42 @@
 - **AVOID** wave/fade animations on page transitions
 - Keep transitions simple: `transition-all duration-200`
 - Use `active:scale-95` for tap feedback
+- Use `animate-bounce-subtle` for loading indicators (not shimmer)
+
+---
+
+## Auth Flow Rules
+
+### Public vs Protected Routes
+- **Public routes**: Homepage (`/`), Dashboard, Recipes list, Shopping lists
+- **Protected routes**: Scan page (requires login to use AI features)
+- **Pattern**: Let users browse freely, only require login for actions that need it
+
+### Implementation Pattern
+```tsx
+// In protected pages (e.g., scan/page.tsx)
+const { isAuthenticated, hasHydrated, isLoading } = useAuthStore();
+
+useEffect(() => {
+  if (hasHydrated && !isLoading && !isAuthenticated) {
+    router.push('/login?redirect=/scan');  // Include redirect param
+  }
+}, [hasHydrated, isLoading, isAuthenticated, router]);
+
+if (!hasHydrated || isLoading || !isAuthenticated) {
+  return null;
+}
+```
+
+### Login Redirect Pattern
+```tsx
+// In login page - read redirect param
+const searchParams = useSearchParams();
+const redirectUrl = searchParams.get('redirect') || '/dashboard';
+
+// After successful login
+router.push(redirectUrl);
+```
 
 ---
 
@@ -76,6 +133,53 @@
 **Solution**: Updated to SQLAlchemy 2.0 patterns
 **Rule**: Use modern SQLAlchemy 2.0 syntax for all database operations
 
+### 8. Next.js useSearchParams SSR Error
+**Problem**: `useSearchParams()` causes build error: "should be wrapped in a suspense boundary"
+**Solution**: Wrap component using `useSearchParams` in `<Suspense>` boundary
+**Rule**: Always wrap useSearchParams in Suspense
+```tsx
+// WRONG - causes build error
+export default function Page() {
+  const searchParams = useSearchParams();  // Error!
+  return <div>...</div>;
+}
+
+// CORRECT - wrap in Suspense
+function PageContent() {
+  const searchParams = useSearchParams();
+  return <div>...</div>;
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <PageContent />
+    </Suspense>
+  );
+}
+```
+
+### 9. Emojis vs Icons
+**Problem**: Raw emojis (📸🍳🛒) look inconsistent and unprofessional
+**Solution**: Replace all emojis with styled Phosphor Icons in containers
+**Rule**: NEVER use emojis in UI - always use Phosphor Icons with proper styling
+
+### 10. Auth Blocking All Routes
+**Problem**: Blocking all (app) routes for unauthenticated users prevents exploration
+**Solution**: Only protect routes that actually need auth (scan). Let users browse freely.
+**Rule**: Don't over-protect - only require auth where necessary
+
+### 11. SQLAlchemy JSON Mutation Detection
+**Problem**: Updating JSON/dict fields doesn't trigger SQLAlchemy to detect changes
+**Solution**: Use `flag_modified()` or reassign the field
+```python
+from sqlalchemy.orm import attributes
+attributes.flag_modified(user, 'settings')
+# OR
+user.settings = {**user.settings, 'new_key': 'value'}
+```
+**Rule**: Always flag_modified for JSON field updates
+
 ---
 
 ## Code Patterns to Follow
@@ -86,10 +190,13 @@
 'use client';
 
 // Use Phosphor Icons (not Heroicons or Lucide)
-import { Camera, House } from '@phosphor-icons/react';
+import { Camera, House, Sun, Moon } from '@phosphor-icons/react';
 
 // Use custom media query hooks
 import { useIsLandscape, useIsMobile } from '@/hooks/useMediaQuery';
+
+// Use auth store for protected features
+import { useAuthStore } from '@/store/auth';
 ```
 
 ### Tailwind Classes
@@ -103,6 +210,21 @@ className="transition-all duration-200 active:scale-95"
 
 // Active states use terracotta
 className={active ? 'text-terracotta' : 'text-charcoal/50'}
+
+// Icon containers
+className="w-14 h-14 bg-terracotta/10 rounded-2xl flex items-center justify-center"
+className="p-3 bg-sage/10 rounded-xl"
+```
+
+### Hook Patterns
+```tsx
+// Return React components from hooks when needed
+interface SeasonalGreeting {
+  greeting: string;
+  Icon: ComponentType<IconProps>;  // Return component, not emoji string
+  iconColor: string;
+  iconBgColor: string;
+}
 ```
 
 ### API Calls
@@ -116,14 +238,22 @@ model = genai.GenerativeModel('gemini-2.5-flash')
 ## File Locations
 
 ### Key Frontend Files
+- `frontend/src/app/(app)/layout.tsx` - App shell (header, nav, sidebar)
+- `frontend/src/app/(app)/scan/page.tsx` - Scan page (protected)
+- `frontend/src/app/(app)/dashboard/page.tsx` - Dashboard with seasonal greeting
+- `frontend/src/app/login/page.tsx` - Login with redirect support
 - `frontend/src/components/layout/Navigation.tsx` - Bottom nav component
+- `frontend/src/components/ui/ProgressBar.tsx` - Cooking progress with icons
+- `frontend/src/hooks/useSeasonalSurprise.ts` - Time/holiday greetings with icons
 - `frontend/src/hooks/useMediaQuery.ts` - Responsive hooks
+- `frontend/src/store/auth.ts` - Auth state management
 - `frontend/tailwind.config.ts` - Custom colors/theme
 
 ### Key Backend Files
 - `backend/app/main.py` - FastAPI app entry
 - `backend/app/routers/` - API endpoints
 - `backend/app/services/gemini_service.py` - AI integration
+- `backend/app/models/` - SQLAlchemy models
 
 ---
 
@@ -132,10 +262,12 @@ model = genai.GenerativeModel('gemini-2.5-flash')
 ### Vercel (Frontend)
 - Auto-deploys from main branch
 - Preview URLs need CORS allowlist
+- Environment: `NEXT_PUBLIC_API_URL`
 
 ### Render (Backend)
 - Check logs at Render dashboard if API fails
-- Environment variables must include GEMINI_API_KEY
+- Environment variables must include `GEMINI_API_KEY`
+- Database persists in `/opt/render/project/src/`
 
 ---
 
@@ -148,6 +280,25 @@ model = genai.GenerativeModel('gemini-2.5-flash')
 | Gemini not working | Verify model is `gemini-2.5-flash` |
 | Login not persisting | Check auth token storage |
 | Page feels like reload | Remove shimmer/skeleton animations |
+| useSearchParams error | Wrap in `<Suspense>` boundary |
+| Emojis look bad | Replace with styled Phosphor Icons |
+| JSON field not saving | Use `flag_modified()` in SQLAlchemy |
+| Users can't browse | Only protect scan, not all routes |
+
+---
+
+## DO NOT DO (Common Mistakes)
+
+1. **DON'T** use emojis in UI - use Phosphor Icons
+2. **DON'T** use shimmer/skeleton loading animations
+3. **DON'T** block all routes for unauthenticated users
+4. **DON'T** use `useSearchParams` without Suspense boundary
+5. **DON'T** use Heroicons or Lucide - use Phosphor Icons
+6. **DON'T** make nav bar fancy/protruding - keep it flat
+7. **DON'T** forget to test auth flow end-to-end
+8. **DON'T** use old Gemini model versions
+9. **DON'T** update JSON fields without flag_modified()
+10. **DON'T** have different validation rules on frontend vs backend
 
 ---
 
