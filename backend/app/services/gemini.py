@@ -174,6 +174,7 @@ def generate_recipes(
 
         # Format preferences
         prefs_str = ""
+        has_cuisine_preference = False
         if preferences:
             dietary = preferences.get("dietary", [])
             allergies = preferences.get("allergies", [])
@@ -182,15 +183,32 @@ def generate_recipes(
             max_cook_time = preferences.get("max_cook_time", 60)
             servings = preferences.get("servings", 2)
 
+            has_cuisine_preference = bool(cuisines and len(cuisines) > 0)
+
+            # Build cuisine instruction
+            if has_cuisine_preference:
+                cuisine_list = ', '.join(cuisines)
+                cuisine_instruction = f"""STRICTLY {cuisine_list} cuisine ONLY.
+CRITICAL: You MUST generate AUTHENTIC, TRADITIONAL {cuisine_list} dishes:
+- Use traditional recipe names (e.g., for Indian: "Aloo Gobi", "Dal Tadka", "Paneer Butter Masala")
+- These must be real dishes that people from {cuisine_list} would recognize
+- Do NOT create fusion or "inspired by" dishes
+- Do NOT add "{cuisine_list}-style" or "{cuisine_list}-inspired" to non-authentic dishes"""
+            else:
+                cuisine_instruction = "Any cuisine"
+
             prefs_str = f"""
 User Preferences:
 - Dietary restrictions: {', '.join(dietary) if dietary else 'None'}
-- Allergies: {', '.join(allergies) if allergies else 'None'}
-- Preferred cuisines: {', '.join(cuisines) if cuisines else 'Any'}
+- Allergies (MUST AVOID): {', '.join(allergies) if allergies else 'None'}
+- Cuisine: {cuisine_instruction}
 - Skill level: {skill_level}
 - Maximum cooking time: {max_cook_time} minutes
 - Servings needed: {servings}
 """
+
+        # Build variety guideline based on cuisine preference
+        variety_guideline = "ALL recipes must be authentic dishes from the specified cuisine - no fusion" if has_cuisine_preference else "Include variety in meal types and cuisines"
 
         # Create the prompt
         prompt = f"""
@@ -220,9 +238,9 @@ For each recipe, provide a JSON object with this exact format:
 Guidelines:
 - Prioritize recipes where the user has MOST of the ingredients
 - Mark each ingredient as "available": true if the user has it, false otherwise
-- Include some variety (different types of meals, cuisines)
+- {variety_guideline}
 - Keep recipes practical for home cooking
-- Respect dietary restrictions and allergies strictly
+- STRICTLY respect dietary restrictions and allergies - never include allergens
 - Consider the user's skill level and time constraints
 - Use clear, step-by-step instructions
 - Difficulty levels: "easy", "medium", "hard"

@@ -8,19 +8,24 @@ import Link from 'next/link';
 
 export default function Home() {
   const router = useRouter();
-  const { isAuthenticated, isLoading, checkAuth } = useAuthStore();
+  const { isAuthenticated, isLoading, hasHydrated, checkAuth } = useAuthStore();
 
+  // Validate token with server after hydration
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    if (hasHydrated) {
+      checkAuth();
+    }
+  }, [hasHydrated, checkAuth]);
 
+  // Redirect to dashboard if already authenticated (only after hydration)
   useEffect(() => {
-    if (!isLoading && isAuthenticated) {
+    if (hasHydrated && !isLoading && isAuthenticated) {
       router.push('/dashboard');
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [hasHydrated, isAuthenticated, isLoading, router]);
 
-  if (isLoading) {
+  // Wait for hydration before showing content
+  if (!hasHydrated || isLoading) {
     return null;
   }
 
