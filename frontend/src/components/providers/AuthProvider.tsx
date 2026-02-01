@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAuthStore } from '@/store/auth';
 
 interface AuthProviderProps {
@@ -9,7 +9,6 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const { hasHydrated, checkAuth, token } = useAuthStore();
-  const [hasCheckedAuth, setHasCheckedAuth] = useState(false);
 
   useEffect(() => {
     // Wait for Zustand to hydrate from localStorage
@@ -17,20 +16,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     // If there's a token, validate it with the server
     if (token) {
-      checkAuth().finally(() => {
-        setHasCheckedAuth(true);
-      });
-    } else {
-      // No token, no need to check with server
-      setHasCheckedAuth(true);
+      checkAuth();
     }
   }, [hasHydrated, token, checkAuth]);
 
-  // Don't render until hydration is complete
-  // This prevents flash of wrong auth state
-  if (!hasHydrated) {
-    return null;
-  }
-
+  // Always render children - individual pages handle their own auth checks
+  // This prevents blank page during hydration
   return <>{children}</>;
 }
