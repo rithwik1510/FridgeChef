@@ -70,6 +70,38 @@ export interface ShoppingList {
   updated_at: string;
 }
 
+// Pantry types
+export interface PantryItem {
+  id: string;
+  user_id: string;
+  name: string;
+  quantity: string;
+  category: string;
+  expiry_date?: string;
+  added_at: string;
+  updated_at?: string;
+}
+
+export interface PantryItemCreate {
+  name: string;
+  quantity?: string;
+  category?: string;
+  expiry_date?: string;
+}
+
+export interface PantryItemUpdate {
+  name?: string;
+  quantity?: string;
+  category?: string;
+  expiry_date?: string;
+}
+
+export interface PantryResponse {
+  items: PantryItem[];
+  grouped: Record<string, PantryItem[]>;
+  categories: string[];
+}
+
 // API response types
 export interface AuthResponse {
   access_token: string;

@@ -16,7 +16,18 @@
       "Bash(npm run build:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "WebFetch(domain:fridgechef-9zb2.onrender.com)",
+      "Bash(ping:*)",
+      "Bash(tree:*)",
+      "Bash(more:*)",
+      "WebSearch",
+      "WebFetch(domain:ai.google.dev)",
+      "Bash(timeout 5 npm run dev:*)",
+      "WebFetch(domain:fridge-chef-859g.vercel.app)",
+      "Bash(git revert:*)",
+      "Bash(timeout:*)",
+      "WebFetch(domain:phosphoricons.com)"
     ]
   }
 }

@@ -2251,3 +2251,28 @@ Exception: Failed to detect ingredients: 403 Your API key was reported as leaked
 2026-01-21 15:53:19 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
 2026-01-21 15:53:23 - app.services.gemini - INFO - API key configured (length: 39)
 2026-01-21 15:53:23 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-21 21:24:24 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-01-21 21:24:24 - app.config - INFO - ENV file exists: True
+2026-01-21 21:24:24 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-01-21 21:24:25 - app.services.gemini - INFO - API key configured (length: 39)
+2026-01-21 21:24:25 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-01-21 21:24:25 - app.main - INFO - Configuring CORS with allowed origins: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://192.168.0.181:3000']
+2026-02-02 16:43:02 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-02-02 16:43:02 - app.config - INFO - ENV file exists: True
+2026-02-02 16:43:02 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-02-02 16:43:05 - app.services.gemini - INFO - API key configured (length: 39)
+2026-02-02 16:43:12 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-02-02 16:43:12 - app.config - INFO - ENV file exists: True
+2026-02-02 16:43:12 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-02-02 16:43:14 - app.services.gemini - INFO - API key configured (length: 39)
+2026-02-02 16:43:14 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-02-02 16:43:14 - app.main - INFO - Configuring CORS with allowed origins: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://192.168.0.181:3000']
+2026-02-02 16:43:34 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-02-02 16:43:34 - app.config - INFO - ENV file exists: True
+2026-02-02 16:43:34 - app.config - INFO - GOOGLE_API_KEY loaded: Yes
+2026-02-02 16:43:36 - app.services.gemini - INFO - API key configured (length: 39)
+2026-02-02 16:43:36 - app.main - INFO - Uploads directory: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\uploads
+2026-02-02 16:43:36 - app.main - INFO - Configuring CORS with allowed origins: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://192.168.0.181:3000']
+2026-02-02 16:43:43 - app.config - INFO - ENV file path: C:\Users\posan\OneDrive\Desktop\Fridge recipe\backend\.env
+2026-02-02 16:43:43 - app.config - INFO - ENV file exists: True
+2026-02-02 16:43:43 - app.config - INFO - GOOGLE_API_KEY loaded: Yes

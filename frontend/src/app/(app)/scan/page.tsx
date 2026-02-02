@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { scansApi, recipesApi } from '@/lib/api';
+import { scansApi, recipesApi, pantryApi } from '@/lib/api';
 import { ImageUploader } from '@/components/scan/ImageUploader';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -11,13 +11,24 @@ import { Input } from '@/components/ui/Input';
 import { CookingProgress, StepProgress } from '@/components/ui/ProgressBar';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { useToast } from '@/components/ui/Toast';
-import { Plus, Sparkle, ArrowRight } from '@phosphor-icons/react';
+import { Plus, Sparkle, ArrowRight, Package } from '@phosphor-icons/react';
 import { useAuthStore } from '@/store/auth';
 
 export default function ScanPage() {
   const router = useRouter();
   const { addToast } = useToast();
   const { isAuthenticated, hasHydrated, isLoading } = useAuthStore();
+
+  // ALL hooks must be declared before any conditional returns
+  const [scanId, setScanId] = useState<string | null>(null);
+  const [ingredients, setIngredients] = useState<any[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isDetecting, setIsDetecting] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isAddingToPantry, setIsAddingToPantry] = useState(false);
+  const [generationStage, setGenerationStage] = useState<'detecting' | 'analyzing' | 'generating' | 'complete'>('detecting');
+  const [newIngredient, setNewIngredient] = useState('');
+  const [newQuantity, setNewQuantity] = useState('');
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -30,14 +41,6 @@ export default function ScanPage() {
   if (!hasHydrated || isLoading || !isAuthenticated) {
     return null;
   }
-  const [scanId, setScanId] = useState<string | null>(null);
-  const [ingredients, setIngredients] = useState<any[]>([]);
-  const [isUploading, setIsUploading] = useState(false);
-  const [isDetecting, setIsDetecting] = useState(false);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generationStage, setGenerationStage] = useState<'detecting' | 'analyzing' | 'generating' | 'complete'>('detecting');
-  const [newIngredient, setNewIngredient] = useState('');
-  const [newQuantity, setNewQuantity] = useState('');
 
   const handleUpload = async (file: File) => {
     setIsUploading(true);
@@ -111,8 +114,35 @@ export default function ScanPage() {
   };
 
   const handleRemoveIngredient = (index: number) => {
-    const removed = ingredients[index];
     setIngredients(ingredients.filter((_, i) => i !== index));
+  };
+
+  const handleAddToPantry = async () => {
+    if (ingredients.length === 0) return;
+
+    setIsAddingToPantry(true);
+    try {
+      const pantryItems = ingredients.map(ing => ({
+        name: ing.name,
+        quantity: ing.quantity || 'some',
+      }));
+
+      await pantryApi.addBulk(pantryItems);
+      addToast({
+        type: 'success',
+        title: 'Added to Pantry',
+        message: `${ingredients.length} ingredient${ingredients.length !== 1 ? 's' : ''} added to your pantry`,
+      });
+    } catch (error) {
+      console.error('Error adding to pantry:', error);
+      addToast({
+        type: 'error',
+        title: 'Failed to add to pantry',
+        message: 'Could not add ingredients to your pantry.',
+      });
+    } finally {
+      setIsAddingToPantry(false);
+    }
   };
 
   const handleGenerateRecipes = async () => {
@@ -238,19 +268,32 @@ export default function ScanPage() {
               </div>
             </div>
 
-            {/* Generate button */}
-            <Button
-              variant="primary"
-              size="lg"
-              fullWidth
-              onClick={handleGenerateRecipes}
-              isLoading={isGenerating}
-              disabled={ingredients.length === 0}
-              iconRight={!isGenerating ? <ArrowRight size={20} weight="bold" /> : undefined}
-              glow={!isGenerating && ingredients.length > 0}
-            >
-              {isGenerating ? 'Cooking up recipes...' : 'Get Recipe Ideas'}
-            </Button>
+            {/* Action buttons */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={handleAddToPantry}
+                isLoading={isAddingToPantry}
+                disabled={ingredients.length === 0 || isAddingToPantry}
+                iconLeft={!isAddingToPantry ? <Package size={18} weight="bold" /> : undefined}
+                className="sm:flex-1"
+              >
+                {isAddingToPantry ? 'Adding...' : 'Add to Pantry'}
+              </Button>
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={handleGenerateRecipes}
+                isLoading={isGenerating}
+                disabled={ingredients.length === 0}
+                iconRight={!isGenerating ? <ArrowRight size={20} weight="bold" /> : undefined}
+                glow={!isGenerating && ingredients.length > 0}
+                className="sm:flex-1"
+              >
+                {isGenerating ? 'Cooking up recipes...' : 'Get Recipe Ideas'}
+              </Button>
+            </div>
           </div>
         </Card>
       )}

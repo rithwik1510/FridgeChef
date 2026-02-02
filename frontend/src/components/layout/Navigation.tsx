@@ -2,14 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Camera, ForkKnife, ShoppingCart, House, Gear } from '@phosphor-icons/react';
+import { Camera, ForkKnife, Package, House, Gear } from '@phosphor-icons/react';
 import { useIsLandscape, useIsMobile } from '@/hooks/useMediaQuery';
 
 const navItems = [
   { href: '/dashboard', label: 'Home', icon: House },
   { href: '/recipes', label: 'Recipes', icon: ForkKnife },
   { href: '/scan', label: '', icon: Camera, isCenter: true },
-  { href: '/lists', label: 'Lists', icon: ShoppingCart },
+  { href: '/pantry', label: 'Pantry', icon: Package },
   { href: '/settings', label: 'Settings', icon: Gear },
 ];
 

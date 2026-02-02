@@ -7,6 +7,7 @@ from app.database import get_db
 from app.models.user import User
 from app.models.scan import Scan
 from app.models.recipe import Recipe
+from app.models.pantry import PantryItem
 from app.schemas.recipe import RecipeGenerate, RecipeResponse, RecipeUpdate
 from app.services.gemini import generate_recipes
 from app.services.auth import get_current_user
@@ -47,12 +48,27 @@ async def generate_recipes_from_scan(
             detail="No ingredients detected in scan"
         )
 
+    # Fetch user's pantry items
+    pantry_items = db.query(PantryItem).filter(
+        PantryItem.user_id == current_user.id
+    ).all()
+
+    # Convert pantry items to ingredient format
+    pantry_ingredients = [
+        {
+            'name': item.name,
+            'quantity': item.quantity,
+        }
+        for item in pantry_items
+    ]
+
     try:
-        # Generate recipes using Gemini
+        # Generate recipes using Gemini with both scan and pantry ingredients
         recipes_data = generate_recipes(
             available_ingredients=scan.ingredients,
             preferences=current_user.preferences,
-            count=recipe_request.count
+            count=recipe_request.count,
+            pantry_ingredients=pantry_ingredients
         )
 
         # Save recipes to database

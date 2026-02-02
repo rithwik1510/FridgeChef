@@ -155,21 +155,66 @@ def detect_ingredients_from_image(image_path: str) -> List[Dict]:
         raise Exception(f"Failed to detect ingredients: {str(e)}")
 
 
+def merge_ingredients(scan_ingredients: List[Dict], pantry_ingredients: List[Dict]) -> List[Dict]:
+    """
+    Merge scan ingredients with pantry ingredients, avoiding duplicates.
+    Scan ingredients take priority for quantities.
+    """
+    merged = {}
+
+    # First add pantry ingredients
+    for ing in pantry_ingredients:
+        name_lower = ing.get('name', '').lower().strip()
+        if name_lower:
+            merged[name_lower] = {
+                'name': ing.get('name', '').strip(),
+                'quantity': ing.get('quantity', 'some'),
+                'confidence': 1.0,  # Pantry items are confirmed
+                'source': 'pantry'
+            }
+
+    # Then add/override with scan ingredients
+    for ing in scan_ingredients:
+        name_lower = ing.get('name', '').lower().strip()
+        if name_lower:
+            merged[name_lower] = {
+                'name': ing.get('name', '').strip(),
+                'quantity': ing.get('quantity', 'some'),
+                'confidence': ing.get('confidence', 0.8),
+                'source': 'scan'
+            }
+
+    return list(merged.values())
+
+
 def generate_recipes(
     available_ingredients: List[Dict],
     preferences: Optional[Dict] = None,
-    count: int = 3
+    count: int = 3,
+    pantry_ingredients: Optional[List[Dict]] = None
 ) -> List[Dict]:
     """
     Generate recipe suggestions based on available ingredients and user preferences.
     Returns a list of recipe objects.
+
+    Args:
+        available_ingredients: Ingredients from the current scan
+        preferences: User preferences (dietary, allergies, cuisines, etc.)
+        count: Number of recipes to generate
+        pantry_ingredients: Additional ingredients from user's pantry
     """
     try:
         # Create the model
         model = genai.GenerativeModel('gemini-2.5-flash')
 
+        # Merge scan ingredients with pantry ingredients
+        all_ingredients = available_ingredients
+        if pantry_ingredients:
+            all_ingredients = merge_ingredients(available_ingredients, pantry_ingredients)
+            logger.info(f"Merged {len(available_ingredients)} scan + {len(pantry_ingredients)} pantry = {len(all_ingredients)} total ingredients")
+
         # Format ingredients list
-        ingredients_list = [f"{ing['name']} ({ing.get('quantity', 'some')})" for ing in available_ingredients]
+        ingredients_list = [f"{ing['name']} ({ing.get('quantity', 'some')})" for ing in all_ingredients]
         ingredients_str = ", ".join(ingredients_list)
 
         # Format preferences

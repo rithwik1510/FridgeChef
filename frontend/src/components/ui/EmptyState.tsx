@@ -4,7 +4,7 @@ import React from 'react';
 import { Button } from './Button';
 
 interface EmptyStateProps {
-  variant: 'no-scans' | 'no-recipes' | 'no-lists' | 'no-favorites' | 'error' | 'custom';
+  variant: 'no-scans' | 'no-recipes' | 'no-lists' | 'no-favorites' | 'no-pantry' | 'error' | 'custom';
   title?: string;
   description?: string;
   actionLabel?: string;
@@ -158,11 +158,45 @@ const ErrorIllustration = () => (
   </svg>
 );
 
+const EmptyPantryIllustration = () => (
+  <svg width="120" height="140" viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Cabinet */}
+    <rect x="20" y="25" width="80" height="95" rx="4" fill="#F0E9DC" stroke="#E5DBC8" strokeWidth="2" />
+
+    {/* Cabinet doors */}
+    <rect x="24" y="29" width="34" height="87" rx="2" fill="#FBF8F3" stroke="#E5DBC8" strokeWidth="1" />
+    <rect x="62" y="29" width="34" height="87" rx="2" fill="#FBF8F3" stroke="#E5DBC8" strokeWidth="1" />
+
+    {/* Door handles */}
+    <rect x="52" y="65" width="3" height="12" rx="1.5" fill="#C4704B" />
+    <rect x="65" y="65" width="3" height="12" rx="1.5" fill="#C4704B" />
+
+    {/* Empty shelves (dashed) */}
+    <line x1="28" y1="50" x2="54" y2="50" stroke="#E5DBC8" strokeWidth="1" strokeDasharray="4 2" />
+    <line x1="28" y1="75" x2="54" y2="75" stroke="#E5DBC8" strokeWidth="1" strokeDasharray="4 2" />
+    <line x1="28" y1="100" x2="54" y2="100" stroke="#E5DBC8" strokeWidth="1" strokeDasharray="4 2" />
+    <line x1="66" y1="50" x2="92" y2="50" stroke="#E5DBC8" strokeWidth="1" strokeDasharray="4 2" />
+    <line x1="66" y1="75" x2="92" y2="75" stroke="#E5DBC8" strokeWidth="1" strokeDasharray="4 2" />
+    <line x1="66" y1="100" x2="92" y2="100" stroke="#E5DBC8" strokeWidth="1" strokeDasharray="4 2" />
+
+    {/* Package icon outline */}
+    <rect x="45" y="55" width="30" height="25" rx="3" stroke="#C4704B" strokeWidth="2" strokeDasharray="4 2" fill="none" opacity="0.4" />
+    <line x1="45" y1="65" x2="75" y2="65" stroke="#C4704B" strokeWidth="1" strokeDasharray="4 2" opacity="0.4" />
+    <line x1="60" y1="55" x2="60" y2="65" stroke="#C4704B" strokeWidth="1" strokeDasharray="4 2" opacity="0.4" />
+
+    {/* Plus sign */}
+    <circle cx="100" cy="25" r="12" fill="#7D8B6E" opacity="0.2" />
+    <line x1="95" y1="25" x2="105" y2="25" stroke="#7D8B6E" strokeWidth="2" strokeLinecap="round" />
+    <line x1="100" y1="20" x2="100" y2="30" stroke="#7D8B6E" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
 const illustrations = {
   'no-scans': EmptyFridgeIllustration,
   'no-recipes': ChefPuzzledIllustration,
   'no-lists': EmptyBasketIllustration,
   'no-favorites': HeartEmptyIllustration,
+  'no-pantry': EmptyPantryIllustration,
   'error': ErrorIllustration,
   'custom': null,
 };
@@ -187,6 +221,11 @@ const defaultContent = {
     title: "No favorites yet",
     description: "Heart recipes you love to save them here for quick access.",
     actionLabel: "Browse Recipes",
+  },
+  'no-pantry': {
+    title: "Your pantry is empty",
+    description: "Add ingredients you have on hand to get better recipe suggestions.",
+    actionLabel: "Scan to Add",
   },
   'error': {
     title: "Oops! Something went wrong",

@@ -1,13 +1,17 @@
 import axios from 'axios';
-import type { 
-  User, 
-  Scan, 
-  Recipe, 
-  ShoppingList, 
-  AuthResponse, 
-  Ingredient, 
+import type {
+  User,
+  Scan,
+  Recipe,
+  ShoppingList,
+  AuthResponse,
+  Ingredient,
   ShoppingListItem,
-  UserPreferences
+  UserPreferences,
+  PantryItem,
+  PantryItemCreate,
+  PantryItemUpdate,
+  PantryResponse
 } from '@/types/api';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
@@ -153,5 +157,31 @@ export const userApi = {
   updatePreferences: async (preferences: Partial<UserPreferences>): Promise<UserPreferences> => {
     const { data } = await api.put('/user/preferences', preferences);
     return data;
+  },
+};
+
+// Pantry API
+export const pantryApi = {
+  list: async (): Promise<PantryResponse> => {
+    const { data } = await api.get('/pantry');
+    return data;
+  },
+  add: async (item: PantryItemCreate): Promise<PantryItem> => {
+    const { data } = await api.post('/pantry', item);
+    return data;
+  },
+  addBulk: async (items: PantryItemCreate[]): Promise<PantryItem[]> => {
+    const { data } = await api.post('/pantry/bulk', { items });
+    return data;
+  },
+  update: async (itemId: string, updates: PantryItemUpdate): Promise<PantryItem> => {
+    const { data } = await api.put(`/pantry/${itemId}`, updates);
+    return data;
+  },
+  delete: async (itemId: string): Promise<void> => {
+    await api.delete(`/pantry/${itemId}`);
+  },
+  clear: async (): Promise<void> => {
+    await api.delete('/pantry');
   },
 };

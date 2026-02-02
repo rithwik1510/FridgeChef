@@ -27,7 +27,7 @@
 5. **Add Environment Variables** (click "Advanced" → "Add Environment Variable"):
    ```
    SECRET_KEY = d7aa4b6e66e05dc507330b7ee13ca349f75b9504da5b3574930b75ff3470b527
-   GOOGLE_API_KEY = AIzaSyD4QtdSC9Sh9qBVURZuQkc46vFB7Sl1tsI
+   GOOGLE_API_KEY = your_google_api_key_here
    ALLOWED_ORIGINS = https://fridgechef.vercel.app
    DATABASE_URL = sqlite:///./fridgechef.db
    ```

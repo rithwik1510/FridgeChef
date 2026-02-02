@@ -7,6 +7,8 @@ from slowapi.errors import RateLimitExceeded
 from app.config import settings
 from app.api.v1.router import api_router
 from app.database import Base, engine
+# Import all models to ensure tables are created
+from app.models import User, Scan, Recipe, ShoppingList, PantryItem
 from app.utils.logger import setup_logger
 import os
 

@@ -6,7 +6,7 @@
 
 ## Critical Security Issues (MUST FIX IMMEDIATELY)
 
-1. **EXPOSED API KEY**: `AIzaSyCeLqCZgZF1w4MS1_i_MIVvsR2SwzigYZw` in `.env` - REVOKE NOW
+1. **EXPOSED API KEY**: [REDACTED] in `.env` - REVOKE NOW
 2. **Test user bypass**: 4 files allow authentication bypass
 3. **CORS open**: `allow_origins=["*"]` allows any origin
 4. **Weak SECRET_KEY**: Auto-generated, won't persist
@@ -21,7 +21,7 @@
 ```bash
 # Action Required:
 # 1. Go to Google Cloud Console → API & Services → Credentials
-# 2. Find and DELETE key: AIzaSyCeLqCZgZF1w4MS1_i_MIVvsR2SwzigYZw
+# 2. Find and DELETE key: [REDACTED]
 # 3. Generate new key with HTTP referrer restrictions
 # 4. Update backend/.env with new key
 ```

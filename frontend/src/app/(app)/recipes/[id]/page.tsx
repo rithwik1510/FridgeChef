@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { recipesApi, listsApi } from '@/lib/api';
+import { recipesApi, listsApi, pantryApi } from '@/lib/api';
+import type { PantryItem } from '@/types/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Tag } from '@/components/ui/Tag';
 import { Loading } from '@/components/ui/Loading';
-import { Heart, Clock, ChefHat, Users, ShoppingCart, Check } from '@phosphor-icons/react';
+import { Heart, Clock, ChefHat, Users, ShoppingCart, Check, Package } from '@phosphor-icons/react';
 import { formatTime } from '@/lib/utils';
 import { useToast } from '@/components/ui/Toast';
 
@@ -18,6 +19,7 @@ export default function RecipeDetailPage() {
   const { addToast } = useToast();
 
   const [recipe, setRecipe] = useState<any>(null);
+  const [pantryItems, setPantryItems] = useState<PantryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isFavoriting, setIsFavoriting] = useState(false);
   const [isCreatingList, setIsCreatingList] = useState(false);
@@ -26,8 +28,28 @@ export default function RecipeDetailPage() {
   useEffect(() => {
     if (recipeId) {
       loadRecipe();
+      loadPantry();
     }
   }, [recipeId]);
+
+  const loadPantry = async () => {
+    try {
+      const response = await pantryApi.list();
+      setPantryItems(response.items);
+    } catch (error) {
+      // Silently fail - pantry check is optional enhancement
+      console.error('Error loading pantry:', error);
+    }
+  };
+
+  // Check if ingredient is in pantry (fuzzy match)
+  const isInPantry = (ingredientName: string): boolean => {
+    const nameLower = ingredientName.toLowerCase();
+    return pantryItems.some(p =>
+      p.name.toLowerCase().includes(nameLower) ||
+      nameLower.includes(p.name.toLowerCase())
+    );
+  };
 
   const loadRecipe = async () => {
     try {
@@ -127,8 +149,20 @@ export default function RecipeDetailPage() {
     return null;
   }
 
-  const availableIngredients = recipe.ingredients?.filter((ing: any) => ing.available) || [];
-  const missingIngredients = recipe.ingredients?.filter((ing: any) => !ing.available) || [];
+  // Enhanced ingredient availability check
+  // Recipe might have 'available' from generation, but we also check pantry
+  const getIngredientAvailability = (ing: any) => {
+    if (ing.available) return 'available';
+    if (isInPantry(ing.name)) return 'in-pantry';
+    return 'missing';
+  };
+
+  const availableIngredients = recipe.ingredients?.filter(
+    (ing: any) => getIngredientAvailability(ing) !== 'missing'
+  ) || [];
+  const missingIngredients = recipe.ingredients?.filter(
+    (ing: any) => getIngredientAvailability(ing) === 'missing'
+  ) || [];
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -185,30 +219,43 @@ export default function RecipeDetailPage() {
 
         {availableIngredients.length > 0 && (
           <div className="mb-6">
-            <h3 className="text-lg font-medium text-sage mb-3">✓ You have these:</h3>
+            <h3 className="text-lg font-medium text-sage mb-3 flex items-center gap-2">
+              <Check size={20} weight="bold" />
+              You have these:
+            </h3>
             <ul className="space-y-2">
-              {availableIngredients.map((ingredient: any, index: number) => (
-                <li
-                  key={index}
-                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-sage/5 cursor-pointer"
-                  onClick={() => toggleIngredient(index)}
-                >
-                  <div
-                    className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-                      checkedIngredients.has(index)
-                        ? 'bg-sage border-sage'
-                        : 'border-charcoal/30'
-                    }`}
+              {availableIngredients.map((ingredient: any, index: number) => {
+                const availability = getIngredientAvailability(ingredient);
+                const fromPantry = availability === 'in-pantry';
+                return (
+                  <li
+                    key={index}
+                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-sage/5 cursor-pointer"
+                    onClick={() => toggleIngredient(index)}
                   >
-                    {checkedIngredients.has(index) && (
-                      <Check size={14} weight="bold" className="text-cream" />
+                    <div
+                      className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
+                        checkedIngredients.has(index)
+                          ? 'bg-sage border-sage'
+                          : 'border-charcoal/30'
+                      }`}
+                    >
+                      {checkedIngredients.has(index) && (
+                        <Check size={14} weight="bold" className="text-cream" />
+                      )}
+                    </div>
+                    <span className={checkedIngredients.has(index) ? 'line-through text-charcoal/50' : ''}>
+                      {ingredient.amount} {ingredient.name}
+                    </span>
+                    {fromPantry && (
+                      <span className="flex items-center gap-1 text-xs text-sage bg-sage/10 px-2 py-0.5 rounded-full">
+                        <Package size={12} weight="bold" />
+                        Pantry
+                      </span>
                     )}
-                  </div>
-                  <span className={checkedIngredients.has(index) ? 'line-through text-charcoal/50' : ''}>
-                    {ingredient.amount} {ingredient.name}
-                  </span>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         )}
