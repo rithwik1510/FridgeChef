@@ -73,7 +73,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
       <div className="p-4 border-t border-charcoal/10">
         {!collapsed && (
           <div className="text-xs text-charcoal/50 text-center">
-            <p>FridgeChef v1.0</p>
+            <p>FridgeChef v1.2.0</p>
           </div>
         )}
       </div>

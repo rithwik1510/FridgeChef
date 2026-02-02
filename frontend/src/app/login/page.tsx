@@ -9,6 +9,7 @@ import { z } from 'zod';
 import { useAuthStore } from '@/store/auth';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { ChefHat } from '@phosphor-icons/react';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -115,7 +116,11 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Brand Header */}
         <div className="text-center mb-8">
-          <div className="text-5xl mb-4">🥘</div>
+          <div className="flex justify-center mb-4">
+            <div className="w-20 h-20 bg-terracotta/10 rounded-2xl flex items-center justify-center">
+              <ChefHat size={48} className="text-terracotta" weight="duotone" />
+            </div>
+          </div>
           <h1 className="text-4xl font-fraunces text-charcoal mb-2">Welcome Back</h1>
           <p className="text-charcoal/60 text-lg">Let's see what's in your fridge today.</p>
         </div>
