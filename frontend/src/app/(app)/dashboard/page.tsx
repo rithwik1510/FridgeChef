@@ -6,7 +6,7 @@ import { scansApi, recipesApi } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { Camera, ForkKnife, ShoppingCart, ArrowRight, Clock, ChefHat } from '@phosphor-icons/react';
+import { Camera, ForkKnife, Package, ArrowRight, Clock, ChefHat } from '@phosphor-icons/react';
 import { useToast } from '@/components/ui/Toast';
 import { useSeasonalSurprise } from '@/hooks/useSeasonalSurprise';
 import Link from 'next/link';
@@ -115,16 +115,16 @@ export default function DashboardPage() {
           variant="elevated"
           hover
           compact
-          onClick={() => router.push('/lists')}
+          onClick={() => router.push('/pantry')}
         >
           <div className="flex items-start gap-4">
             <div className="p-3 bg-butter/10 rounded-xl">
-              <ShoppingCart size={28} weight="duotone" className="text-butter-dark" />
+              <Package size={28} weight="duotone" className="text-butter-dark" />
             </div>
             <div className="flex-1">
-              <h3 className="text-lg font-semibold mb-1">Shopping Lists</h3>
+              <h3 className="text-lg font-semibold mb-1">Pantry</h3>
               <p className="text-sm text-charcoal/70">
-                Manage your shopping lists
+                Manage your ingredient inventory
               </p>
             </div>
           </div>

@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/auth';
 import { Avatar } from '@/components/ui/Avatar';
 import { Logo } from '@/components/ui/Logo';
-import { X, Camera, ForkKnife, ShoppingCart, Gear, House, SignOut } from '@phosphor-icons/react';
+import { X, Camera, ForkKnife, Package, Gear, House, SignOut } from '@phosphor-icons/react';
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -17,7 +17,7 @@ const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: House },
   { href: '/scan', label: 'Scan Fridge', icon: Camera },
   { href: '/recipes', label: 'Recipes', icon: ForkKnife },
-  { href: '/lists', label: 'Shopping Lists', icon: ShoppingCart },
+  { href: '/pantry', label: 'Pantry', icon: Package },
   { href: '/settings', label: 'Settings', icon: Gear },
 ];
 

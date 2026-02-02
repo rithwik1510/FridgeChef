@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/auth';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
-import { Camera, CookingPot, ShoppingCart } from '@phosphor-icons/react';
+import { Camera, CookingPot, Package } from '@phosphor-icons/react';
 
 export default function Home() {
   const router = useRouter();
@@ -49,7 +49,7 @@ export default function Home() {
         {/* Description */}
         <p className="text-lg md:text-xl text-charcoal/60 mb-12 max-w-2xl mx-auto leading-relaxed">
           Upload a photo of your fridge, see what ingredients you have, get recipe ideas,
-          and create shopping lists for what you're missing.
+          and manage your pantry inventory.
         </p>
 
         {/* CTA Buttons */}
@@ -100,11 +100,11 @@ export default function Home() {
 
           <div className="bg-cream-dark rounded-2xl p-6 shadow-soft">
             <div className="w-14 h-14 bg-terracotta/10 rounded-2xl flex items-center justify-center mb-4">
-              <ShoppingCart size={28} className="text-terracotta" weight="duotone" />
+              <Package size={28} className="text-terracotta" weight="duotone" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-charcoal">Shop Smart</h3>
+            <h3 className="text-xl font-semibold mb-2 text-charcoal">Track Your Pantry</h3>
             <p className="text-charcoal/70">
-              Create shopping lists for missing ingredients with one click
+              Keep inventory of what you have on hand for better recipe suggestions
             </p>
           </div>
         </div>
