@@ -23,7 +23,7 @@ logger.info(f"Uploads directory: {os.path.abspath(settings.UPLOAD_DIR)}")
 app = FastAPI(
     title="FridgeChef API",
     description="Backend API for FridgeChef - Your personal recipe assistant",
-    version="1.0.0"
+    version="1.2.0"
 )
 
 # Rate limiter
