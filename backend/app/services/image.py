@@ -1,4 +1,5 @@
 import os
+import re
 import uuid
 from pathlib import Path
 from PIL import Image
@@ -7,6 +8,16 @@ from app.config import settings
 from app.utils.logger import setup_logger
 
 logger = setup_logger(__name__)
+
+
+def validate_image_path(image_path: str) -> bool:
+    """
+    Validate that an image path is safe (no directory traversal).
+    Only allows UUID-like filenames with valid image extensions.
+    """
+    # Only allow UUID-like filenames with valid extensions
+    pattern = r'^[a-f0-9\-]+\.(jpg|jpeg|png|gif|webp)$'
+    return bool(re.match(pattern, image_path, re.IGNORECASE))
 
 
 def validate_image(file: UploadFile) -> None:
@@ -115,10 +126,24 @@ def optimize_image(file_path: Path, max_size: tuple = (1920, 1920), quality: int
 
 
 def delete_image(file_path: str) -> None:
-    """Delete an image file."""
+    """Delete an image file safely."""
     try:
+        # Validate path to prevent directory traversal attacks
+        if not validate_image_path(file_path):
+            logger.warning(f"Invalid image path rejected: {file_path}")
+            return
+
         full_path = Path(settings.UPLOAD_DIR) / file_path
-        if full_path.exists():
-            full_path.unlink()
+
+        # Additional security: ensure resolved path is still within upload directory
+        upload_dir = Path(settings.UPLOAD_DIR).resolve()
+        resolved_path = full_path.resolve()
+        if not str(resolved_path).startswith(str(upload_dir)):
+            logger.warning(f"Path traversal attempt blocked: {file_path}")
+            return
+
+        if resolved_path.exists():
+            resolved_path.unlink()
+            logger.info(f"Deleted image: {file_path}")
     except Exception as e:
         logger.warning(f"Could not delete image {file_path}: {e}")

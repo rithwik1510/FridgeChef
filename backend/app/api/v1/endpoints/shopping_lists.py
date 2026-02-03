@@ -1,6 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
 from typing import List
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from app.database import get_db
 from app.models.user import User
 from app.models.recipe import Recipe
@@ -9,10 +11,13 @@ from app.schemas.shopping_list import ShoppingListCreate, ShoppingListResponse, 
 from app.services.auth import get_current_user
 
 router = APIRouter()
+limiter = Limiter(key_func=get_remote_address)
 
 
 @router.post("", response_model=ShoppingListResponse, status_code=status.HTTP_201_CREATED)
+@limiter.limit("20/minute")
 async def create_shopping_list(
+    request: Request,
     list_data: ShoppingListCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -69,7 +74,9 @@ async def create_shopping_list(
 
 
 @router.get("", response_model=List[ShoppingListResponse])
+@limiter.limit("60/minute")
 async def list_shopping_lists(
+    request: Request,
     db: Session = Depends(get_db),
     limit: int = 20,
     offset: int = 0,
@@ -88,7 +95,9 @@ async def list_shopping_lists(
 
 
 @router.get("/{list_id}", response_model=ShoppingListResponse)
+@limiter.limit("60/minute")
 async def get_shopping_list(
+    request: Request,
     list_id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -114,7 +123,9 @@ async def get_shopping_list(
 
 
 @router.patch("/{list_id}", response_model=ShoppingListResponse)
+@limiter.limit("30/minute")
 async def update_shopping_list(
+    request: Request,
     list_id: str,
     list_update: ShoppingListUpdate,
     db: Session = Depends(get_db),
@@ -146,7 +157,9 @@ async def update_shopping_list(
 
 
 @router.delete("/{list_id}", status_code=status.HTTP_204_NO_CONTENT)
+@limiter.limit("20/minute")
 async def delete_shopping_list(
+    request: Request,
     list_id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)

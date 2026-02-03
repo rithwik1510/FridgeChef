@@ -4,14 +4,15 @@ import { Card } from '@/components/ui/Card';
 import { Tag } from '@/components/ui/Tag';
 import { Clock, ChefHat, Heart } from '@phosphor-icons/react';
 import { formatTime } from '@/lib/utils';
+import type { Recipe, RecipeIngredient } from '@/types/api';
 
 interface RecipeCardProps {
-  recipe: any;
+  recipe: Recipe;
   onClick: () => void;
 }
 
 export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onClick }) => {
-  const availableCount = recipe.ingredients?.filter((ing: any) => ing.available).length || 0;
+  const availableCount = recipe.ingredients?.filter((ing: RecipeIngredient) => ing.available).length || 0;
   const totalCount = recipe.ingredients?.length || 0;
   const availabilityPercent = totalCount > 0 ? Math.round((availableCount / totalCount) * 100) : 0;
 

@@ -1,6 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
 from typing import List
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from app.database import get_db
 from app.models.user import User
 from app.models.pantry import PantryItem
@@ -15,6 +17,7 @@ from app.schemas.pantry import (
 from app.services.auth import get_current_user
 
 router = APIRouter()
+limiter = Limiter(key_func=get_remote_address)
 
 
 def categorize_ingredient(name: str) -> str:
@@ -88,7 +91,9 @@ def categorize_ingredient(name: str) -> str:
 
 
 @router.get("", response_model=PantryResponse)
+@limiter.limit("60/minute")
 async def get_pantry(
+    request: Request,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -112,7 +117,9 @@ async def get_pantry(
 
 
 @router.post("", response_model=PantryItemResponse, status_code=status.HTTP_201_CREATED)
+@limiter.limit("30/minute")
 async def add_pantry_item(
+    request: Request,
     item_data: PantryItemCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -139,7 +146,9 @@ async def add_pantry_item(
 
 
 @router.post("/bulk", response_model=List[PantryItemResponse], status_code=status.HTTP_201_CREATED)
+@limiter.limit("10/minute")
 async def add_pantry_items_bulk(
+    request: Request,
     bulk_data: PantryItemBulkCreate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -174,7 +183,9 @@ async def add_pantry_items_bulk(
 
 
 @router.put("/{item_id}", response_model=PantryItemResponse)
+@limiter.limit("30/minute")
 async def update_pantry_item(
+    request: Request,
     item_id: str,
     item_update: PantryItemUpdate,
     db: Session = Depends(get_db),
@@ -207,7 +218,9 @@ async def update_pantry_item(
 
 
 @router.delete("/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
+@limiter.limit("30/minute")
 async def delete_pantry_item(
+    request: Request,
     item_id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -234,7 +247,9 @@ async def delete_pantry_item(
 
 
 @router.delete("", status_code=status.HTTP_204_NO_CONTENT)
+@limiter.limit("5/minute")
 async def clear_pantry(
+    request: Request,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):

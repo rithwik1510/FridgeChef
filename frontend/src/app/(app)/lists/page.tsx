@@ -8,11 +8,16 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useToast } from '@/components/ui/Toast';
 import { Check, Trash, ListChecks } from '@phosphor-icons/react';
+import type { ShoppingList, ShoppingListItem } from '@/types/api';
+
+interface ShoppingListItemWithIndex extends ShoppingListItem {
+  index: number;
+}
 
 export default function ShoppingListsPage() {
   const { addToast } = useToast();
-  const [lists, setLists] = useState<any[]>([]);
-  const [selectedList, setSelectedList] = useState<any>(null);
+  const [lists, setLists] = useState<ShoppingList[]>([]);
+  const [selectedList, setSelectedList] = useState<ShoppingList | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -41,7 +46,7 @@ export default function ShoppingListsPage() {
   const handleToggleItem = async (itemIndex: number) => {
     if (!selectedList) return;
 
-    const updatedItems = selectedList.items.map((item: any, index: number) => {
+    const updatedItems = selectedList.items.map((item: ShoppingListItem, index: number) => {
       if (index === itemIndex) {
         return { ...item, checked: !item.checked };
       }
@@ -75,7 +80,7 @@ export default function ShoppingListsPage() {
     }
   };
 
-  const checkedCount = selectedList?.items?.filter((item: any) => item.checked).length || 0;
+  const checkedCount = selectedList?.items?.filter((item: ShoppingListItem) => item.checked).length || 0;
   const totalCount = selectedList?.items?.length || 0;
   const progress = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
 
@@ -102,7 +107,7 @@ export default function ShoppingListsPage() {
           {/* Lists Sidebar */}
           <div className="lg:col-span-1 space-y-3">
             {lists.map((list) => {
-              const listCheckedCount = list.items?.filter((item: any) => item.checked).length || 0;
+              const listCheckedCount = list.items?.filter((item: ShoppingListItem) => item.checked).length || 0;
               const listTotalCount = list.items?.length || 0;
               const listProgress = listTotalCount > 0 ? Math.round((listCheckedCount / listTotalCount) * 100) : 0;
 
@@ -159,19 +164,19 @@ export default function ShoppingListsPage() {
                 {selectedList.items && selectedList.items.length > 0 ? (
                   <div className="space-y-5">
                     {Object.entries(
-                      selectedList.items.reduce((acc: any, item: any, index: number) => {
+                      selectedList.items.reduce((acc: Record<string, ShoppingListItemWithIndex[]>, item: ShoppingListItem, index: number) => {
                         const category = item.category || 'Other';
                         if (!acc[category]) acc[category] = [];
                         acc[category].push({ ...item, index });
                         return acc;
                       }, {})
-                    ).map(([category, items]: [string, any]) => (
+                    ).map(([category, items]) => (
                       <div key={category}>
                         <h3 className="text-sm font-semibold text-charcoal/60 uppercase tracking-wide mb-2">
                           {category}
                         </h3>
                         <ul className="space-y-1">
-                          {items.map((item: any) => (
+                          {items.map((item) => (
                             <li
                               key={item.index}
                               className="flex items-center gap-3 p-3 rounded-xl hover:bg-cream-dark cursor-pointer transition-all duration-200"

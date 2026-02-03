@@ -34,20 +34,29 @@ export interface Scan {
 }
 
 // Recipe types
+export interface RecipeIngredient {
+  name: string;
+  amount?: string;
+  quantity?: string;
+  unit?: string;
+  available?: boolean;
+}
+
 export interface Recipe {
   id: string;
-  user_id: string;
-  scan_id: string;
-  name: string;
-  description: string;
-  ingredients: string[];
+  user_id?: string;
+  scan_id?: string;
+  title: string;
+  name?: string;
+  description?: string;
+  ingredients: RecipeIngredient[];
   instructions: string[];
-  prep_time: number;
-  cook_time: number;
-  servings: number;
-  difficulty: 'easy' | 'medium' | 'hard';
-  cuisine_type: string;
-  dietary_info: string[];
+  prep_time?: number;
+  cook_time?: number;
+  servings?: number;
+  difficulty?: 'easy' | 'medium' | 'hard';
+  cuisine_type?: string;
+  dietary_info?: string[];
   is_favorite: boolean;
   times_made: number;
   created_at: string;
@@ -56,7 +65,8 @@ export interface Recipe {
 // Shopping list types
 export interface ShoppingListItem {
   name: string;
-  quantity: string;
+  quantity?: string;
+  amount?: string;
   checked: boolean;
   category?: string;
 }

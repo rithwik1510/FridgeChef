@@ -9,11 +9,12 @@ import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Heart } from '@phosphor-icons/react';
 import { useToast } from '@/components/ui/Toast';
+import type { Recipe } from '@/types/api';
 
 export default function RecipesPage() {
   const router = useRouter();
   const { addToast } = useToast();
-  const [recipes, setRecipes] = useState<any[]>([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 

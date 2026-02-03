@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { recipesApi, listsApi, pantryApi } from '@/lib/api';
-import type { PantryItem } from '@/types/api';
+import type { PantryItem, Recipe, RecipeIngredient } from '@/types/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Tag } from '@/components/ui/Tag';
@@ -18,7 +18,7 @@ export default function RecipeDetailPage() {
   const recipeId = params?.id as string;
   const { addToast } = useToast();
 
-  const [recipe, setRecipe] = useState<any>(null);
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [pantryItems, setPantryItems] = useState<PantryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isFavoriting, setIsFavoriting] = useState(false);
@@ -151,17 +151,17 @@ export default function RecipeDetailPage() {
 
   // Enhanced ingredient availability check
   // Recipe might have 'available' from generation, but we also check pantry
-  const getIngredientAvailability = (ing: any) => {
+  const getIngredientAvailability = (ing: RecipeIngredient): 'available' | 'in-pantry' | 'missing' => {
     if (ing.available) return 'available';
     if (isInPantry(ing.name)) return 'in-pantry';
     return 'missing';
   };
 
   const availableIngredients = recipe.ingredients?.filter(
-    (ing: any) => getIngredientAvailability(ing) !== 'missing'
+    (ing: RecipeIngredient) => getIngredientAvailability(ing) !== 'missing'
   ) || [];
   const missingIngredients = recipe.ingredients?.filter(
-    (ing: any) => getIngredientAvailability(ing) === 'missing'
+    (ing: RecipeIngredient) => getIngredientAvailability(ing) === 'missing'
   ) || [];
 
   return (
@@ -224,7 +224,7 @@ export default function RecipeDetailPage() {
               You have these:
             </h3>
             <ul className="space-y-2">
-              {availableIngredients.map((ingredient: any, index: number) => {
+              {availableIngredients.map((ingredient: RecipeIngredient, index: number) => {
                 const availability = getIngredientAvailability(ingredient);
                 const fromPantry = availability === 'in-pantry';
                 return (
@@ -276,7 +276,7 @@ export default function RecipeDetailPage() {
               </Button>
             </div>
             <ul className="space-y-2">
-              {missingIngredients.map((ingredient: any, index: number) => (
+              {missingIngredients.map((ingredient: RecipeIngredient, index: number) => (
                 <li key={index} className="flex items-center gap-3 p-2">
                   <span className="text-charcoal/70">
                     {ingredient.amount} {ingredient.name}

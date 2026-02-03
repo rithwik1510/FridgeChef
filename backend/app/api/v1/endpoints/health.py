@@ -81,7 +81,6 @@ async def gemini_api_test():
 
     result = {
         "api_key_set": bool(settings.GOOGLE_API_KEY),
-        "api_key_length": len(settings.GOOGLE_API_KEY) if settings.GOOGLE_API_KEY else 0,
         "test_call": "not_attempted",
         "error": None
     }
