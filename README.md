@@ -1,11 +1,11 @@
-# <img src="frontend/public/favicon.ico" width="32" height="32" /> FridgeChef
+# 🥘 FridgeChef
 
 <div align="center">
 
 ![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.109-009688?style=for-the-badge&logo=fastapi)
 ![Google Gemini](https://img.shields.io/badge/Google_Gemini-2.5_Flash-4285F4?style=for-the-badge&logo=google-gemini)
-![License](https://img.shields.io/badge/license-MIT-C4704B?style=for-the-badge)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)
 
 ### **The Intelligent Kitchen Operating System.**
 **Turn your fridge into a five-star pantry with the power of generative AI.**
@@ -28,16 +28,16 @@ Every year, millions of tons of food go to waste simply because we don't know wh
 Your culinary command center. Track recent scans, browse personalized recipe suggestions, and manage your kitchen inventory at a glance.
 
 <div align="center">
-  <img src="home page 1.png" width="900" alt="FridgeChef Dashboard" />
+  <img src="home%20page%201.png" width="900" alt="FridgeChef Dashboard" />
 </div>
 
 <br />
 
 ### **AI-Powered Fridge Scanning**
-Forget manual entry. Snap a photo of your fridge or pantry, and our Gemini-powered vision pipeline identifies every ingredient, estimates quantities, and suggests immediate possibilities.
+Forget manual entry. Snap a photo of your fridge or pantry, and our Gemini-powered vision pipeline identifies every ingredient, estimates quantities, and determines freshness instantly.
 
 <div align="center">
-  <img src="scan .png" width="900" alt="AI Scan Interface" />
+  <img src="scan%20.png" width="900" alt="AI Scan Interface" />
 </div>
 
 <br />
@@ -51,29 +51,36 @@ Browse recipes specifically matched to your current inventory. Our AI doesn't ju
 
 ---
 
-## 🛠️ Key Capabilities
+## 🏗️ How It's Built
 
-- **📸 Computer Vision Analysis**: Automatically identifies produce, proteins, and pantry staples from simple smartphone photos.
-- **🍳 Generative Recipe Engineering**: Custom recipes generated on-the-fly using Google Gemini 2.5 Flash, optimized for minimal waste.
-- **📊 Real-time Inventory Matching**: Instant calculation of ingredient availability percentages for every recipe.
-- **🛒 Seamless Shopping Workflow**: Automatically generate shopping lists for the specific ingredients you're missing from a chosen recipe.
-- **🎨 "Kitchen Table" Design System**: A warm, organic UI built on Material Design principles with a sophisticated Terracotta and Sage color palette.
+FridgeChef is a full-stack application engineered with a focus on real-time performance and seamless AI integration.
+
+### **1. AI & Computer Vision Pipeline**
+At the heart of FridgeChef is the **Google Gemini 2.5 Flash** model. 
+- **Ingredient Detection**: When you upload a photo, the image is processed through our FastAPI backend and sent to Gemini with a specialized multi-modal prompt. The AI identifies ingredients, suggests quantities, and categorizes them (Produce, Dairy, Meat, etc.).
+- **Generative Recipe Logic**: Unlike traditional database-driven recipe apps, FridgeChef uses **Generative AI** to build recipes on-the-fly. It considers the combination of ingredients, user dietary preferences, and difficulty levels to "invent" recipes that minimize waste.
+
+### **2. Frontend Architecture (The Kitchen)**
+- **Next.js 14 (App Router)**: Utilizing the latest React features for optimized routing and server-side rendering.
+- **React Query (TanStack)**: Used for robust server-state management, providing automatic caching, background fetching, and optimistic updates.
+- **Zustand**: Handles local client state for authentication and UI preferences.
+- **Design System**: A custom-tailored Tailwind CSS implementation featuring a "Kitchen Table" aesthetic—warm, organic colors (`Terracotta`, `Sage`, `Butter`) that make the app feel inviting.
+
+### **3. Backend Infrastructure (The Line)**
+- **FastAPI**: An asynchronous Python framework that handles high-concurrency AI requests with minimal latency.
+- **SQLAlchemy 2.0 & PostgreSQL**: Modern ORM patterns ensure data integrity for user profiles, saved recipes, and pantry inventory.
+- **SlowAPI**: Integrated rate-limiting to protect the generative AI infrastructure from abuse.
+- **Request Logging Middleware**: Custom middleware for real-time observability and performance tracking.
 
 ---
 
-## 🏗️ Technical Architecture
+## 🛠️ Key Capabilities
 
-### **Frontend Excellence**
-*   **Framework**: Next.js 14 (App Router) for high-performance server-side rendering.
-*   **State Management**: React Query (TanStack) for robust server-state synchronization and caching.
-*   **Design System**: Tailwind CSS with a custom "Kitchen Table" theme.
-*   **Iconography**: Phosphor Icons (Duotone) for a modern, cohesive visual language.
-
-### **Backend Performance**
-*   **Engine**: FastAPI (Python 3.12) providing high-concurrency, asynchronous API performance.
-*   **AI Integration**: Google Gemini API for advanced multi-modal ingredient detection and recipe generation.
-*   **ORM**: SQLAlchemy 2.0 with PostgreSQL for scalable data persistence.
-*   **Security**: JWT-based authentication with high-entropy hashing and Rate Limiting protection.
+- **📸 Computer Vision Analysis**: Automatically identifies ingredients from smartphone photos.
+- **🍳 Generative Recipe Engineering**: Custom recipes generated using Gemini, optimized for your specific inventory.
+- **📊 Inventory Intelligence**: Real-time matching between recipes and your digital pantry.
+- **🛒 Smart Shopping Lists**: Automatic generation of lists for missing items.
+- **🎨 Modern UX**: A responsive, mobile-first design with smooth micro-interactions.
 
 ---
 
@@ -84,13 +91,13 @@ Browse recipes specifically matched to your current inventory. Our AI doesn't ju
 2.  **Setup**: Run `FIRST_TIME_SETUP.bat` and provide your Gemini API Key.
 3.  **Launch**: Run `START_APP.bat`.
 
-### **Standard Installation**
+### **Manual Installation**
 
 **1. Backend Environment**
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # or venv\Scripts\activate
+venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
@@ -104,23 +111,15 @@ npm run dev
 
 ---
 
-## 🛡️ Performance & Security
-
-- **Rate Limiting**: Protected against API abuse via `slowapi`.
-- **Memoized Renders**: High-performance UI using `useMemo` for complex ingredient calculations.
-- **Input Validation**: End-to-end type safety using Zod (Frontend) and Pydantic (Backend).
-- **Graceful Error Handling**: Error boundaries and toast notifications ensure a seamless user experience even under network instability.
-
----
-
 ## 🤝 Contributing & License
 
-We welcome contributions to the FridgeChef ecosystem. Please see our [CLAUDE.md](CLAUDE.md) for development rules and [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for our feature roadmap.
+We welcome contributions to the FridgeChef ecosystem. Please see our [CLAUDE.md](CLAUDE.md) for development rules and [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for our roadmap.
 
-Distributed under the **MIT License**. See `LICENSE` for more information.
+Distributed under the **MIT License**.
 
 <div align="center">
 
+### **Made with 🧡 by Rithwik**
 **Crafted with precision for the modern kitchen.**
 
 </div>
