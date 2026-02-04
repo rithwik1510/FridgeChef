@@ -1,113 +1,101 @@
-# 🥘 FridgeChef
+# <img src="frontend/public/favicon.ico" width="32" height="32" /> FridgeChef
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/version-1.0.0-C4704B?style=for-the-badge&logo=none)
-![Build](https://img.shields.io/badge/build-passing-7D8B6E?style=for-the-badge&logo=github)
-![License](https://img.shields.io/badge/license-MIT-2D2A26?style=for-the-badge)
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.109-009688?style=for-the-badge&logo=fastapi)
+![Google Gemini](https://img.shields.io/badge/Google_Gemini-2.5_Flash-4285F4?style=for-the-badge&logo=google-gemini)
+![License](https://img.shields.io/badge/license-MIT-C4704B?style=for-the-badge)
 
-**Reduce Waste. Save Money. Eat Well.**
+### **The Intelligent Kitchen Operating System.**
+**Turn your fridge into a five-star pantry with the power of generative AI.**
 
-An intelligent kitchen assistant that turns your random ingredients into culinary masterpieces using Google Gemini AI.
-
-[View Demo](https://fridgechef.vercel.app) • [Report Bug](https://github.com/rithwik1510/FridgeChef/issues) • [Request Feature](https://github.com/rithwik1510/FridgeChef/issues)
+[Explore the Platform](https://fridgechef.vercel.app) • [Read the Plan](IMPLEMENTATION_PLAN.md) • [View API Docs](http://localhost:8000/docs)
 
 </div>
 
 ---
 
-## 🎨 The "Kitchen Table" Philosophy
+## 🌟 The Vision
 
-FridgeChef isn't just a utility; it's designed to feel like home. Our interface is built on a **"Kitchen Table"** aesthetic—warm, inviting, and organic.
-
-- **Cream & Charcoal**: A base of `#FBF8F3` (Cream) and `#2D2A26` (Charcoal) provides a clean, readable, and soft contrast that is easier on the eyes than stark black and white.
-- **Terracotta Accents**: `#C4704B` brings warmth and appetite appeal, guiding users to key actions like "Cook" or "Save".
-- **Sage Green**: `#7D8B6E` indicates success, freshness, and healthy choices.
-- **Typography**: We use **Fraunces** for headings—a soft, charismatic serif that feels like a classic cookbook—paired with **Source Serif 4** for high readability.
+Every year, millions of tons of food go to waste simply because we don't know what to cook with what we have. **FridgeChef** bridges the gap between available ingredients and culinary inspiration. Using cutting-edge computer vision and generative AI, it acts as a digital sous-chef that understands your kitchen, your preferences, and your schedule.
 
 ---
 
-## ✨ Key Features
+## 📱 Experience the Interface
 
-### 📸 AI Fridge Scan
-Stop typing. Just snap a photo of your open fridge or pantry. Our computer vision pipeline (powered by Google Gemini Vision) identifies ingredients, estimates quantities, and determines freshness confidence.
+### **Intelligent Dashboard**
+Your culinary command center. Track recent scans, browse personalized recipe suggestions, and manage your kitchen inventory at a glance.
 
-### 🍳 Chef's Intelligence
-We don't just match keywords. The AI understands:
-- **Flavor Profiles**: It knows basil pairs with tomato, not chocolate.
-- **Dietary Context**: Gluten-free? Vegan? Keto? It adapts instantly.
-- **Skill Level**: Request "easy" recipes for Tuesday nights or "advanced" for Sunday dinner.
+<div align="center">
+  <img src="home page 1.png" width="900" alt="FridgeChef Dashboard" />
+</div>
 
-### 🛒 Smart Lists & Pantry
-- **One-Tap Shopping**: Missing one ingredient? Add it to your smart list instantly.
-- **Pantry Tracking**: Keep a digital twin of your kitchen inventory (Coming Soon).
+<br />
 
----
+### **AI-Powered Fridge Scanning**
+Forget manual entry. Snap a photo of your fridge or pantry, and our Gemini-powered vision pipeline identifies every ingredient, estimates quantities, and suggests immediate possibilities.
 
-## 🛠️ Tech Stack
+<div align="center">
+  <img src="scan .png" width="900" alt="AI Scan Interface" />
+</div>
 
-### Frontend (The Kitchen)
-- **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with Custom Design Tokens
-- **State**: Zustand
-- **Forms**: React Hook Form + Zod
+<br />
 
-### Backend (The Line)
-- **API**: [FastAPI](https://fastapi.tiangolo.com/) (Python 3.11)
-- **AI Engine**: Google Gemini Pro Vision
-- **Database**: PostgreSQL with SQLAlchemy & Alembic
-- **Security**: OAuth2 with JWT, BCrypt, SlowAPI Rate Limiting
+### **Curated Culinary Discovery**
+Browse recipes specifically matched to your current inventory. Our AI doesn't just match keywords; it understands flavor profiles, dietary restrictions, and cooking techniques to provide the perfect meal for your ingredients.
 
-### Infrastructure (The Pass)
-- **Containerization**: Docker & Docker Compose
-- **CI/CD**: GitHub Actions
-- **Storage**: Local/S3 Compatible
+<div align="center">
+  <img src="recipes.png" width="900" alt="Recipe Discovery" />
+</div>
 
 ---
 
-## 🚀 Quick Start
+## 🛠️ Key Capabilities
 
-### Prerequisites
-- Docker & Docker Compose
-- Node.js 20+
-- Python 3.11+
-- Google Cloud API Key (Gemini)
-
-### 1. Clone the Kitchen
-```bash
-git clone https://github.com/rithwik1510/FridgeChef.git
-cd FridgeChef
-```
-
-### 2. Mise en place (Setup)
-Copy the environment variables and fill in your secrets.
-```bash
-cp .env.example .env
-```
-
-### 3. Fire up the Stoves (Docker)
-The easiest way to run the full stack:
-```bash
-docker-compose up -d
-```
-Visit `http://localhost:3000` to start cooking.
+- **📸 Computer Vision Analysis**: Automatically identifies produce, proteins, and pantry staples from simple smartphone photos.
+- **🍳 Generative Recipe Engineering**: Custom recipes generated on-the-fly using Google Gemini 2.5 Flash, optimized for minimal waste.
+- **📊 Real-time Inventory Matching**: Instant calculation of ingredient availability percentages for every recipe.
+- **🛒 Seamless Shopping Workflow**: Automatically generate shopping lists for the specific ingredients you're missing from a chosen recipe.
+- **🎨 "Kitchen Table" Design System**: A warm, organic UI built on Material Design principles with a sophisticated Terracotta and Sage color palette.
 
 ---
 
-## 💻 Local Development
+## 🏗️ Technical Architecture
 
-If you want to run services individually:
+### **Frontend Excellence**
+*   **Framework**: Next.js 14 (App Router) for high-performance server-side rendering.
+*   **State Management**: React Query (TanStack) for robust server-state synchronization and caching.
+*   **Design System**: Tailwind CSS with a custom "Kitchen Table" theme.
+*   **Iconography**: Phosphor Icons (Duotone) for a modern, cohesive visual language.
 
-**Backend:**
+### **Backend Performance**
+*   **Engine**: FastAPI (Python 3.12) providing high-concurrency, asynchronous API performance.
+*   **AI Integration**: Google Gemini API for advanced multi-modal ingredient detection and recipe generation.
+*   **ORM**: SQLAlchemy 2.0 with PostgreSQL for scalable data persistence.
+*   **Security**: JWT-based authentication with high-entropy hashing and Rate Limiting protection.
+
+---
+
+## 🚀 Deployment & Installation
+
+### **The 60-Second Start (Windows)**
+1.  **Clone**: `git clone https://github.com/rithwik1510/FridgeChef.git`
+2.  **Setup**: Run `FIRST_TIME_SETUP.bat` and provide your Gemini API Key.
+3.  **Launch**: Run `START_APP.bat`.
+
+### **Standard Installation**
+
+**1. Backend Environment**
 ```bash
 cd backend
 python -m venv venv
-# Windows: venv\Scripts\activate | Mac/Linux: source venv/bin/activate
+source venv/bin/activate  # or venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-**Frontend:**
+**2. Frontend Environment**
 ```bash
 cd frontend
 npm install
@@ -116,48 +104,23 @@ npm run dev
 
 ---
 
-## 🧪 Testing
+## 🛡️ Performance & Security
 
-We maintain high standards in this kitchen.
-
-**Backend Coverage (70%+):**
-```bash
-cd backend
-pytest --cov
-```
-
-**Frontend Unit Tests:**
-```bash
-cd frontend
-npm run test
-```
+- **Rate Limiting**: Protected against API abuse via `slowapi`.
+- **Memoized Renders**: High-performance UI using `useMemo` for complex ingredient calculations.
+- **Input Validation**: End-to-end type safety using Zod (Frontend) and Pydantic (Backend).
+- **Graceful Error Handling**: Error boundaries and toast notifications ensure a seamless user experience even under network instability.
 
 ---
 
-## 🔒 Security
+## 🤝 Contributing & License
 
-- **No Open Doors**: Strict CORS policies.
-- **Rate Limited**: API endpoints are protected against abuse.
-- **Encrypted**: All sensitive user data is hashed.
+We welcome contributions to the FridgeChef ecosystem. Please see our [CLAUDE.md](CLAUDE.md) for development rules and [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for our feature roadmap.
 
-See [SECURITY.md](SECURITY.md) for our vulnerability disclosure policy.
-
----
-
-## 🤝 Contributing
-
-We welcome sous-chefs! Please read our [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) to understand the roadmap before submitting a PR.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingRecipe`)
-3. Commit your Changes (`git commit -m 'Add some AmazingRecipe'`)
-4. Push to the Branch (`git push origin feature/AmazingRecipe`)
-5. Open a Pull Request
-
----
+Distributed under the **MIT License**. See `LICENSE` for more information.
 
 <div align="center">
 
-**Made with 🧡 and 🥗 by the FridgeChef Team**
+**Crafted with precision for the modern kitchen.**
 
 </div>
