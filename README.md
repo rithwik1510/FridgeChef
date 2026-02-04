@@ -1,4 +1,4 @@
-# 🥘 FridgeChef
+# <img src="logo.svg" width="42" height="42" vertical-align="middle" /> FridgeChef
 
 <div align="center">
 
