@@ -16,13 +16,13 @@
 
 ---
 
-## 🌟 The Vision
+## <img src="doc_assets/vision.svg" width="24" height="24" /> The Vision
 
 Every year, millions of tons of food go to waste simply because we don't know what to cook with what we have. **FridgeChef** bridges the gap between available ingredients and culinary inspiration. Using cutting-edge computer vision and generative AI, it acts as a digital sous-chef that understands your kitchen, your preferences, and your schedule.
 
 ---
 
-## 📱 Experience the Interface
+## <img src="doc_assets/interface.svg" width="24" height="24" /> Experience the Interface
 
 ### **Intelligent Dashboard**
 Your culinary command center. Track recent scans, browse personalized recipe suggestions, and manage your kitchen inventory at a glance.
@@ -51,7 +51,7 @@ Browse recipes specifically matched to your current inventory. Our AI doesn't ju
 
 ---
 
-## 🏗️ How It's Built
+## <img src="doc_assets/built.svg" width="24" height="24" /> How It's Built
 
 FridgeChef is a full-stack application engineered with a focus on real-time performance and seamless AI integration.
 
@@ -74,7 +74,7 @@ At the heart of FridgeChef is the **Google Gemini 2.5 Flash** model.
 
 ---
 
-## 🛠️ Key Capabilities
+## <img src="doc_assets/capabilities.svg" width="24" height="24" /> Key Capabilities
 
 - **📸 Computer Vision Analysis**: Automatically identifies ingredients from smartphone photos.
 - **🍳 Generative Recipe Engineering**: Custom recipes generated using Gemini, optimized for your specific inventory.
@@ -84,7 +84,7 @@ At the heart of FridgeChef is the **Google Gemini 2.5 Flash** model.
 
 ---
 
-## 🚀 Deployment & Installation
+## <img src="doc_assets/deploy.svg" width="24" height="24" /> Deployment & Installation
 
 ### **The 60-Second Start (Windows)**
 1.  **Clone**: `git clone https://github.com/rithwik1510/FridgeChef.git`
@@ -111,7 +111,7 @@ npm run dev
 
 ---
 
-## 🤝 Contributing & License
+## <img src="doc_assets/contribute.svg" width="24" height="24" /> Contributing & License
 
 We welcome contributions to the FridgeChef ecosystem. Please see our [CLAUDE.md](CLAUDE.md) for development rules and [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for our roadmap.
 
@@ -119,7 +119,7 @@ Distributed under the **MIT License**.
 
 <div align="center">
 
-### **Made with 🧡 by Rithwik**
+### **Made with <img src="doc_assets/contribute.svg" width="18" height="18" /> by Rithwik**
 **Crafted with precision for the modern kitchen.**
 
 </div>
