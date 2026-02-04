@@ -8,6 +8,21 @@
 
 ---
 
+## Development Commands
+
+### Backend
+- **Run Tests**: `pytest`
+- **Run Tests with Coverage**: `pytest --cov=app`
+- **Start Server**: `uvicorn app.main:app --reload` (or use `start_backend.bat` on Windows)
+
+### Frontend
+- **Start Dev Server**: `npm run dev`
+- **Linting**: `npm run lint`
+- **Build**: `npm run build`
+- *Note: Frontend tests are not currently configured.*
+
+---
+
 ## Design System
 
 ### Colors (Tailwind Custom)

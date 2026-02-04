@@ -110,6 +110,7 @@ export default function RecipeDetailPage() {
   };
 
   const handleCreateShoppingList = async () => {
+    if (!recipe) return;
     setIsCreatingList(true);
     try {
       await listsApi.create(`Shopping for: ${recipe.title}`, recipeId);

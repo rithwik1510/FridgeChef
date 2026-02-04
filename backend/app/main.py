@@ -38,6 +38,7 @@ from app.middleware.exception_handlers import (
     database_exception_handler,
     validation_exception_handler
 )
+from app.middleware.logging import RequestLoggingMiddleware
 from sqlalchemy.exc import SQLAlchemyError
 
 app.add_exception_handler(Exception, generic_exception_handler)
@@ -57,6 +58,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.add_middleware(RequestLoggingMiddleware)
 
 # Mount uploads directory for serving images
 app.mount("/uploads", StaticFiles(directory=settings.UPLOAD_DIR), name="uploads")

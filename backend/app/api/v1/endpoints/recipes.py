@@ -110,7 +110,9 @@ async def generate_recipes_from_scan(
 
 
 @router.get("", response_model=List[RecipeResponse])
+@limiter.limit("60/minute")
 async def list_recipes(
+    request: Request,
     db: Session = Depends(get_db),
     favorites_only: bool = False,
     limit: int = 20,
@@ -131,7 +133,9 @@ async def list_recipes(
 
 
 @router.get("/{recipe_id}", response_model=RecipeResponse)
+@limiter.limit("60/minute")
 async def get_recipe(
+    request: Request,
     recipe_id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -157,7 +161,9 @@ async def get_recipe(
 
 
 @router.patch("/{recipe_id}/favorite", response_model=RecipeResponse)
+@limiter.limit("30/minute")
 async def toggle_favorite(
+    request: Request,
     recipe_id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -187,7 +193,9 @@ async def toggle_favorite(
 
 
 @router.patch("/{recipe_id}/made", response_model=RecipeResponse)
+@limiter.limit("30/minute")
 async def increment_times_made(
+    request: Request,
     recipe_id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -217,7 +225,9 @@ async def increment_times_made(
 
 
 @router.delete("/{recipe_id}", status_code=status.HTTP_204_NO_CONTENT)
+@limiter.limit("30/minute")
 async def delete_recipe(
+    request: Request,
     recipe_id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)

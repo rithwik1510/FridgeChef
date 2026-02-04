@@ -1,8 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { pantryApi } from '@/lib/api';
+import {
+  usePantry,
+  useAddPantryItem,
+  useUpdatePantryItem,
+  useDeletePantryItem,
+  useClearPantry
+} from '@/hooks/usePantry';
 import type { PantryItem, PantryItemCreate } from '@/types/api';
 import { Button, IconButton } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -63,11 +69,18 @@ export default function PantryPage() {
   const { isAuthenticated, hasHydrated, isLoading: authLoading } = useAuthStore();
 
   // ALL hooks must be declared before any conditional returns
-  const [items, setItems] = useState<PantryItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: pantryData, isLoading } = usePantry();
+  const addMutation = useAddPantryItem();
+  const updateMutation = useUpdatePantryItem();
+  const deleteMutation = useDeletePantryItem();
+  const clearMutation = useClearPantry();
+
+  const items = pantryData?.items || [];
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [editingItem, setEditingItem] = useState<PantryItem | null>(null);
 
   // Form state
@@ -83,33 +96,10 @@ export default function PantryPage() {
     }
   }, [hasHydrated, authLoading, isAuthenticated, router]);
 
-  // Load pantry items
-  useEffect(() => {
-    if (isAuthenticated) {
-      loadPantry();
-    }
-  }, [isAuthenticated]);
-
   // Show nothing while checking auth or if not authenticated
   if (!hasHydrated || authLoading || !isAuthenticated) {
     return null;
   }
-
-  const loadPantry = async () => {
-    try {
-      const response = await pantryApi.list();
-      setItems(response.items);
-    } catch (error) {
-      console.error('Error loading pantry:', error);
-      addToast({
-        type: 'error',
-        title: 'Error loading pantry',
-        message: 'Could not load your pantry items.',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleAddItem = async () => {
     if (!formName.trim()) {
@@ -118,15 +108,12 @@ export default function PantryPage() {
     }
 
     try {
-      const newItem: PantryItemCreate = {
+      await addMutation.mutateAsync({
         name: formName.trim(),
         quantity: formQuantity.trim() || 'some',
         category: formCategory,
         expiry_date: formExpiry || undefined,
-      };
-
-      const created = await pantryApi.add(newItem);
-      setItems([...items, created]);
+      });
       resetForm();
       setShowAddModal(false);
       addToast({ type: 'success', title: 'Item added to pantry' });
@@ -140,43 +127,42 @@ export default function PantryPage() {
     if (!editingItem || !formName.trim()) return;
 
     try {
-      const updated = await pantryApi.update(editingItem.id, {
-        name: formName.trim(),
-        quantity: formQuantity.trim() || 'some',
-        category: formCategory,
-        expiry_date: formExpiry || undefined,
+      await updateMutation.mutateAsync({
+        id: editingItem.id,
+        updates: {
+          name: formName.trim(),
+          quantity: formQuantity.trim() || 'some',
+          category: formCategory,
+          expiry_date: formExpiry || undefined,
+        }
       });
-
-      setItems(items.map(item => item.id === updated.id ? updated : item));
       resetForm();
       setEditingItem(null);
       addToast({ type: 'success', title: 'Item updated' });
     } catch (error) {
-      console.error('Error updating item:', error);
       addToast({ type: 'error', title: 'Failed to update item' });
     }
   };
 
   const handleDeleteItem = async (itemId: string) => {
     try {
-      await pantryApi.delete(itemId);
-      setItems(items.filter(item => item.id !== itemId));
+      await deleteMutation.mutateAsync(itemId);
       addToast({ type: 'success', title: 'Item removed' });
     } catch (error) {
-      console.error('Error deleting item:', error);
       addToast({ type: 'error', title: 'Failed to remove item' });
     }
   };
 
-  const handleClearPantry = async () => {
-    if (!confirm('Are you sure you want to clear your entire pantry?')) return;
+  const handleClearPantry = () => {
+    setShowClearConfirm(true);
+  };
 
+  const executeClearPantry = async () => {
     try {
-      await pantryApi.clear();
-      setItems([]);
+      await clearMutation.mutateAsync();
+      setShowClearConfirm(false);
       addToast({ type: 'success', title: 'Pantry cleared' });
     } catch (error) {
-      console.error('Error clearing pantry:', error);
       addToast({ type: 'error', title: 'Failed to clear pantry' });
     }
   };
@@ -202,21 +188,24 @@ export default function PantryPage() {
     resetForm();
   };
 
-  // Filter items
-  const filteredItems = items.filter(item => {
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || item.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  // Filter & Group items (Memoized)
+  const { filteredItems, groupedItems } = useMemo(() => {
+    const filtered = items.filter(item => {
+      const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory = selectedCategory === 'All' || item.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
 
-  // Group by category
-  const groupedItems: Record<string, PantryItem[]> = {};
-  filteredItems.forEach(item => {
-    if (!groupedItems[item.category]) {
-      groupedItems[item.category] = [];
-    }
-    groupedItems[item.category].push(item);
-  });
+    const grouped: Record<string, PantryItem[]> = {};
+    filtered.forEach(item => {
+      if (!grouped[item.category]) {
+        grouped[item.category] = [];
+      }
+      grouped[item.category].push(item);
+    });
+
+    return { filteredItems: filtered, groupedItems: grouped };
+  }, [items, searchQuery, selectedCategory]);
 
   return (
     <div className="space-y-6">
@@ -376,6 +365,33 @@ export default function PantryPage() {
               </Button>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Clear Confirmation Modal */}
+      {showClearConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-charcoal/50">
+          <Card variant="elevated" className="w-full max-w-sm text-center">
+            <h2 className="text-xl font-semibold mb-2">Clear Pantry?</h2>
+            <p className="text-charcoal/70 mb-6">
+              Are you sure you want to remove all items? This action cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-center">
+              <Button
+                variant="outline"
+                onClick={() => setShowClearConfirm(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                onClick={executeClearPantry}
+                className="bg-red-500 hover:bg-red-600 text-white border-red-500"
+              >
+                Yes, Clear All
+              </Button>
+            </div>
+          </Card>
         </div>
       )}
 

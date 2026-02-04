@@ -47,6 +47,8 @@ export const Header = () => {
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="flex items-center gap-3 p-2 rounded-xl hover:bg-cream-dark/50 transition-colors"
+              aria-label="User menu"
+              aria-expanded={isDropdownOpen}
             >
               <Avatar name={user?.name} size="sm" />
               <span className="text-charcoal/80 hidden sm:block font-medium">

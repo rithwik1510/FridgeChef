@@ -28,7 +28,6 @@ export default function RecipesPage() {
       const data = await recipesApi.list(showFavoritesOnly);
       setRecipes(data);
     } catch (error) {
-      console.error('Error loading recipes:', error);
       addToast({
         type: 'error',
         title: 'Error loading recipes',

@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Tag } from '@/components/ui/Tag';
 import { Clock, ChefHat, Heart } from '@phosphor-icons/react';
@@ -12,9 +13,12 @@ interface RecipeCardProps {
 }
 
 export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onClick }) => {
-  const availableCount = recipe.ingredients?.filter((ing: RecipeIngredient) => ing.available).length || 0;
-  const totalCount = recipe.ingredients?.length || 0;
-  const availabilityPercent = totalCount > 0 ? Math.round((availableCount / totalCount) * 100) : 0;
+  const { availableCount, totalCount, availabilityPercent } = useMemo(() => {
+    const available = recipe.ingredients?.filter((ing: RecipeIngredient) => ing.available).length || 0;
+    const total = recipe.ingredients?.length || 0;
+    const percent = total > 0 ? Math.round((available / total) * 100) : 0;
+    return { availableCount: available, totalCount: total, availabilityPercent: percent };
+  }, [recipe.ingredients]);
 
   return (
     <Card hover onClick={onClick} className="h-full flex flex-col">

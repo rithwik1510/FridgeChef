@@ -9,6 +9,7 @@ from app.models.recipe import Recipe
 from app.models.shopping_list import ShoppingList
 from app.schemas.shopping_list import ShoppingListCreate, ShoppingListResponse, ShoppingListUpdate
 from app.services.auth import get_current_user
+from app.services.categorization import categorize_ingredient
 
 router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
@@ -187,34 +188,4 @@ async def delete_shopping_list(
     return None
 
 
-def categorize_ingredient(name: str) -> str:
-    """
-    Simple categorization of ingredients.
-    """
-    name_lower = name.lower()
 
-    # Produce
-    produce = ["lettuce", "tomato", "onion", "garlic", "pepper", "carrot", "celery", "spinach",
-               "broccoli", "cauliflower", "cucumber", "zucchini", "potato", "apple", "banana",
-               "lemon", "lime", "orange", "berry", "herb", "cilantro", "parsley", "basil"]
-    if any(item in name_lower for item in produce):
-        return "Produce"
-
-    # Dairy
-    dairy = ["milk", "cheese", "yogurt", "butter", "cream", "egg"]
-    if any(item in name_lower for item in dairy):
-        return "Dairy & Eggs"
-
-    # Meat
-    meat = ["chicken", "beef", "pork", "fish", "salmon", "turkey", "bacon", "sausage", "meat"]
-    if any(item in name_lower for item in meat):
-        return "Meat & Seafood"
-
-    # Pantry
-    pantry = ["flour", "sugar", "salt", "pepper", "oil", "vinegar", "sauce", "pasta", "rice",
-              "bean", "can", "stock", "broth"]
-    if any(item in name_lower for item in pantry):
-        return "Pantry"
-
-    # Default
-    return "Other"

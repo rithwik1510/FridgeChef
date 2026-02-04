@@ -32,7 +32,6 @@ export default function ShoppingListsPage() {
         setSelectedList(data[0]);
       }
     } catch (error) {
-      console.error('Error loading shopping lists:', error);
       addToast({
         type: 'error',
         title: 'Error loading lists',
@@ -58,7 +57,6 @@ export default function ShoppingListsPage() {
       setSelectedList(updated);
       setLists(lists.map(list => list.id === updated.id ? updated : list));
     } catch (error) {
-      console.error('Error updating shopping list:', error);
       addToast({ type: 'error', title: 'Failed to update item' });
     }
   };
@@ -75,7 +73,6 @@ export default function ShoppingListsPage() {
       }
       addToast({ type: 'success', title: 'List deleted' });
     } catch (error) {
-      console.error('Error deleting shopping list:', error);
       addToast({ type: 'error', title: 'Failed to delete list' });
     }
   };

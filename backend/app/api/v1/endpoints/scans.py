@@ -86,7 +86,9 @@ async def create_scan(
 
 
 @router.get("", response_model=List[ScanResponse])
+@limiter.limit("60/minute")
 async def list_scans(
+    request: Request,
     db: Session = Depends(get_db),
     limit: int = 20,
     offset: int = 0,
@@ -105,7 +107,9 @@ async def list_scans(
 
 
 @router.get("/{scan_id}", response_model=ScanResponse)
+@limiter.limit("60/minute")
 async def get_scan(
+    request: Request,
     scan_id: str,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -131,7 +135,9 @@ async def get_scan(
 
 
 @router.put("/{scan_id}", response_model=ScanResponse)
+@limiter.limit("30/minute")
 async def update_scan(
+    request: Request,
     scan_id: str,
     scan_update: ScanUpdate,
     db: Session = Depends(get_db),

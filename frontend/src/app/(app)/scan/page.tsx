@@ -63,8 +63,6 @@ export default function ScanPage() {
         });
       }
     } catch (error: any) {
-      console.error('Error uploading image:', error);
-
       let errorMessage = 'Unknown error';
 
       if (error.code === 'ERR_NETWORK') {
@@ -134,7 +132,6 @@ export default function ScanPage() {
         message: `${ingredients.length} ingredient${ingredients.length !== 1 ? 's' : ''} added to your pantry`,
       });
     } catch (error) {
-      console.error('Error adding to pantry:', error);
       addToast({
         type: 'error',
         title: 'Failed to add to pantry',
@@ -152,7 +149,6 @@ export default function ScanPage() {
     try {
       await scansApi.update(scanId, ingredients);
     } catch (error) {
-      console.error('Error updating ingredients:', error);
       addToast({
         type: 'warning',
         title: 'Update failed',
@@ -175,7 +171,6 @@ export default function ScanPage() {
 
       setTimeout(() => router.push('/recipes'), 500);
     } catch (error) {
-      console.error('Error generating recipes:', error);
       addToast({
         type: 'error',
         title: 'Generation failed',
@@ -250,6 +245,7 @@ export default function ScanPage() {
                   onChange={(e) => setNewIngredient(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleAddIngredient()}
                   className="flex-1"
+                  aria-label="New ingredient name"
                 />
                 <Input
                   placeholder="Qty"
@@ -257,6 +253,7 @@ export default function ScanPage() {
                   onChange={(e) => setNewQuantity(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleAddIngredient()}
                   className="w-24"
+                  aria-label="New ingredient quantity"
                 />
                 <Button
                   variant="secondary"
