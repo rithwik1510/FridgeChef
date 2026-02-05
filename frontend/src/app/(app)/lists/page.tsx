@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { listsApi } from '@/lib/api';
-import { IconButton } from '@/components/ui/Button';
+import { Button, IconButton } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useToast } from '@/components/ui/Toast';
-import { Check, Trash, ListChecks } from '@phosphor-icons/react';
+import { Check, Trash, ListChecks, Warning, X } from '@phosphor-icons/react';
 import type { ShoppingList, ShoppingListItem } from '@/types/api';
 
 interface ShoppingListItemWithIndex extends ShoppingListItem {
@@ -19,6 +19,7 @@ export default function ShoppingListsPage() {
   const [lists, setLists] = useState<ShoppingList[]>([]);
   const [selectedList, setSelectedList] = useState<ShoppingList | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   useEffect(() => {
     loadLists();
@@ -62,8 +63,6 @@ export default function ShoppingListsPage() {
   };
 
   const handleDeleteList = async (listId: string) => {
-    if (!confirm('Are you sure you want to delete this shopping list?')) return;
-
     try {
       await listsApi.delete(listId);
       const newLists = lists.filter(list => list.id !== listId);
@@ -72,9 +71,15 @@ export default function ShoppingListsPage() {
         setSelectedList(newLists[0] || null);
       }
       addToast({ type: 'success', title: 'List deleted' });
-    } catch (error) {
+    } catch {
       addToast({ type: 'error', title: 'Failed to delete list' });
+    } finally {
+      setDeleteConfirm(null);
     }
+  };
+
+  const confirmDelete = (listId: string) => {
+    setDeleteConfirm(listId);
   };
 
   const checkedCount = selectedList?.items?.filter((item: ShoppingListItem) => item.checked).length || 0;
@@ -128,7 +133,7 @@ export default function ShoppingListsPage() {
                       size="sm"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDeleteList(list.id);
+                        confirmDelete(list.id);
                       }}
                       className="text-charcoal/40 hover:text-red-500"
                     />
@@ -220,6 +225,57 @@ export default function ShoppingListsPage() {
             onAction={() => {}}
           />
         </Card>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          onClick={() => setDeleteConfirm(null)}
+        >
+          <div
+            className="bg-cream rounded-2xl p-6 max-w-sm w-full shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-start mb-4">
+              <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                <Warning size={24} weight="duotone" className="text-red-500" />
+              </div>
+              <button
+                onClick={() => setDeleteConfirm(null)}
+                className="p-1 hover:bg-cream-dark rounded-lg transition-colors"
+                aria-label="Close"
+              >
+                <X size={20} className="text-charcoal/50" />
+              </button>
+            </div>
+
+            <h3 className="text-xl font-semibold text-charcoal mb-2">
+              Delete Shopping List?
+            </h3>
+            <p className="text-charcoal/70 mb-6">
+              This action cannot be undone. All items in this list will be permanently removed.
+            </p>
+
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                fullWidth
+                onClick={() => setDeleteConfirm(null)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                fullWidth
+                onClick={() => handleDeleteList(deleteConfirm)}
+                className="bg-red-500 hover:bg-red-600"
+              >
+                Delete
+              </Button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

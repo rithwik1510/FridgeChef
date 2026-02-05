@@ -1,7 +1,7 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import List
 from pathlib import Path
-import secrets
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 from app.utils.logger import setup_logger
 
 logger = setup_logger(__name__)
@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     # File Upload
     UPLOAD_DIR: str = "./uploads"
     MAX_UPLOAD_SIZE: int = 10 * 1024 * 1024  # 10MB
-    ALLOWED_EXTENSIONS: List[str] = ["jpg", "jpeg", "png", "heic", "webp"]
+    ALLOWED_EXTENSIONS: list[str] = ["jpg", "jpeg", "png", "heic", "webp"]
 
     # CORS
     ALLOWED_ORIGINS: str = "http://localhost:3000,http://127.0.0.1:3000"
@@ -48,7 +48,7 @@ class Settings(BaseSettings):
     )
 
     @property
-    def allowed_origins_list(self) -> List[str]:
+    def allowed_origins_list(self) -> list[str]:
         """Convert comma-separated origins to list."""
         return [origin.strip() for origin in self.ALLOWED_ORIGINS.split(",")]
 

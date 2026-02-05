@@ -1,16 +1,18 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-from app.config import settings
+from slowapi.util import get_remote_address
+
 from app.api.v1.router import api_router
+from app.config import settings
 from app.database import Base, engine
+
 # Import all models to ensure tables are created
-from app.models import User, Scan, Recipe, ShoppingList, PantryItem
 from app.utils.logger import setup_logger
-import os
 
 logger = setup_logger(__name__)
 
@@ -33,13 +35,14 @@ limiter = Limiter(key_func=get_remote_address, default_limits=["100/minute"])
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
+from sqlalchemy.exc import SQLAlchemyError
+
 from app.middleware.exception_handlers import (
-    generic_exception_handler,
     database_exception_handler,
-    validation_exception_handler
+    generic_exception_handler,
+    validation_exception_handler,
 )
 from app.middleware.logging import RequestLoggingMiddleware
-from sqlalchemy.exc import SQLAlchemyError
 
 app.add_exception_handler(Exception, generic_exception_handler)
 app.add_exception_handler(SQLAlchemyError, database_exception_handler)

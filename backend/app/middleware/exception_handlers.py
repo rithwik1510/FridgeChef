@@ -1,6 +1,7 @@
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
+
 from app.utils.logger import setup_logger
 
 logger = setup_logger(__name__)

@@ -1,6 +1,6 @@
-from pydantic import BaseModel
-from typing import List, Optional
 from datetime import datetime
+
+from pydantic import BaseModel
 
 
 class RecipeIngredient(BaseModel):
@@ -19,15 +19,15 @@ class RecipeGenerate(BaseModel):
 class RecipeResponse(BaseModel):
     """Schema for recipe response."""
     id: str
-    user_id: Optional[str]
-    scan_id: Optional[str]
+    user_id: str | None
+    scan_id: str | None
     title: str
-    description: Optional[str]
-    cook_time: Optional[int]
-    difficulty: Optional[str]
-    servings: Optional[int]
-    ingredients: List[dict]
-    instructions: List[str]
+    description: str | None
+    cook_time: int | None
+    difficulty: str | None
+    servings: int | None
+    ingredients: list[dict]
+    instructions: list[str]
     is_favorite: bool
     times_made: int
     created_at: datetime
@@ -38,5 +38,5 @@ class RecipeResponse(BaseModel):
 
 class RecipeUpdate(BaseModel):
     """Schema for updating recipe."""
-    is_favorite: Optional[bool] = None
-    times_made: Optional[int] = None
+    is_favorite: bool | None = None
+    times_made: int | None = None

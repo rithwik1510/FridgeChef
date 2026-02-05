@@ -1,13 +1,13 @@
-from pydantic import BaseModel
-from typing import List, Optional
 from datetime import datetime
+
+from pydantic import BaseModel
 
 
 class IngredientDetected(BaseModel):
     """Schema for detected ingredient."""
     name: str
-    quantity: Optional[str] = None
-    confidence: Optional[float] = None
+    quantity: str | None = None
+    confidence: float | None = None
 
 
 class ScanCreate(BaseModel):
@@ -21,7 +21,7 @@ class ScanResponse(BaseModel):
     user_id: str
     image_path: str
     status: str
-    ingredients: List[dict]
+    ingredients: list[dict]
     created_at: datetime
 
     class Config:
@@ -30,4 +30,4 @@ class ScanResponse(BaseModel):
 
 class ScanUpdate(BaseModel):
     """Schema for updating scan ingredients."""
-    ingredients: List[dict]
+    ingredients: list[dict]

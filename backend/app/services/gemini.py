@@ -1,9 +1,10 @@
-import google.generativeai as genai
-from typing import List, Dict, Optional
+import json
 from pathlib import Path
+
+import google.generativeai as genai
+
 from app.config import settings
 from app.utils.logger import setup_logger
-import json
 
 logger = setup_logger(__name__)
 
@@ -19,7 +20,8 @@ genai.configure(api_key=settings.GOOGLE_API_KEY)
 
 import mimetypes
 
-def detect_ingredients_from_image(image_path: str) -> List[Dict]:
+
+def detect_ingredients_from_image(image_path: str) -> list[dict]:
     """
     Detect ingredients from a fridge/pantry image using Gemini Vision.
     Returns a list of detected ingredients with confidence scores.
@@ -83,7 +85,7 @@ def detect_ingredients_from_image(image_path: str) -> List[Dict]:
         logger.info("Sending request to Gemini API...")
         response = model.generate_content([prompt, {"mime_type": mime_type, "data": image_data}])
         logger.info("Response received from Gemini API")
-        
+
         # --- DEBUG LOGGING ---
         logger.debug(f"Response feedback: {response.prompt_feedback}")
         try:
@@ -99,13 +101,13 @@ def detect_ingredients_from_image(image_path: str) -> List[Dict]:
         try:
             # Extract JSON from response
             response_text = response.text.strip()
-            
+
             # Clean markdown code blocks if present
             if "```json" in response_text:
                 response_text = response_text.replace("```json", "").replace("```", "")
             elif "```" in response_text:
                 response_text = response_text.replace("```", "")
-                
+
             response_text = response_text.strip()
             logger.debug(f"Raw response length: {len(response_text)}")
 
@@ -117,9 +119,9 @@ def detect_ingredients_from_image(image_path: str) -> List[Dict]:
 
                 if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
                     response_text = response_text[start_idx : end_idx + 1]
-                    logger.debug(f"Extracted JSON segment")
+                    logger.debug("Extracted JSON segment")
                 else:
-                    logger.warning(f"Could not find JSON array brackets in response")
+                    logger.warning("Could not find JSON array brackets in response")
             except Exception as extract_err:
                 logger.error(f"Error extracting JSON substring: {extract_err}")
 
@@ -136,7 +138,7 @@ def detect_ingredients_from_image(image_path: str) -> List[Dict]:
                     })
 
             logger.info(f"Successfully parsed {len(cleaned_ingredients)} ingredients")
-            
+
             if not cleaned_ingredients:
                 raise Exception(f"Gemini returned no ingredients. Raw text: {response_text[:200]}")
 
@@ -152,10 +154,10 @@ def detect_ingredients_from_image(image_path: str) -> List[Dict]:
         logger.error(f"Error in detect_ingredients_from_image: {e}")
         import traceback
         logger.error(traceback.format_exc())
-        raise Exception(f"Failed to detect ingredients: {str(e)}")
+        raise Exception(f"Failed to detect ingredients: {str(e)}") from e
 
 
-def merge_ingredients(scan_ingredients: List[Dict], pantry_ingredients: List[Dict]) -> List[Dict]:
+def merge_ingredients(scan_ingredients: list[dict], pantry_ingredients: list[dict]) -> list[dict]:
     """
     Merge scan ingredients with pantry ingredients, avoiding duplicates.
     Scan ingredients take priority for quantities.
@@ -188,11 +190,11 @@ def merge_ingredients(scan_ingredients: List[Dict], pantry_ingredients: List[Dic
 
 
 def generate_recipes(
-    available_ingredients: List[Dict],
-    preferences: Optional[Dict] = None,
+    available_ingredients: list[dict],
+    preferences: dict | None = None,
     count: int = 3,
-    pantry_ingredients: Optional[List[Dict]] = None
-) -> List[Dict]:
+    pantry_ingredients: list[dict] | None = None
+) -> list[dict]:
     """
     Generate recipe suggestions based on available ingredients and user preferences.
     Returns a list of recipe objects.
@@ -300,7 +302,7 @@ Return format: [recipe1, recipe2, recipe3]
         # Parse the response
         try:
             response_text = response.text.strip()
-            
+
             # Robust JSON extraction
             try:
                 # Find the start and end of the JSON array
@@ -310,7 +312,7 @@ Return format: [recipe1, recipe2, recipe3]
                 if start_idx != -1 and end_idx != -1 and end_idx > start_idx:
                     response_text = response_text[start_idx : end_idx + 1]
                 else:
-                    logger.warning(f"Could not find JSON array brackets in recipe response")
+                    logger.warning("Could not find JSON array brackets in recipe response")
             except Exception as extract_err:
                 logger.error(f"Error extracting JSON substring: {extract_err}")
 
@@ -329,4 +331,4 @@ Return format: [recipe1, recipe2, recipe3]
 
     except Exception as e:
         logger.error(f"Error generating recipes: {e}")
-        raise Exception(f"Failed to generate recipes: {str(e)}")
+        raise Exception(f"Failed to generate recipes: {str(e)}") from e

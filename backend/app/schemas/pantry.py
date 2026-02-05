@@ -1,7 +1,6 @@
-from pydantic import BaseModel
-from typing import List, Optional, Dict
-from datetime import datetime, date
+from datetime import date, datetime
 
+from pydantic import BaseModel
 
 # Pantry categories
 PANTRY_CATEGORIES = [
@@ -21,17 +20,17 @@ PANTRY_CATEGORIES = [
 class PantryItemCreate(BaseModel):
     """Schema for creating a pantry item."""
     name: str
-    quantity: Optional[str] = "some"
-    category: Optional[str] = "Other"
-    expiry_date: Optional[date] = None
+    quantity: str | None = "some"
+    category: str | None = "Other"
+    expiry_date: date | None = None
 
 
 class PantryItemUpdate(BaseModel):
     """Schema for updating a pantry item."""
-    name: Optional[str] = None
-    quantity: Optional[str] = None
-    category: Optional[str] = None
-    expiry_date: Optional[date] = None
+    name: str | None = None
+    quantity: str | None = None
+    category: str | None = None
+    expiry_date: date | None = None
 
 
 class PantryItemResponse(BaseModel):
@@ -41,9 +40,9 @@ class PantryItemResponse(BaseModel):
     name: str
     quantity: str
     category: str
-    expiry_date: Optional[date]
+    expiry_date: date | None
     added_at: datetime
-    updated_at: Optional[datetime]
+    updated_at: datetime | None
 
     class Config:
         from_attributes = True
@@ -51,11 +50,11 @@ class PantryItemResponse(BaseModel):
 
 class PantryItemBulkCreate(BaseModel):
     """Schema for bulk creating pantry items."""
-    items: List[PantryItemCreate]
+    items: list[PantryItemCreate]
 
 
 class PantryResponse(BaseModel):
     """Schema for pantry response with items grouped by category."""
-    items: List[PantryItemResponse]
-    grouped: Dict[str, List[PantryItemResponse]]
-    categories: List[str] = PANTRY_CATEGORIES
+    items: list[PantryItemResponse]
+    grouped: dict[str, list[PantryItemResponse]]
+    categories: list[str] = PANTRY_CATEGORIES

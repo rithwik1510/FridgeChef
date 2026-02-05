@@ -1,15 +1,16 @@
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Request
-from sqlalchemy.orm import Session
-from typing import List
+
+from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile, status
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+from sqlalchemy.orm import Session
+
 from app.database import get_db
-from app.models.user import User
 from app.models.scan import Scan
+from app.models.user import User
 from app.schemas.scan import ScanResponse, ScanUpdate
-from app.services.image import save_upload_file
-from app.services.gemini import detect_ingredients_from_image
 from app.services.auth import get_current_user
+from app.services.gemini import detect_ingredients_from_image
+from app.services.image import save_upload_file
 from app.utils.logger import setup_logger
 
 logger = setup_logger(__name__)
@@ -29,7 +30,7 @@ async def create_scan(
     """
     Upload a fridge image and detect ingredients.
     """
-    logger.info(f"=== SCAN UPLOAD STARTED ===")
+    logger.info("=== SCAN UPLOAD STARTED ===")
     logger.info(f"File name: {file.filename}")
     logger.info(f"Content type: {file.content_type}")
 
@@ -75,17 +76,17 @@ async def create_scan(
         # Re-raise HTTP exceptions (like validation errors)
         raise
     except Exception as e:
-        logger.error(f"=== SCAN FAILED ===")
+        logger.error("=== SCAN FAILED ===")
         logger.error(f"Error: {e}")
         import traceback
         logger.error(traceback.format_exc())
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error processing scan: {str(e)}"
-        )
+        ) from e
 
 
-@router.get("", response_model=List[ScanResponse])
+@router.get("", response_model=list[ScanResponse])
 @limiter.limit("60/minute")
 async def list_scans(
     request: Request,
@@ -124,7 +125,7 @@ async def get_scan(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Scan not found"
         )
-        
+
     if scan.user_id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

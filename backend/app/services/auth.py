@@ -1,25 +1,30 @@
+
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, status, Depends
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from typing import Optional
-from app.models.user import User
-from app.core.security import verify_password, get_password_hash, create_access_token, decode_access_token
+
+from app.core.security import (
+    decode_access_token,
+    get_password_hash,
+    verify_password,
+)
 from app.database import get_db
+from app.models.user import User
 
 security = HTTPBearer()
 
 
-def get_user_by_email(db: Session, email: str) -> Optional[User]:
+def get_user_by_email(db: Session, email: str) -> User | None:
     """Get user by email."""
     return db.query(User).filter(User.email == email).first()
 
 
-def get_user_by_id(db: Session, user_id: str) -> Optional[User]:
+def get_user_by_id(db: Session, user_id: str) -> User | None:
     """Get user by ID."""
     return db.query(User).filter(User.id == user_id).first()
 
 
-def authenticate_user(db: Session, email: str, password: str) -> Optional[User]:
+def authenticate_user(db: Session, email: str, password: str) -> User | None:
     """Authenticate user with email and password."""
     user = get_user_by_email(db, email)
     if not user:
@@ -29,7 +34,7 @@ def authenticate_user(db: Session, email: str, password: str) -> Optional[User]:
     return user
 
 
-def create_user(db: Session, email: str, password: str, name: Optional[str] = None) -> User:
+def create_user(db: Session, email: str, password: str, name: str | None = None) -> User:
     """Create a new user."""
     # Check if user already exists
     existing_user = get_user_by_email(db, email)
@@ -70,7 +75,7 @@ async def get_current_user(
         if user_id is None:
             raise credentials_exception
     except Exception:
-        raise credentials_exception
+        raise credentials_exception from None
 
     user = get_user_by_id(db, user_id)
     if user is None:

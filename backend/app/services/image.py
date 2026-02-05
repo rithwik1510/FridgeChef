@@ -1,9 +1,10 @@
-import os
 import re
 import uuid
 from pathlib import Path
+
+from fastapi import HTTPException, UploadFile, status
 from PIL import Image
-from fastapi import UploadFile, HTTPException, status
+
 from app.config import settings
 from app.utils.logger import setup_logger
 
@@ -87,7 +88,7 @@ async def save_upload_file(file: UploadFile) -> str:
     # Save file
     with open(file_path, "wb") as f:
         f.write(content)
-    logger.info(f"File saved successfully!")
+    logger.info("File saved successfully!")
 
     # Optimize/compress image
     try:
@@ -122,7 +123,7 @@ def optimize_image(file_path: Path, max_size: tuple = (1920, 1920), quality: int
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error processing image: {str(e)}"
-        )
+        ) from e
 
 
 def delete_image(file_path: str) -> None:

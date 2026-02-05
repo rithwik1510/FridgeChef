@@ -2,10 +2,12 @@
 
 <div align="center">
 
+![Version](https://img.shields.io/badge/version-1.3.0-blue?style=for-the-badge)
 ![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.109-009688?style=for-the-badge&logo=fastapi)
 ![Google Gemini](https://img.shields.io/badge/Google_Gemini-2.5_Flash-4285F4?style=for-the-badge&logo=google-gemini)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)
+![Tests](https://img.shields.io/badge/tests-passing-success?style=for-the-badge)
 
 ### **The Intelligent Kitchen Operating System.**
 **Turn your fridge into a five-star pantry with the power of generative AI.**
@@ -108,6 +110,32 @@ cd frontend
 npm install
 npm run dev
 ```
+
+---
+
+## Testing
+
+FridgeChef includes comprehensive test suites for both frontend and backend.
+
+### **Backend Tests**
+```bash
+cd backend
+pytest                    # Run all tests
+pytest --cov              # Run with coverage report
+ruff check app/           # Run linting
+mypy app/                 # Run type checking
+```
+
+### **Frontend Tests**
+```bash
+cd frontend
+npm run test              # Run tests in watch mode
+npm run test:run          # Run tests once
+npm run test:coverage     # Run with coverage report
+npm run lint              # Run ESLint
+```
+
+**Current Coverage**: Backend 78% | Frontend tests passing
 
 ---
 

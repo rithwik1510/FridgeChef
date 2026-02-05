@@ -36,8 +36,7 @@ export default function SettingsPage() {
     try {
       const data = await userApi.getPreferences();
       setPreferences(data);
-    } catch (error) {
-      console.error('Error loading preferences:', error);
+    } catch {
       addToast({
         type: 'error',
         title: 'Error loading settings',
@@ -57,8 +56,7 @@ export default function SettingsPage() {
         title: 'Preferences saved!',
         message: 'Your settings have been updated',
       });
-    } catch (error) {
-      console.error('Error saving preferences:', error);
+    } catch {
       addToast({
         type: 'error',
         title: 'Failed to save',

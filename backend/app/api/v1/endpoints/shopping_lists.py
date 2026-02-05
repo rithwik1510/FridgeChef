@@ -1,12 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request
-from sqlalchemy.orm import Session
-from typing import List
+
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+from sqlalchemy.orm import Session
+
 from app.database import get_db
-from app.models.user import User
 from app.models.recipe import Recipe
 from app.models.shopping_list import ShoppingList
+from app.models.user import User
 from app.schemas.shopping_list import ShoppingListCreate, ShoppingListResponse, ShoppingListUpdate
 from app.services.auth import get_current_user
 from app.services.categorization import categorize_ingredient
@@ -38,7 +39,7 @@ async def create_shopping_list(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Recipe not found"
             )
-        
+
         if recipe.user_id != current_user.id:
              raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
@@ -74,7 +75,7 @@ async def create_shopping_list(
     return shopping_list
 
 
-@router.get("", response_model=List[ShoppingListResponse])
+@router.get("", response_model=list[ShoppingListResponse])
 @limiter.limit("60/minute")
 async def list_shopping_lists(
     request: Request,
@@ -175,7 +176,7 @@ async def delete_shopping_list(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Shopping list not found"
         )
-    
+
     if shopping_list.user_id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

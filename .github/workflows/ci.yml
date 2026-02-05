@@ -47,6 +47,12 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
+      - name: Run linting
+        run: |
+          cd backend
+          ruff check app/
+          mypy app/ --ignore-missing-imports
+
       - name: Run tests with coverage
         env:
           DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
@@ -61,6 +67,7 @@ jobs:
         with:
           file: ./backend/coverage.xml
           flags: backend
+        continue-on-error: true
 
   frontend-tests:
     name: Frontend Tests
@@ -106,6 +113,7 @@ jobs:
         with:
           file: ./frontend/coverage/lcov.info
           flags: frontend
+        continue-on-error: true
 
   docker-build:
     name: Docker Build Test

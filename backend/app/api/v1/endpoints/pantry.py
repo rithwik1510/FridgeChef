@@ -1,18 +1,19 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request
-from sqlalchemy.orm import Session
-from typing import List
+
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+from sqlalchemy.orm import Session
+
 from app.database import get_db
-from app.models.user import User
 from app.models.pantry import PantryItem
+from app.models.user import User
 from app.schemas.pantry import (
-    PantryItemCreate,
-    PantryItemUpdate,
-    PantryItemResponse,
+    PANTRY_CATEGORIES,
     PantryItemBulkCreate,
+    PantryItemCreate,
+    PantryItemResponse,
+    PantryItemUpdate,
     PantryResponse,
-    PANTRY_CATEGORIES
 )
 from app.services.auth import get_current_user
 from app.services.categorization import categorize_ingredient
@@ -79,7 +80,7 @@ async def add_pantry_item(
     return pantry_item
 
 
-@router.post("/bulk", response_model=List[PantryItemResponse], status_code=status.HTTP_201_CREATED)
+@router.post("/bulk", response_model=list[PantryItemResponse], status_code=status.HTTP_201_CREATED)
 @limiter.limit("10/minute")
 async def add_pantry_items_bulk(
     request: Request,

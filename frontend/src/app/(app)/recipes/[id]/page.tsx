@@ -36,9 +36,8 @@ export default function RecipeDetailPage() {
     try {
       const response = await pantryApi.list();
       setPantryItems(response.items);
-    } catch (error) {
+    } catch {
       // Silently fail - pantry check is optional enhancement
-      console.error('Error loading pantry:', error);
     }
   };
 
@@ -55,8 +54,7 @@ export default function RecipeDetailPage() {
     try {
       const data = await recipesApi.get(recipeId);
       setRecipe(data);
-    } catch (error) {
-      console.error('Error loading recipe:', error);
+    } catch {
       addToast({
         type: 'error',
         title: 'Error loading recipe',
@@ -78,8 +76,7 @@ export default function RecipeDetailPage() {
         title: updated.is_favorite ? 'Added to favorites' : 'Removed from favorites',
         duration: 2000,
       });
-    } catch (error) {
-      console.error('Error toggling favorite:', error);
+    } catch {
       addToast({
         type: 'error',
         title: 'Action failed',
@@ -99,8 +96,7 @@ export default function RecipeDetailPage() {
         title: 'Bon appétit!',
         message: 'Recipe marked as made.',
       });
-    } catch (error) {
-      console.error('Error incrementing made count:', error);
+    } catch {
       addToast({
         type: 'error',
         title: 'Action failed',
@@ -120,8 +116,7 @@ export default function RecipeDetailPage() {
         message: 'Missing ingredients added to your list.',
       });
       router.push('/lists');
-    } catch (error) {
-      console.error('Error creating shopping list:', error);
+    } catch {
       addToast({
         type: 'error',
         title: 'Error creating list',

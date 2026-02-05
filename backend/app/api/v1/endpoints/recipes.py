@@ -1,22 +1,23 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request
-from sqlalchemy.orm import Session
-from typing import List
+
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+from sqlalchemy.orm import Session
+
 from app.database import get_db
-from app.models.user import User
-from app.models.scan import Scan
-from app.models.recipe import Recipe
 from app.models.pantry import PantryItem
-from app.schemas.recipe import RecipeGenerate, RecipeResponse, RecipeUpdate
-from app.services.gemini import generate_recipes
+from app.models.recipe import Recipe
+from app.models.scan import Scan
+from app.models.user import User
+from app.schemas.recipe import RecipeGenerate, RecipeResponse
 from app.services.auth import get_current_user
+from app.services.gemini import generate_recipes
 
 router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
 
 
-@router.post("/generate", response_model=List[RecipeResponse], status_code=status.HTTP_201_CREATED)
+@router.post("/generate", response_model=list[RecipeResponse], status_code=status.HTTP_201_CREATED)
 @limiter.limit("15/minute")
 async def generate_recipes_from_scan(
     request: Request,
@@ -35,7 +36,7 @@ async def generate_recipes_from_scan(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Scan not found"
         )
-    
+
     if scan.user_id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -106,10 +107,10 @@ async def generate_recipes_from_scan(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error generating recipes: {str(e)}"
-        )
+        ) from e
 
 
-@router.get("", response_model=List[RecipeResponse])
+@router.get("", response_model=list[RecipeResponse])
 @limiter.limit("60/minute")
 async def list_recipes(
     request: Request,
@@ -125,7 +126,7 @@ async def list_recipes(
     query = db.query(Recipe).filter(Recipe.user_id == current_user.id)
 
     if favorites_only:
-        query = query.filter(Recipe.is_favorite == True)
+        query = query.filter(Recipe.is_favorite.is_(True))
 
     recipes = query.order_by(Recipe.created_at.desc()).offset(offset).limit(limit).all()
 
@@ -178,7 +179,7 @@ async def toggle_favorite(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Recipe not found"
         )
-    
+
     if recipe.user_id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

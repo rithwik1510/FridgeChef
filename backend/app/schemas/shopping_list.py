@@ -1,30 +1,30 @@
-from pydantic import BaseModel
-from typing import List, Optional
 from datetime import datetime
+
+from pydantic import BaseModel
 
 
 class ShoppingListItem(BaseModel):
     """Schema for shopping list item."""
     name: str
     amount: str
-    category: Optional[str] = None
+    category: str | None = None
     checked: bool = False
 
 
 class ShoppingListCreate(BaseModel):
     """Schema for creating shopping list."""
-    recipe_id: Optional[str] = None
+    recipe_id: str | None = None
     name: str
-    items: List[dict]
+    items: list[dict]
 
 
 class ShoppingListResponse(BaseModel):
     """Schema for shopping list response."""
     id: str
     user_id: str
-    recipe_id: Optional[str]
+    recipe_id: str | None
     name: str
-    items: List[dict]
+    items: list[dict]
     created_at: datetime
 
     class Config:
@@ -33,4 +33,4 @@ class ShoppingListResponse(BaseModel):
 
 class ShoppingListUpdate(BaseModel):
     """Schema for updating shopping list."""
-    items: List[dict]
+    items: list[dict]

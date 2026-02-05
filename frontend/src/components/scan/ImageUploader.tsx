@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { UploadSimple, Image as ImageIcon, Camera } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/Button';
 import { useIsMobile } from '@/hooks/useMediaQuery';
+import { useToast } from '@/components/ui/Toast';
 
 interface ImageUploaderProps {
   onUpload: (file: File) => void;
@@ -12,6 +13,7 @@ interface ImageUploaderProps {
 
 export const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isLoading = false }) => {
   const isMobile = useIsMobile();
+  const { addToast } = useToast();
   const [dragActive, setDragActive] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -47,7 +49,11 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isLoadin
   const handleFile = (file: File) => {
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      alert('Please upload an image file');
+      addToast({
+        type: 'warning',
+        title: 'Invalid file type',
+        message: 'Please upload an image file (JPG, PNG, etc.)',
+      });
       return;
     }
 
@@ -75,6 +81,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isLoadin
         onChange={handleChange}
         className="hidden"
         disabled={isLoading}
+        aria-label="Upload image from gallery"
+        id="image-upload"
       />
       <input
         ref={cameraRef}
@@ -84,6 +92,8 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isLoadin
         onChange={handleChange}
         className="hidden"
         disabled={isLoading}
+        aria-label="Take photo with camera"
+        id="camera-capture"
       />
 
       {preview ? (
@@ -113,6 +123,9 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isLoadin
         </div>
       ) : (
         <div
+          role="button"
+          tabIndex={0}
+          aria-label="Upload image area. Drag and drop an image or click to select"
           className={`
             relative border-2 border-dashed rounded-2xl p-12
             transition-all duration-200 cursor-pointer
@@ -122,12 +135,19 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isLoadin
                 : 'border-charcoal/20 hover:border-terracotta hover:bg-cream-dark'
             }
             ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
+            focus:outline-none focus:ring-2 focus:ring-terracotta focus:ring-offset-2
           `}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
           onDrop={handleDrop}
           onClick={handleButtonClick}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleButtonClick();
+            }
+          }}
         >
           <div className="flex flex-col items-center justify-center text-center space-y-4">
             {dragActive ? (

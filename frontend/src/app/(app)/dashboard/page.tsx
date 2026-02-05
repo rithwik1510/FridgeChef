@@ -28,12 +28,12 @@ export default function DashboardPage() {
         ]);
         setRecentScans(scans);
         setRecentRecipes(recipes);
-      } catch (error: any) {
+      } catch (error: unknown) {
         // Ignore 401/403 errors as they are handled by the interceptor
-        if (error.response?.status === 401 || error.response?.status === 403) {
+        const axiosError = error as { response?: { status?: number } };
+        if (axiosError.response?.status === 401 || axiosError.response?.status === 403) {
           return;
         }
-        console.error('Error loading dashboard data:', error);
         addToast({
           type: 'error',
           title: 'Connection error',

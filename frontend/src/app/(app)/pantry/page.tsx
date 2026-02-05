@@ -117,8 +117,7 @@ export default function PantryPage() {
       resetForm();
       setShowAddModal(false);
       addToast({ type: 'success', title: 'Item added to pantry' });
-    } catch (error) {
-      console.error('Error adding item:', error);
+    } catch {
       addToast({ type: 'error', title: 'Failed to add item' });
     }
   };
