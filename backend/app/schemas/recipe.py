@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class RecipeIngredient(BaseModel):
@@ -13,7 +13,7 @@ class RecipeIngredient(BaseModel):
 class RecipeGenerate(BaseModel):
     """Schema for generating recipes from scan."""
     scan_id: str
-    count: int = 3
+    count: int = Field(default=3, ge=1, le=10)
 
 
 class RecipeResponse(BaseModel):

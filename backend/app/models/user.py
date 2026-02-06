@@ -17,6 +17,8 @@ class User(Base):
     password_hash = Column(String(255), nullable=False)
     created_at = Column(DateTime, default=func.now())
     preferences = Column(JSON, default={})
+    reset_token = Column(String(64), nullable=True, index=True)
+    reset_token_expires = Column(DateTime, nullable=True)
 
     def __repr__(self):
         return f"<User {self.email}>"

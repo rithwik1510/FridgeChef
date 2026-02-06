@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuthStore } from '@/store/auth';
+import { isHttpError } from '@/lib/errors';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { ChefHat } from '@phosphor-icons/react';
@@ -38,9 +39,8 @@ function LoginForm() {
     try {
       await login(data.email, data.password);
       router.push(redirectUrl);
-    } catch (err: any) {
-      // Handle different types of errors
-      if (err.response?.status === 401) {
+    } catch (err: unknown) {
+      if (isHttpError(err, 401)) {
         setError('Invalid email or password');
       } else {
         setError('Something went wrong. Please try again.');
@@ -94,8 +94,18 @@ function LoginForm() {
         </div>
       </form>
 
+      {/* Forgot Password */}
+      <div className="mt-4 text-center">
+        <Link
+          href="/forgot-password"
+          className="text-sm text-charcoal/50 hover:text-terracotta transition-colors"
+        >
+          Forgot your password?
+        </Link>
+      </div>
+
       {/* Footer */}
-      <div className="mt-8 text-center text-charcoal/60">
+      <div className="mt-6 text-center text-charcoal/60">
         <p>
           Don't have an account?{' '}
           <Link

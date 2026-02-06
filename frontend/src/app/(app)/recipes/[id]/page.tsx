@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { recipesApi, listsApi, pantryApi } from '@/lib/api';
 import type { PantryItem, Recipe, RecipeIngredient } from '@/types/api';
@@ -8,8 +8,10 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Tag } from '@/components/ui/Tag';
 import { Loading } from '@/components/ui/Loading';
-import { Heart, Clock, ChefHat, Users, ShoppingCart, Check, Package } from '@phosphor-icons/react';
+import { ServingsAdjuster } from '@/components/recipe/ServingsAdjuster';
+import { Heart, Clock, ChefHat, ShoppingCart, Check, Package } from '@phosphor-icons/react';
 import { formatTime } from '@/lib/utils';
+import { scaleIngredientAmount } from '@/lib/recipeScaling';
 import { useToast } from '@/components/ui/Toast';
 
 export default function RecipeDetailPage() {
@@ -24,6 +26,19 @@ export default function RecipeDetailPage() {
   const [isFavoriting, setIsFavoriting] = useState(false);
   const [isCreatingList, setIsCreatingList] = useState(false);
   const [checkedIngredients, setCheckedIngredients] = useState<Set<number>>(new Set());
+  const [currentServings, setCurrentServings] = useState<number>(0);
+
+  const originalServings = recipe?.servings || 2;
+  const scalingRatio = currentServings > 0 ? currentServings / originalServings : 1;
+
+  // Scale ingredient amounts based on servings
+  const scaledIngredients = useMemo(() => {
+    if (!recipe?.ingredients || scalingRatio === 1) return recipe?.ingredients || [];
+    return recipe.ingredients.map((ing: RecipeIngredient) => ({
+      ...ing,
+      amount: ing.amount ? scaleIngredientAmount(ing.amount, scalingRatio) : ing.amount,
+    }));
+  }, [recipe?.ingredients, scalingRatio]);
 
   useEffect(() => {
     if (recipeId) {
@@ -54,6 +69,7 @@ export default function RecipeDetailPage() {
     try {
       const data = await recipesApi.get(recipeId);
       setRecipe(data);
+      setCurrentServings(data.servings || 2);
     } catch {
       addToast({
         type: 'error',
@@ -153,12 +169,12 @@ export default function RecipeDetailPage() {
     return 'missing';
   };
 
-  const availableIngredients = recipe.ingredients?.filter(
+  const availableIngredients = scaledIngredients.filter(
     (ing: RecipeIngredient) => getIngredientAvailability(ing) !== 'missing'
-  ) || [];
-  const missingIngredients = recipe.ingredients?.filter(
+  );
+  const missingIngredients = scaledIngredients.filter(
     (ing: RecipeIngredient) => getIngredientAvailability(ing) === 'missing'
-  ) || [];
+  );
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -196,11 +212,12 @@ export default function RecipeDetailPage() {
             </div>
           )}
 
-          {recipe.servings && (
-            <div className="flex items-center gap-2">
-              <Users size={20} weight="duotone" />
-              <span>{recipe.servings} servings</span>
-            </div>
+          {currentServings > 0 && (
+            <ServingsAdjuster
+              servings={currentServings}
+              originalServings={originalServings}
+              onChange={setCurrentServings}
+            />
           )}
 
           {recipe.times_made > 0 && (

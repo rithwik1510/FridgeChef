@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.core.security import (
     decode_access_token,
     get_password_hash,
+    is_token_blacklisted,
     verify_password,
 )
 from app.database import get_db
@@ -70,10 +71,16 @@ async def get_current_user(
     )
 
     try:
+        # Check if token has been blacklisted (logged out)
+        if is_token_blacklisted(token.credentials):
+            raise credentials_exception
+
         payload = decode_access_token(token.credentials)
         user_id: str = payload.get("sub")
         if user_id is None:
             raise credentials_exception
+    except HTTPException:
+        raise
     except Exception:
         raise credentials_exception from None
 

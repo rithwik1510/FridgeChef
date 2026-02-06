@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { userApi } from '@/lib/api';
+import type { UserPreferences } from '@/types/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Tag } from '@/components/ui/Tag';
@@ -9,20 +10,17 @@ import { Slider } from '@/components/ui/Slider';
 import { Input } from '@/components/ui/Input';
 import { useToast } from '@/components/ui/Toast';
 import { Plus, Leaf, Warning, Globe, ChefHat, Clock, Users, FloppyDisk } from '@phosphor-icons/react';
-
-const DIETARY_OPTIONS = ['Vegetarian', 'Vegan', 'Gluten-Free', 'Dairy-Free', 'Keto', 'Paleo'];
-const CUISINE_OPTIONS = ['Italian', 'Mexican', 'Asian', 'Mediterranean', 'American', 'Indian', 'French', 'Japanese'];
-const SKILL_LEVELS = ['beginner', 'intermediate', 'advanced'];
+import { DIETARY_OPTIONS, CUISINE_OPTIONS, SKILL_LEVELS } from '@/lib/constants';
 
 export default function SettingsPage() {
   const { addToast } = useToast();
-  const [preferences, setPreferences] = useState<any>({
+  const [preferences, setPreferences] = useState<UserPreferences>({
     dietary: [],
     allergies: [],
     cuisines: [],
     skill_level: 'intermediate',
     max_cook_time: 60,
-    servings: 2
+    servings: 2,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);

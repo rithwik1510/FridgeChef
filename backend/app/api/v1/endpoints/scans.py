@@ -1,9 +1,11 @@
+import asyncio
+from pathlib import Path
 
-from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile, status
-from slowapi import Limiter
-from slowapi.util import get_remote_address
+from fastapi import APIRouter, Depends, File, HTTPException, Query, Request, UploadFile, status
 from sqlalchemy.orm import Session
 
+from app.config import settings
+from app.core.limiter import limiter
 from app.database import get_db
 from app.models.scan import Scan
 from app.models.user import User
@@ -16,7 +18,6 @@ from app.utils.logger import setup_logger
 logger = setup_logger(__name__)
 
 router = APIRouter()
-limiter = Limiter(key_func=get_remote_address)
 
 
 @router.post("", response_model=ScanResponse, status_code=status.HTTP_201_CREATED)
@@ -53,10 +54,10 @@ async def create_scan(
         db.refresh(scan)
         logger.info(f"Scan created with ID: {scan.id}")
 
-        # Detect ingredients
+        # Detect ingredients (run in thread to avoid blocking event loop)
         logger.info("Calling Gemini to detect ingredients...")
         try:
-            ingredients = detect_ingredients_from_image(image_path)
+            ingredients = await asyncio.to_thread(detect_ingredients_from_image, image_path)
             scan.ingredients = ingredients
             scan.status = "completed"
             logger.info(f"SUCCESS: Found {len(ingredients)} ingredients")
@@ -91,8 +92,8 @@ async def create_scan(
 async def list_scans(
     request: Request,
     db: Session = Depends(get_db),
-    limit: int = 20,
-    offset: int = 0,
+    limit: int = Query(default=20, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
     current_user: User = Depends(get_current_user)
 ):
     """
@@ -167,3 +168,44 @@ async def update_scan(
     db.refresh(scan)
 
     return scan
+
+
+@router.delete("/{scan_id}", status_code=status.HTTP_204_NO_CONTENT)
+@limiter.limit("20/minute")
+async def delete_scan(
+    request: Request,
+    scan_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Delete a scan and its associated image file.
+    """
+    scan = db.query(Scan).filter(Scan.id == scan_id).first()
+
+    if not scan:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Scan not found"
+        )
+
+    if scan.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to delete this scan"
+        )
+
+    # Delete associated image file from disk
+    if scan.image_path:
+        image_file = Path(settings.UPLOAD_DIR) / scan.image_path
+        if image_file.exists():
+            try:
+                image_file.unlink()
+                logger.info(f"Deleted image file: {image_file}")
+            except OSError as e:
+                logger.warning(f"Could not delete image file {image_file}: {e}")
+
+    db.delete(scan)
+    db.commit()
+
+    return None

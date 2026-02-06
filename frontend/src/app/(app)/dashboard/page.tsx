@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { scansApi, recipesApi } from '@/lib/api';
+import { DASHBOARD_PREVIEW_COUNT } from '@/lib/constants';
+import { isHttpError } from '@/lib/errors';
+import type { Scan, Recipe } from '@/types/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -15,23 +18,22 @@ export default function DashboardPage() {
   const router = useRouter();
   const { addToast } = useToast();
   const { greeting, Icon, iconColor, iconBgColor, suggestion } = useSeasonalSurprise();
-  const [recentScans, setRecentScans] = useState<any[]>([]);
-  const [recentRecipes, setRecentRecipes] = useState<any[]>([]);
+  const [recentScans, setRecentScans] = useState<Scan[]>([]);
+  const [recentRecipes, setRecentRecipes] = useState<Recipe[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
       try {
         const [scans, recipes] = await Promise.all([
-          scansApi.list(3, 0),
-          recipesApi.list(false, 3, 0),
+          scansApi.list(DASHBOARD_PREVIEW_COUNT, 0),
+          recipesApi.list(false, DASHBOARD_PREVIEW_COUNT, 0),
         ]);
         setRecentScans(scans);
         setRecentRecipes(recipes);
       } catch (error: unknown) {
         // Ignore 401/403 errors as they are handled by the interceptor
-        const axiosError = error as { response?: { status?: number } };
-        if (axiosError.response?.status === 401 || axiosError.response?.status === 403) {
+        if (isHttpError(error, 401) || isHttpError(error, 403)) {
           return;
         }
         addToast({

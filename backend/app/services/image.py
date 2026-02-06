@@ -90,9 +90,10 @@ async def save_upload_file(file: UploadFile) -> str:
         f.write(content)
     logger.info("File saved successfully!")
 
-    # Optimize/compress image
+    # Optimize/compress image in a thread to avoid blocking the event loop
     try:
-        optimize_image(file_path)
+        import asyncio
+        await asyncio.to_thread(optimize_image, file_path)
         logger.debug("Image optimized successfully!")
     except Exception as e:
         logger.warning(f"Could not optimize image: {e}")

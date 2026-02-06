@@ -1,11 +1,12 @@
 import logging
 import sys
+from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 
 def setup_logger(name: str, level: int = logging.INFO) -> logging.Logger:
     """
-    Set up a logger with console and file handlers.
+    Set up a logger with console and rotating file handlers.
 
     Args:
         name: Logger name (usually __name__)
@@ -25,10 +26,15 @@ def setup_logger(name: str, level: int = logging.INFO) -> logging.Logger:
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setLevel(level)
 
-    # File handler
+    # Rotating file handler — 5MB per file, keep 5 backups
     log_dir = Path("logs")
     log_dir.mkdir(exist_ok=True)
-    file_handler = logging.FileHandler(log_dir / "app.log")
+    file_handler = RotatingFileHandler(
+        log_dir / "app.log",
+        maxBytes=5 * 1024 * 1024,
+        backupCount=5,
+        encoding="utf-8",
+    )
     file_handler.setLevel(level)
 
     # Formatter

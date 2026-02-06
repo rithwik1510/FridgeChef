@@ -1,11 +1,12 @@
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import auth, health, pantry, recipes, scans, shopping_lists, user
+from app.api.v1.endpoints import auth, health, pantry, password_reset, recipes, scans, shopping_lists, user
 
 api_router = APIRouter()
 
 # Include all endpoint routers
 api_router.include_router(auth.router, prefix="/auth", tags=["authentication"])
+api_router.include_router(password_reset.router, prefix="/password-reset", tags=["password_reset"])
 api_router.include_router(scans.router, prefix="/scans", tags=["scans"])
 api_router.include_router(recipes.router, prefix="/recipes", tags=["recipes"])
 api_router.include_router(shopping_lists.router, prefix="/lists", tags=["shopping_lists"])

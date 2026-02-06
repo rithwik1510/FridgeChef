@@ -1,9 +1,9 @@
+import asyncio
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
-from slowapi import Limiter
-from slowapi.util import get_remote_address
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from sqlalchemy.orm import Session
 
+from app.core.limiter import limiter
 from app.database import get_db
 from app.models.pantry import PantryItem
 from app.models.recipe import Recipe
@@ -12,9 +12,11 @@ from app.models.user import User
 from app.schemas.recipe import RecipeGenerate, RecipeResponse
 from app.services.auth import get_current_user
 from app.services.gemini import generate_recipes
+from app.utils.logger import setup_logger
+
+logger = setup_logger(__name__)
 
 router = APIRouter()
-limiter = Limiter(key_func=get_remote_address)
 
 
 @router.post("/generate", response_model=list[RecipeResponse], status_code=status.HTTP_201_CREATED)
@@ -64,12 +66,13 @@ async def generate_recipes_from_scan(
     ]
 
     try:
-        # Generate recipes using Gemini with both scan and pantry ingredients
-        recipes_data = generate_recipes(
+        # Generate recipes using Gemini (run in thread to avoid blocking event loop)
+        recipes_data = await asyncio.to_thread(
+            generate_recipes,
             available_ingredients=scan.ingredients,
             preferences=current_user.preferences,
             count=recipe_request.count,
-            pantry_ingredients=pantry_ingredients
+            pantry_ingredients=pantry_ingredients,
         )
 
         # Save recipes to database
@@ -101,9 +104,7 @@ async def generate_recipes_from_scan(
     except HTTPException:
         raise
     except Exception as e:
-        print(f"Error generating recipes: {e}")
-        import traceback
-        traceback.print_exc()
+        logger.error(f"Error generating recipes: {e}", exc_info=True)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error generating recipes: {str(e)}"
@@ -116,19 +117,43 @@ async def list_recipes(
     request: Request,
     db: Session = Depends(get_db),
     favorites_only: bool = False,
-    limit: int = 20,
-    offset: int = 0,
+    search: str | None = Query(default=None, max_length=200),
+    difficulty: str | None = Query(default=None, pattern="^(easy|medium|hard)$"),
+    max_cook_time: int | None = Query(default=None, ge=1, le=1440),
+    sort_by: str = Query(default="created_at", pattern="^(created_at|cook_time|times_made|title)$"),
+    sort_order: str = Query(default="desc", pattern="^(asc|desc)$"),
+    limit: int = Query(default=20, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
     current_user: User = Depends(get_current_user)
 ):
     """
-    List user's saved recipes.
+    List user's saved recipes with optional search, filtering, and sorting.
     """
     query = db.query(Recipe).filter(Recipe.user_id == current_user.id)
 
     if favorites_only:
         query = query.filter(Recipe.is_favorite.is_(True))
 
-    recipes = query.order_by(Recipe.created_at.desc()).offset(offset).limit(limit).all()
+    if search:
+        search_term = f"%{search}%"
+        query = query.filter(
+            (Recipe.title.ilike(search_term)) | (Recipe.description.ilike(search_term))
+        )
+
+    if difficulty:
+        query = query.filter(Recipe.difficulty == difficulty)
+
+    if max_cook_time is not None:
+        query = query.filter(Recipe.cook_time <= max_cook_time)
+
+    # Sorting
+    sort_column = getattr(Recipe, sort_by, Recipe.created_at)
+    if sort_order == "asc":
+        query = query.order_by(sort_column.asc())
+    else:
+        query = query.order_by(sort_column.desc())
+
+    recipes = query.offset(offset).limit(limit).all()
 
     return recipes
 

@@ -19,7 +19,13 @@ class UserLogin(BaseModel):
 class Token(BaseModel):
     """Schema for JWT token response."""
     access_token: str
+    refresh_token: str | None = None
     token_type: str = "bearer"
+
+
+class RefreshTokenRequest(BaseModel):
+    """Schema for refresh token request."""
+    refresh_token: str
 
 
 class UserResponse(BaseModel):

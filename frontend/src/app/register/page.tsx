@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuthStore } from '@/store/auth';
+import { isHttpError } from '@/lib/errors';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { ChefHat } from '@phosphor-icons/react';
@@ -37,8 +38,8 @@ export default function RegisterPage() {
     try {
       await registerUser(data.email, data.password, data.name);
       router.push('/dashboard');
-    } catch (err: any) {
-      if (err.response?.status === 400) {
+    } catch (err: unknown) {
+      if (isHttpError(err, 400)) {
         setError('Email already registered');
       } else {
         setError('Something went wrong. Please try again.');

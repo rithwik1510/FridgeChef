@@ -12,7 +12,7 @@ class Recipe(Base):
     __tablename__ = "recipes"
 
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    user_id = Column(String(36), ForeignKey("users.id", ondelete="SET NULL"), index=True)
+    user_id = Column(String(36), ForeignKey("users.id", ondelete="CASCADE"), index=True)
     scan_id = Column(String(36), ForeignKey("scans.id", ondelete="SET NULL"), index=True)
     title = Column(String(300), nullable=False)
     description = Column(Text)

@@ -7,6 +7,7 @@ import { Sidebar } from '@/components/layout/Sidebar';
 import { ToastProvider } from '@/components/ui/Toast';
 import { EasterEggsProvider } from '@/components/easter-eggs';
 import { useAuthStore } from '@/store/auth';
+import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 
 export default function AppLayout({
   children,
@@ -32,6 +33,8 @@ export default function AppLayout({
           <Header />
           <Navigation />
           <Sidebar />
+
+          <InstallPrompt />
 
           {/* Main Content Area */}
           <main className="

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { scansApi, recipesApi, pantryApi } from '@/lib/api';
+import { getErrorMessage } from '@/lib/errors';
 import { ImageUploader } from '@/components/scan/ImageUploader';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -13,6 +14,8 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { useToast } from '@/components/ui/Toast';
 import { Plus, Sparkle, ArrowRight, Package } from '@phosphor-icons/react';
 import { useAuthStore } from '@/store/auth';
+import { SCAN_STAGE_DELAY_MS, RECIPE_REDIRECT_DELAY_MS } from '@/lib/constants';
+import type { Ingredient } from '@/types/api';
 
 export default function ScanPage() {
   const router = useRouter();
@@ -21,7 +24,7 @@ export default function ScanPage() {
 
   // ALL hooks must be declared before any conditional returns
   const [scanId, setScanId] = useState<string | null>(null);
-  const [ingredients, setIngredients] = useState<any[]>([]);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [isDetecting, setIsDetecting] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -49,7 +52,7 @@ export default function ScanPage() {
 
     try {
       // Simulate stages for better UX
-      setTimeout(() => setGenerationStage('analyzing'), 1500);
+      setTimeout(() => setGenerationStage('analyzing'), SCAN_STAGE_DELAY_MS);
 
       const scan = await scansApi.create(file);
       setScanId(scan.id);
@@ -62,20 +65,8 @@ export default function ScanPage() {
           message: `Found ${scan.ingredients.length} ingredients`,
         });
       }
-    } catch (error: any) {
-      let errorMessage = 'Unknown error';
-
-      if (error.code === 'ERR_NETWORK') {
-        errorMessage = 'Cannot connect to server. Make sure the backend is running.';
-      } else if (error.code === 'ECONNABORTED') {
-        errorMessage = 'Request timed out. The image might be too large.';
-      } else if (error.response) {
-        errorMessage = error.response.data?.detail || error.response.data?.message || `Server error: ${error.response.status}`;
-      } else if (error.request) {
-        errorMessage = 'No response from server. Check if backend is running.';
-      } else {
-        errorMessage = error.message || 'Unknown error';
-      }
+    } catch (error: unknown) {
+      const errorMessage = getErrorMessage(error);
 
       addToast({
         type: 'error',
@@ -169,7 +160,7 @@ export default function ScanPage() {
         message: 'Check out your personalized recipes',
       });
 
-      setTimeout(() => router.push('/recipes'), 500);
+      setTimeout(() => router.push('/recipes'), RECIPE_REDIRECT_DELAY_MS);
     } catch (error) {
       addToast({
         type: 'error',

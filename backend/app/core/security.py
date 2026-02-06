@@ -1,3 +1,4 @@
+import threading
 from datetime import datetime, timedelta
 
 from jose import JWTError, jwt
@@ -7,6 +8,11 @@ from app.config import settings
 
 # Password hashing context
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+# In-memory token blacklist with expiry timestamps
+# For production at scale, replace with Redis
+_blacklisted_tokens: dict[str, float] = {}
+_blacklist_lock = threading.Lock()
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -34,6 +40,25 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
     return encoded_jwt
 
 
+def create_refresh_token(data: dict) -> str:
+    """Create a long-lived JWT refresh token."""
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS)
+    to_encode.update({"exp": expire, "type": "refresh"})
+    return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+
+
+def decode_refresh_token(token: str) -> dict | None:
+    """Decode a refresh token and verify it's the right type."""
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        if payload.get("type") != "refresh":
+            return None
+        return payload
+    except JWTError:
+        return None
+
+
 def decode_access_token(token: str) -> dict | None:
     """Decode and verify a JWT access token."""
     try:
@@ -41,3 +66,27 @@ def decode_access_token(token: str) -> dict | None:
         return payload
     except JWTError:
         return None
+
+
+def blacklist_token(token: str) -> None:
+    """Add a token to the blacklist. It will be cleaned up after it naturally expires."""
+    payload = decode_access_token(token)
+    if payload and "exp" in payload:
+        exp_timestamp = float(payload["exp"])
+    else:
+        # If we can't decode expiry, blacklist for the max token lifetime
+        exp_timestamp = (datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)).timestamp()
+
+    with _blacklist_lock:
+        _blacklisted_tokens[token] = exp_timestamp
+        # Cleanup expired entries while we're at it
+        now = datetime.utcnow().timestamp()
+        expired_keys = [k for k, v in _blacklisted_tokens.items() if v < now]
+        for k in expired_keys:
+            del _blacklisted_tokens[k]
+
+
+def is_token_blacklisted(token: str) -> bool:
+    """Check if a token has been blacklisted (logged out)."""
+    with _blacklist_lock:
+        return token in _blacklisted_tokens

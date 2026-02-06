@@ -45,7 +45,7 @@ def upgrade() -> None:
     op.create_table(
         'recipes',
         sa.Column('id', sa.String(36), primary_key=True),
-        sa.Column('user_id', sa.String(36), sa.ForeignKey('users.id', ondelete='SET NULL'), index=True),
+        sa.Column('user_id', sa.String(36), sa.ForeignKey('users.id', ondelete='CASCADE'), index=True),
         sa.Column('scan_id', sa.String(36), sa.ForeignKey('scans.id', ondelete='SET NULL'), index=True),
         sa.Column('title', sa.String(300), nullable=False),
         sa.Column('description', sa.Text()),

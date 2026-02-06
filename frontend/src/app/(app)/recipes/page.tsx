@@ -1,33 +1,64 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { recipesApi } from '@/lib/api';
 import { RecipeCard } from '@/components/recipe/RecipeCard';
+import { RecipeFilters, type RecipeFilterValues } from '@/components/recipe/RecipeFilters';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Heart } from '@phosphor-icons/react';
 import { useToast } from '@/components/ui/Toast';
+import { RECIPES_PAGE_SIZE } from '@/lib/constants';
 import type { Recipe } from '@/types/api';
+
+const DEFAULT_FILTERS: RecipeFilterValues = {
+  search: '',
+  difficulty: '',
+  max_cook_time: undefined,
+  sort_by: 'created_at',
+  sort_order: 'desc',
+};
 
 export default function RecipesPage() {
   const router = useRouter();
   const { addToast } = useToast();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [filters, setFilters] = useState<RecipeFilterValues>(DEFAULT_FILTERS);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    loadRecipes();
-  }, [showFavoritesOnly]);
+  const loadRecipes = useCallback(async (reset = true, currentFilters?: RecipeFilterValues) => {
+    const activeFilters = currentFilters ?? filters;
+    if (reset) {
+      setIsLoading(true);
+    } else {
+      setIsLoadingMore(true);
+    }
 
-  const loadRecipes = async () => {
-    setIsLoading(true);
     try {
-      const data = await recipesApi.list(showFavoritesOnly);
-      setRecipes(data);
-    } catch (error) {
+      const offset = reset ? 0 : recipes.length;
+      const apiFilters: Record<string, string | number> = {};
+      if (activeFilters.search) apiFilters.search = activeFilters.search;
+      if (activeFilters.difficulty) apiFilters.difficulty = activeFilters.difficulty;
+      if (activeFilters.max_cook_time !== undefined) apiFilters.max_cook_time = activeFilters.max_cook_time;
+      if (activeFilters.sort_by !== 'created_at') apiFilters.sort_by = activeFilters.sort_by;
+      if (activeFilters.sort_order !== 'desc') apiFilters.sort_order = activeFilters.sort_order;
+
+      const data = await recipesApi.list(showFavoritesOnly, RECIPES_PAGE_SIZE, offset, apiFilters);
+
+      if (reset) {
+        setRecipes(data);
+      } else {
+        setRecipes((prev) => [...prev, ...data]);
+      }
+
+      setHasMore(data.length === RECIPES_PAGE_SIZE);
+    } catch {
       addToast({
         type: 'error',
         title: 'Error loading recipes',
@@ -35,6 +66,25 @@ export default function RecipesPage() {
       });
     } finally {
       setIsLoading(false);
+      setIsLoadingMore(false);
+    }
+  }, [showFavoritesOnly, recipes.length, addToast, filters]);
+
+  // Reload on favorites toggle or non-search filter changes
+  useEffect(() => {
+    loadRecipes(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showFavoritesOnly, filters.difficulty, filters.max_cook_time, filters.sort_by, filters.sort_order]);
+
+  const handleFiltersChange = (newFilters: RecipeFilterValues) => {
+    setFilters(newFilters);
+
+    // Debounce search input
+    if (newFilters.search !== filters.search) {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(() => {
+        loadRecipes(true, newFilters);
+      }, 400);
     }
   };
 
@@ -58,6 +108,9 @@ export default function RecipesPage() {
         </Button>
       </div>
 
+      {/* Search & Filters */}
+      <RecipeFilters filters={filters} onChange={handleFiltersChange} />
+
       {/* Recipe Grid */}
       {isLoading ? (
         <div className="flex items-center justify-center py-12">
@@ -68,15 +121,30 @@ export default function RecipesPage() {
           </div>
         </div>
       ) : recipes.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {recipes.map((recipe) => (
-            <RecipeCard
-              key={recipe.id}
-              recipe={recipe}
-              onClick={() => router.push(`/recipes/${recipe.id}`)}
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {recipes.map((recipe) => (
+              <RecipeCard
+                key={recipe.id}
+                recipe={recipe}
+                onClick={() => router.push(`/recipes/${recipe.id}`)}
+              />
+            ))}
+          </div>
+
+          {/* Load More */}
+          {hasMore && (
+            <div className="flex justify-center pt-2">
+              <Button
+                variant="outline"
+                onClick={() => loadRecipes(false)}
+                isLoading={isLoadingMore}
+              >
+                Load More
+              </Button>
+            </div>
+          )}
+        </>
       ) : (
         <Card variant="elevated">
           <EmptyState

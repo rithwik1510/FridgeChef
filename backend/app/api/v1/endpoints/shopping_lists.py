@@ -1,9 +1,8 @@
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
-from slowapi import Limiter
-from slowapi.util import get_remote_address
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from sqlalchemy.orm import Session
 
+from app.core.limiter import limiter
 from app.database import get_db
 from app.models.recipe import Recipe
 from app.models.shopping_list import ShoppingList
@@ -13,7 +12,6 @@ from app.services.auth import get_current_user
 from app.services.categorization import categorize_ingredient
 
 router = APIRouter()
-limiter = Limiter(key_func=get_remote_address)
 
 
 @router.post("", response_model=ShoppingListResponse, status_code=status.HTTP_201_CREATED)
@@ -80,8 +78,8 @@ async def create_shopping_list(
 async def list_shopping_lists(
     request: Request,
     db: Session = Depends(get_db),
-    limit: int = 20,
-    offset: int = 0,
+    limit: int = Query(default=20, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
     current_user: User = Depends(get_current_user)
 ):
     """

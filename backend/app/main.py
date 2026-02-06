@@ -3,9 +3,8 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
-from slowapi.util import get_remote_address
 
 from app.api.v1.router import api_router
 from app.config import settings
@@ -16,8 +15,10 @@ from app.utils.logger import setup_logger
 
 logger = setup_logger(__name__)
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
+# Create database tables automatically in development only.
+# In production, use Alembic migrations: alembic upgrade head
+if not settings.is_production:
+    Base.metadata.create_all(bind=engine)
 
 # Create uploads directory if it doesn't exist
 os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
@@ -27,11 +28,11 @@ logger.info(f"Uploads directory: {os.path.abspath(settings.UPLOAD_DIR)}")
 app = FastAPI(
     title="FridgeChef API",
     description="Backend API for FridgeChef - Your personal recipe assistant",
-    version="1.2.0"
+    version="1.3.0"
 )
 
-# Rate limiter
-limiter = Limiter(key_func=get_remote_address, default_limits=["100/minute"])
+# Rate limiter (shared singleton)
+from app.core.limiter import limiter
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
@@ -42,7 +43,7 @@ from app.middleware.exception_handlers import (
     generic_exception_handler,
     validation_exception_handler,
 )
-from app.middleware.logging import RequestLoggingMiddleware
+from app.middleware.logging import RequestLoggingMiddleware, SecurityHeadersMiddleware
 
 app.add_exception_handler(Exception, generic_exception_handler)
 app.add_exception_handler(SQLAlchemyError, database_exception_handler)
@@ -63,6 +64,7 @@ app.add_middleware(
 )
 
 app.add_middleware(RequestLoggingMiddleware)
+app.add_middleware(SecurityHeadersMiddleware)
 
 # Mount uploads directory for serving images
 app.mount("/uploads", StaticFiles(directory=settings.UPLOAD_DIR), name="uploads")
@@ -77,7 +79,7 @@ async def root():
     return {
         "message": "Welcome to FridgeChef API",
         "docs": "/docs",
-        "version": "1.0.0"
+        "version": "1.3.0"
     }
 
 

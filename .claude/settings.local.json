@@ -27,7 +27,18 @@
       "WebFetch(domain:fridge-chef-859g.vercel.app)",
       "Bash(git revert:*)",
       "Bash(timeout:*)",
-      "WebFetch(domain:phosphoricons.com)"
+      "WebFetch(domain:phosphoricons.com)",
+      "Bash(explorer:*)",
+      "Bash(start \"\" \"C:\\\\Users\\\\posan\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-posan-OneDrive-Desktop-Fridge-recipe\\\\a6b6da88-8613-4a4a-aaf5-b69c4b176b95\\\\scratchpad\\\\ULTRA_DETAILED_SPEC.md\")",
+      "Bash(grep:*)",
+      "Bash(npm run test:run:*)",
+      "Bash(npm install:*)",
+      "Bash(pip install:*)",
+      "Bash(ruff check:*)",
+      "Bash(pytest:*)",
+      "Bash(npm ls:*)",
+      "Bash(git rm:*)",
+      "Bash(git reset:*)"
     ]
   }
 }

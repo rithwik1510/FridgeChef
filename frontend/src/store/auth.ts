@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { authApi } from '@/lib/api';
 
 // Safe localStorage wrapper for private browsing mode compatibility
-const safeLocalStorage = {
+export const safeLocalStorage = {
   getItem: (key: string): string | null => {
     try {
       return localStorage.getItem(key);
@@ -68,6 +68,9 @@ export const useAuthStore = create<AuthState>()(
   login: async (email: string, password: string) => {
     const data = await authApi.login(email, password);
     safeLocalStorage.setItem('auth_token', data.access_token);
+    if (data.refresh_token) {
+      safeLocalStorage.setItem('refresh_token', data.refresh_token);
+    }
     const user = await authApi.getMe();
     set({ user, token: data.access_token, isAuthenticated: true });
   },
@@ -75,12 +78,16 @@ export const useAuthStore = create<AuthState>()(
   register: async (email: string, password: string, name?: string) => {
     const data = await authApi.register(email, password, name);
     safeLocalStorage.setItem('auth_token', data.access_token);
+    if (data.refresh_token) {
+      safeLocalStorage.setItem('refresh_token', data.refresh_token);
+    }
     const user = await authApi.getMe();
     set({ user, token: data.access_token, isAuthenticated: true });
   },
 
   logout: () => {
     safeLocalStorage.removeItem('auth_token');
+    safeLocalStorage.removeItem('refresh_token');
     set({ user: null, token: null, isAuthenticated: false });
   },
 
