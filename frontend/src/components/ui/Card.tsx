@@ -28,9 +28,9 @@ export const Card: React.FC<CardProps> = ({
   shine = false,
 }) => {
   const variantStyles = {
-    default: 'bg-cream border border-cream-darker shadow-soft',
+    default: 'bg-cream-lightest border border-cream-darker shadow-soft',
     glass: 'glass-card',
-    elevated: 'bg-cream shadow-medium',
+    elevated: 'bg-cream-lightest shadow-medium',
     outline: 'bg-transparent border-2 border-cream-darker',
   };
 

@@ -9,12 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Lighter warm cream palette - modern but cozy
+        // Visible warm cream palette - intentional warmth with white cards
         cream: {
-          lightest: '#FFFFFF',     // Pure white (brightest)
-          DEFAULT: '#FDFBF8',      // Very light warm white (subtle warmth)
-          dark: '#F8F6F3',         // Light warm gray (barely visible warmth)
-          darker: '#F0EDE8',       // Subtle warm gray for borders
+          lightest: '#FFFFFF',     // Pure white (for cards that pop)
+          DEFAULT: '#FAF7F2',      // Clearly warm cream (main background)
+          dark: '#F5F1EB',         // Warmer beige (sidebar, depth layers)
+          darker: '#E5DBC8',       // Warm tan (borders, subtle accents)
         },
         charcoal: {
           DEFAULT: '#2D2A26',
