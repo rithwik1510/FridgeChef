@@ -14,9 +14,9 @@
 :root {
   --font-fraunces: 'Fraunces', serif;
   --font-source-serif: 'Source Serif 4', serif;
-  --cream-lightest: #FFFFFF;
-  --cream: #FAF7F2;
-  --cream-dark: #F5F1EB;
+  --cream-lightest: #FFFCF7;
+  --cream: #FBF8F3;
+  --cream-dark: #F0E9DC;
   --cream-darker: #E5DBC8;
   --charcoal: #2D2A26;
   --terracotta: #C4704B;

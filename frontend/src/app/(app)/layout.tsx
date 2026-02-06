@@ -29,7 +29,7 @@ export default function AppLayout({
   return (
     <ToastProvider>
       <EasterEggsProvider>
-        <div className="min-h-screen bg-cream">
+        <div className="min-h-screen bg-cream-lightest">
           <Header />
           <Navigation />
           <Sidebar />
