@@ -9,12 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Modern clean palette (TEST - can revert if needed)
+        // Lighter warm cream palette - modern but cozy
         cream: {
-          lightest: '#FFFFFF',     // Pure white
-          DEFAULT: '#F8F9FA',      // Very light gray (like Notion, Linear)
-          dark: '#F1F3F5',         // Light gray
-          darker: '#E9ECEF',       // Subtle gray for borders
+          lightest: '#FFFFFF',     // Pure white (brightest)
+          DEFAULT: '#FDFBF8',      // Very light warm white (subtle warmth)
+          dark: '#F8F6F3',         // Light warm gray (barely visible warmth)
+          darker: '#F0EDE8',       // Subtle warm gray for borders
         },
         charcoal: {
           DEFAULT: '#2D2A26',

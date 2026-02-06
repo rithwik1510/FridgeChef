@@ -74,7 +74,7 @@ export const Navigation = () => {
                   transition-all duration-200 px-3 py-2
                   ${active
                     ? 'text-terracotta'
-                    : 'text-charcoal/50 hover:text-charcoal active:text-terracotta'
+                    : 'text-charcoal/70 hover:text-charcoal active:text-terracotta'
                   }
                 `}
               >
@@ -118,7 +118,7 @@ export const Navigation = () => {
                         : 'text-terracotta border-transparent hover:bg-terracotta/10'
                       : active
                         ? 'text-terracotta border-terracotta font-medium'
-                        : 'text-charcoal/60 border-transparent hover:text-terracotta hover:border-terracotta/30'
+                        : 'text-charcoal border-transparent hover:text-terracotta hover:border-terracotta/30'
                     }
                   `}
                 >

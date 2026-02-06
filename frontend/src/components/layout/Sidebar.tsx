@@ -46,7 +46,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
                 border-l-4
                 ${isActive
                   ? 'bg-terracotta/10 text-terracotta border-terracotta'
-                  : 'text-charcoal/70 border-transparent hover:bg-cream hover:text-charcoal'
+                  : 'text-charcoal border-transparent hover:bg-cream-darker hover:text-terracotta'
                 }
               `}
               title={collapsed ? item.label : undefined}
