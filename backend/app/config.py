@@ -25,7 +25,8 @@ class Settings(BaseSettings):
     # Security
     SECRET_KEY: str
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 10080  # 7 days
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30  # 30 minutes
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7  # 7 days
 
     # Google AI
     GOOGLE_API_KEY: str
@@ -37,8 +38,8 @@ class Settings(BaseSettings):
 
     # CORS
     ALLOWED_ORIGINS: str = "http://localhost:3000,http://127.0.0.1:3000"
-    # Regex to match any Vercel deployment URL (e.g. https://fridge-chef-*.vercel.app)
-    CORS_ORIGIN_REGEX: str = r"https://.*\.vercel\.app"
+    # Regex to match FridgeChef Vercel deployment URLs (production + preview)
+    CORS_ORIGIN_REGEX: str = r"https://fridgechef(-[a-z0-9]+)?\.vercel\.app"
 
     model_config = SettingsConfigDict(
         env_file=str(ENV_FILE),
@@ -65,3 +66,5 @@ if not settings.GOOGLE_API_KEY:
 logger.info(f"ENV file path: {ENV_FILE}")
 logger.info(f"ENV file exists: {ENV_FILE.exists()}")
 logger.info(f"GOOGLE_API_KEY loaded: {'Yes' if settings.GOOGLE_API_KEY else 'No'}")
+db_type = "PostgreSQL" if settings.is_production else "SQLite"
+logger.info(f"Database: {db_type}")
