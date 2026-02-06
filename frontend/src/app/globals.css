@@ -14,10 +14,10 @@
 :root {
   --font-fraunces: 'Fraunces', serif;
   --font-source-serif: 'Source Serif 4', serif;
-  --cream-lightest: #FFFCF7;
-  --cream: #FBF8F3;
-  --cream-dark: #F0E9DC;
-  --cream-darker: #E5DBC8;
+  --cream-lightest: #FFFFFF;
+  --cream: #F8F9FA;
+  --cream-dark: #F1F3F5;
+  --cream-darker: #E9ECEF;
   --charcoal: #2D2A26;
   --terracotta: #C4704B;
   --terracotta-light: #D98B6A;

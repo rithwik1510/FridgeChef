@@ -9,12 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Enhanced Kitchen Table color palette
+        // Modern clean palette (TEST - can revert if needed)
         cream: {
-          lightest: '#FFFCF7',
-          DEFAULT: '#FBF8F3',
-          dark: '#F0E9DC',
-          darker: '#E5DBC8',
+          lightest: '#FFFFFF',     // Pure white
+          DEFAULT: '#F8F9FA',      // Very light gray (like Notion, Linear)
+          dark: '#F1F3F5',         // Light gray
+          darker: '#E9ECEF',       // Subtle gray for borders
         },
         charcoal: {
           DEFAULT: '#2D2A26',
