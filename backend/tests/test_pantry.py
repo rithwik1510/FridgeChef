@@ -19,6 +19,21 @@ class TestPantryEndpoints:
         assert data["items"] == []
         assert isinstance(data["categories"], list)
 
+    def test_get_pantry_without_grouped_payload(self, client, auth_headers):
+        """Test requesting pantry response without grouped data for smaller payloads."""
+        client.post(
+            "/api/v1/pantry",
+            headers=auth_headers,
+            json={"name": "Tomato", "quantity": "3"}
+        )
+
+        response = client.get("/api/v1/pantry?include_grouped=false", headers=auth_headers)
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert len(data["items"]) == 1
+        assert data["grouped"] == {}
+        assert isinstance(data["categories"], list)
+
     def test_add_pantry_item(self, client, auth_headers):
         """Test adding a single item to pantry."""
         response = client.post(

@@ -12,9 +12,14 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
+      include: ['src/**/*.{ts,tsx}'],
       exclude: [
+        '.next/**',
+        'public/**',
         'node_modules/',
         'src/test/',
+        'src/**/*.test.{ts,tsx,js,jsx}',
+        'src/**/*.spec.{ts,tsx,js,jsx}',
         '**/*.d.ts',
         '**/*.config.*',
         '**/types/**',

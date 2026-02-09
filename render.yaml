@@ -19,16 +19,7 @@ services:
       - key: ALLOWED_ORIGINS
         value: https://fridgechef.vercel.app,http://localhost:3000
       - key: DATABASE_URL
-        fromDatabase:
-          name: fridgechef-db
-          property: connectionString
+        sync: false
       - key: GOOGLE_API_KEY
         sync: false
     autoDeploy: false
-
-  # Database Service
-  - type: psql
-    name: fridgechef-db
-    env: postgres
-    plan: free
-    ipAllowList: [] # Allow all internal connections

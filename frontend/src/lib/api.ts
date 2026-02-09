@@ -248,8 +248,10 @@ export const userApi = {
 
 // Pantry API
 export const pantryApi = {
-  list: async (): Promise<PantryResponse> => {
-    const { data } = await api.get('/pantry');
+  list: async (includeGrouped = false): Promise<PantryResponse> => {
+    const { data } = await api.get('/pantry', {
+      params: { include_grouped: includeGrouped },
+    });
     return data;
   },
   add: async (item: PantryItemCreate): Promise<PantryItem> => {

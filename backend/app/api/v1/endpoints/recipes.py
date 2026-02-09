@@ -1,7 +1,7 @@
 import asyncio
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, load_only
 
 from app.core.limiter import limiter
 from app.database import get_db
@@ -9,7 +9,7 @@ from app.models.pantry import PantryItem
 from app.models.recipe import Recipe
 from app.models.scan import Scan
 from app.models.user import User
-from app.schemas.recipe import RecipeGenerate, RecipeResponse
+from app.schemas.recipe import RecipeGenerate, RecipeListResponse, RecipeResponse
 from app.services.auth import get_current_user
 from app.services.gemini import generate_recipes
 from app.utils.logger import setup_logger
@@ -52,9 +52,12 @@ async def generate_recipes_from_scan(
         )
 
     # Fetch user's pantry items
-    pantry_items = db.query(PantryItem).filter(
-        PantryItem.user_id == current_user.id
-    ).all()
+    pantry_items = (
+        db.query(PantryItem)
+        .options(load_only(PantryItem.name, PantryItem.quantity))
+        .filter(PantryItem.user_id == current_user.id)
+        .all()
+    )
 
     # Convert pantry items to ingredient format
     pantry_ingredients = [
@@ -111,7 +114,7 @@ async def generate_recipes_from_scan(
         ) from e
 
 
-@router.get("", response_model=list[RecipeResponse])
+@router.get("", response_model=list[RecipeListResponse])
 @limiter.limit("60/minute")
 async def list_recipes(
     request: Request,
@@ -129,7 +132,26 @@ async def list_recipes(
     """
     List user's saved recipes with optional search, filtering, and sorting.
     """
-    query = db.query(Recipe).filter(Recipe.user_id == current_user.id)
+    query = (
+        db.query(Recipe)
+        .options(
+            load_only(
+                Recipe.id,
+                Recipe.user_id,
+                Recipe.scan_id,
+                Recipe.title,
+                Recipe.description,
+                Recipe.cook_time,
+                Recipe.difficulty,
+                Recipe.servings,
+                Recipe.ingredients,
+                Recipe.is_favorite,
+                Recipe.times_made,
+                Recipe.created_at,
+            )
+        )
+        .filter(Recipe.user_id == current_user.id)
+    )
 
     if favorites_only:
         query = query.filter(Recipe.is_favorite.is_(True))

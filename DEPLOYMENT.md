@@ -29,7 +29,7 @@
    SECRET_KEY = d7aa4b6e66e05dc507330b7ee13ca349f75b9504da5b3574930b75ff3470b527
    GOOGLE_API_KEY = your_google_api_key_here
    ALLOWED_ORIGINS = https://fridgechef.vercel.app
-   DATABASE_URL = sqlite:///./fridgechef.db
+   DATABASE_URL = postgresql://postgres:YOUR_URL_ENCODED_PASSWORD@db.YOUR_PROJECT_REF.supabase.co:5432/postgres?sslmode=require
    ```
 
 6. Click **"Create Web Service"**
@@ -145,7 +145,7 @@ https://fridgechef.app,https://fridgechef-xyz.vercel.app
 - Upgrade to paid tier or Railway to fix
 
 ### Images not persisting
-- Render free tier resets files on redeploy
+- Render free tier resets local files on redeploy
 - Upgrade to paid tier for persistent disk
 - Or use Cloudinary/AWS S3 for images
 

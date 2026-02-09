@@ -9,7 +9,7 @@ import {
   useDeletePantryItem,
   useClearPantry
 } from '@/hooks/usePantry';
-import type { PantryItem, PantryItemCreate } from '@/types/api';
+import type { PantryItem } from '@/types/api';
 import { Button, IconButton } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
@@ -69,13 +69,13 @@ export default function PantryPage() {
   const { isAuthenticated, hasHydrated, isLoading: authLoading } = useAuthStore();
 
   // ALL hooks must be declared before any conditional returns
-  const { data: pantryData, isLoading } = usePantry();
+  const { data: pantryData, isLoading } = usePantry(hasHydrated && isAuthenticated);
   const addMutation = useAddPantryItem();
   const updateMutation = useUpdatePantryItem();
   const deleteMutation = useDeletePantryItem();
   const clearMutation = useClearPantry();
 
-  const items = pantryData?.items || [];
+  const items = useMemo(() => pantryData?.items ?? [], [pantryData?.items]);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -95,11 +95,6 @@ export default function PantryPage() {
       router.push('/login?redirect=/pantry');
     }
   }, [hasHydrated, authLoading, isAuthenticated, router]);
-
-  // Show nothing while checking auth or if not authenticated
-  if (!hasHydrated || authLoading || !isAuthenticated) {
-    return null;
-  }
 
   const handleAddItem = async () => {
     if (!formName.trim()) {
@@ -138,7 +133,7 @@ export default function PantryPage() {
       resetForm();
       setEditingItem(null);
       addToast({ type: 'success', title: 'Item updated' });
-    } catch (error) {
+    } catch {
       addToast({ type: 'error', title: 'Failed to update item' });
     }
   };
@@ -147,7 +142,7 @@ export default function PantryPage() {
     try {
       await deleteMutation.mutateAsync(itemId);
       addToast({ type: 'success', title: 'Item removed' });
-    } catch (error) {
+    } catch {
       addToast({ type: 'error', title: 'Failed to remove item' });
     }
   };
@@ -161,7 +156,7 @@ export default function PantryPage() {
       await clearMutation.mutateAsync();
       setShowClearConfirm(false);
       addToast({ type: 'success', title: 'Pantry cleared' });
-    } catch (error) {
+    } catch {
       addToast({ type: 'error', title: 'Failed to clear pantry' });
     }
   };
@@ -205,6 +200,11 @@ export default function PantryPage() {
 
     return { filteredItems: filtered, groupedItems: grouped };
   }, [items, searchQuery, selectedCategory]);
+
+  // Show nothing while checking auth or if not authenticated
+  if (!hasHydrated || authLoading || !isAuthenticated) {
+    return null;
+  }
 
   return (
     <div className="space-y-6">

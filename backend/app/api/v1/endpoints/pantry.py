@@ -1,5 +1,5 @@
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from sqlalchemy.orm import Session
 
 from app.core.limiter import limiter
@@ -28,6 +28,7 @@ router = APIRouter()
 async def get_pantry(
     request: Request,
     db: Session = Depends(get_db),
+    include_grouped: bool = Query(default=True),
     current_user: User = Depends(get_current_user)
 ):
     """Get all pantry items for the current user, grouped by category."""
@@ -35,12 +36,13 @@ async def get_pantry(
         PantryItem.user_id == current_user.id
     ).order_by(PantryItem.category, PantryItem.name).all()
 
-    # Group items by category
     grouped = {}
-    for item in items:
-        if item.category not in grouped:
-            grouped[item.category] = []
-        grouped[item.category].append(item)
+    if include_grouped:
+        # Build grouped response only when requested to reduce payload size.
+        for item in items:
+            if item.category not in grouped:
+                grouped[item.category] = []
+            grouped[item.category].append(item)
 
     return PantryResponse(
         items=items,

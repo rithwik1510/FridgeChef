@@ -1,11 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { pantryApi } from '@/lib/api';
-import type { PantryItem, PantryItemCreate, PantryItemUpdate } from '@/types/api';
+import type { PantryItemUpdate } from '@/types/api';
 
-export const usePantry = () => {
+export const usePantry = (enabled = true) => {
   return useQuery({
     queryKey: ['pantry'],
-    queryFn: pantryApi.list,
+    queryFn: () => pantryApi.list(false),
+    enabled,
+    staleTime: 5 * 60 * 1000,
   });
 };
 

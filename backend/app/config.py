@@ -14,8 +14,8 @@ ENV_FILE = CONFIG_DIR / ".env"
 class Settings(BaseSettings):
     """Application settings from environment variables."""
 
-    # Database - SQLite by default for easy setup, override for production
-    DATABASE_URL: str = "sqlite:///./fridgechef.db"
+    # Database - required, use a PostgreSQL URL (Supabase/Render/etc.)
+    DATABASE_URL: str
 
     @property
     def is_production(self) -> bool:
@@ -61,10 +61,13 @@ if not settings.SECRET_KEY:
     raise ValueError("SECRET_KEY environment variable must be set")
 if not settings.GOOGLE_API_KEY:
     raise ValueError("GOOGLE_API_KEY environment variable must be set")
+if not settings.DATABASE_URL:
+    raise ValueError("DATABASE_URL environment variable must be set")
+if not settings.is_production:
+    raise ValueError("DATABASE_URL must be a PostgreSQL connection string")
 
 # Debug logging to verify settings loaded
 logger.info(f"ENV file path: {ENV_FILE}")
 logger.info(f"ENV file exists: {ENV_FILE.exists()}")
 logger.info(f"GOOGLE_API_KEY loaded: {'Yes' if settings.GOOGLE_API_KEY else 'No'}")
-db_type = "PostgreSQL" if settings.is_production else "SQLite"
-logger.info(f"Database: {db_type}")
+logger.info("Database: PostgreSQL")
