@@ -201,6 +201,13 @@ export default function PantryPage() {
     return { filteredItems: filtered, groupedItems: grouped };
   }, [items, searchQuery, selectedCategory]);
 
+  const compactGroups = useMemo(() => {
+    if (selectedCategory === 'All') {
+      return { 'All Items': filteredItems };
+    }
+    return groupedItems;
+  }, [selectedCategory, filteredItems, groupedItems]);
+
   // Show nothing while checking auth or if not authenticated
   if (!hasHydrated || authLoading || !isAuthenticated) {
     return null;
@@ -293,62 +300,74 @@ export default function PantryPage() {
           <p className="text-charcoal/60">No items match your search</p>
         </Card>
       ) : (
-        <div className="space-y-6">
-          {Object.entries(groupedItems).map(([category, categoryItems]) => (
-            <div key={category}>
-              <div className="flex items-center gap-2 mb-3">
-                <div className="p-2 bg-sage/10 rounded-lg text-sage">
-                  {categoryIcons[category] || <Package size={16} weight="duotone" />}
+        <div className="space-y-4">
+          {Object.entries(compactGroups).map(([category, categoryItems]) => (
+            <div key={category} className="space-y-2">
+              {selectedCategory !== 'All' && (
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 bg-sage/10 rounded-lg text-sage">
+                    {categoryIcons[category] || <Package size={14} weight="duotone" />}
+                  </div>
+                  <h2 className="text-xs font-semibold text-charcoal/60 uppercase tracking-wide">
+                    {category}
+                  </h2>
+                  <span className="text-xs text-charcoal/40">
+                    ({categoryItems.length})
+                  </span>
                 </div>
-                <h2 className="text-sm font-semibold text-charcoal/60 uppercase tracking-wide">
-                  {category}
-                </h2>
-                <span className="text-xs text-charcoal/40">
-                  ({categoryItems.length})
-                </span>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {categoryItems.map((item) => (
-                  <Card
+              )}
+
+              <Card variant="default" compact className="p-0 overflow-hidden border border-charcoal/10">
+                {categoryItems.map((item, index) => (
+                  <div
                     key={item.id}
-                    variant="default"
-                    compact
-                    className="group"
+                    className={`
+                      grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2 px-3 py-2.5
+                      ${index !== categoryItems.length - 1 ? 'border-b border-charcoal/10' : ''}
+                    `}
                   >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-charcoal truncate">
-                          {item.name}
-                        </h3>
-                        <p className="text-sm text-charcoal/60">
-                          {item.quantity}
-                        </p>
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-charcoal truncate">
+                        {item.name}
+                      </p>
+                      <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-xs text-charcoal/60">
+                        <span className="font-medium text-charcoal/75">{item.quantity}</span>
+
+                        {selectedCategory === 'All' && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-sage/10 px-2 py-0.5 text-sage">
+                            {categoryIcons[item.category] || <Package size={12} weight="duotone" />}
+                            {item.category}
+                          </span>
+                        )}
+
                         {item.expiry_date && (
-                          <p className="text-xs text-charcoal/40 mt-1">
-                            Expires: {new Date(item.expiry_date).toLocaleDateString()}
-                          </p>
+                          <span className="inline-flex items-center rounded-full bg-butter/15 px-2 py-0.5 text-charcoal/70">
+                            Expires {new Date(item.expiry_date).toLocaleDateString()}
+                          </span>
                         )}
                       </div>
-                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <IconButton
-                          icon={<PencilSimple size={16} weight="bold" />}
-                          label="Edit item"
-                          size="sm"
-                          onClick={() => openEditModal(item)}
-                          className="text-charcoal/40 hover:text-terracotta"
-                        />
-                        <IconButton
-                          icon={<Trash size={16} weight="bold" />}
-                          label="Delete item"
-                          size="sm"
-                          onClick={() => handleDeleteItem(item.id)}
-                          className="text-charcoal/40 hover:text-red-500"
-                        />
-                      </div>
                     </div>
-                  </Card>
+
+                    <button
+                      type="button"
+                      aria-label={`Edit ${item.name}`}
+                      onClick={() => openEditModal(item)}
+                      className="rounded-md p-1.5 text-charcoal/45 transition-all duration-200 hover:bg-terracotta/10 hover:text-terracotta"
+                    >
+                      <PencilSimple size={15} weight="bold" />
+                    </button>
+
+                    <button
+                      type="button"
+                      aria-label={`Delete ${item.name}`}
+                      onClick={() => handleDeleteItem(item.id)}
+                      className="rounded-md p-1.5 text-charcoal/45 transition-all duration-200 hover:bg-red-500/10 hover:text-red-500"
+                    >
+                      <Trash size={15} weight="bold" />
+                    </button>
+                  </div>
                 ))}
-              </div>
+              </Card>
             </div>
           ))}
 
