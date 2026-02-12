@@ -37,6 +37,18 @@
     @apply bg-cream-lightest text-charcoal font-source-serif text-base antialiased;
   }
 
+  /* Prevent route bleed-through on overscroll/rubber-band across desktop + touch devices */
+  html, body {
+    min-height: 100%;
+    overscroll-behavior-y: none;
+    overscroll-behavior-x: none;
+    background-color: var(--cream-lightest);
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-fraunces font-semibold;
   }

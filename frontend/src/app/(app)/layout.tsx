@@ -29,7 +29,7 @@ export default function AppLayout({
   return (
     <ToastProvider>
       <EasterEggsProvider>
-        <div className="min-h-screen bg-cream-lightest">
+        <div className="min-h-screen bg-cream-lightest isolate overflow-x-hidden">
           <Header />
           <Navigation />
           <Sidebar />
@@ -43,6 +43,7 @@ export default function AppLayout({
             py-6 lg:py-8
             pb-24 lg:pb-8
             min-h-[calc(100vh-64px)]
+            overscroll-y-contain
           ">
             <div className="max-w-5xl mx-auto">
               {children}
