@@ -11,9 +11,13 @@ import { Input } from '@/components/ui/Input';
 import { useToast } from '@/components/ui/Toast';
 import { Plus, Leaf, Warning, Globe, ChefHat, Clock, Users, FloppyDisk } from '@phosphor-icons/react';
 import { DIETARY_OPTIONS, CUISINE_OPTIONS, SKILL_LEVELS } from '@/lib/constants';
+import { useAuthStore } from '@/store/auth';
+import { GUEST_DEMO_ENABLED } from '@/lib/demoMode';
 
 export default function SettingsPage() {
   const { addToast } = useToast();
+  const { isAuthenticated, hasHydrated, isLoading: isAuthLoading } = useAuthStore();
+  const isGuestDemo = GUEST_DEMO_ENABLED && hasHydrated && !isAuthLoading && !isAuthenticated;
   const [preferences, setPreferences] = useState<UserPreferences>({
     dietary: [],
     allergies: [],
@@ -27,10 +31,24 @@ export default function SettingsPage() {
   const [newAllergy, setNewAllergy] = useState('');
 
   useEffect(() => {
+    if (!hasHydrated) return;
     loadPreferences();
-  }, []);
+  }, [hasHydrated, isGuestDemo]);
 
   const loadPreferences = async () => {
+    if (isGuestDemo) {
+      setPreferences({
+        dietary: ['Vegetarian'],
+        allergies: ['Peanuts'],
+        cuisines: ['Indian', 'Mediterranean'],
+        skill_level: 'intermediate',
+        max_cook_time: 45,
+        servings: 2,
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const data = await userApi.getPreferences();
       setPreferences(data);
@@ -46,6 +64,15 @@ export default function SettingsPage() {
   };
 
   const handleSave = async () => {
+    if (isGuestDemo) {
+      addToast({
+        type: 'info',
+        title: 'Sign in to save preferences',
+        message: 'Guest demo mode is read-only for recruiters.',
+      });
+      return;
+    }
+
     setIsSaving(true);
     try {
       await userApi.updatePreferences(preferences);
@@ -117,6 +144,14 @@ export default function SettingsPage() {
           Customize your recipe recommendations
         </p>
       </div>
+
+      {isGuestDemo && (
+        <Card variant="glass" className="border border-terracotta/20">
+          <p className="text-sm text-charcoal/80 text-center mb-0">
+            Guest demo mode: settings are preview-only. Sign in to personalize and persist your preferences.
+          </p>
+        </Card>
+      )}
 
       {/* Dietary Restrictions */}
       <Card variant="elevated">

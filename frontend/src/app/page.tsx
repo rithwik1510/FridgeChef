@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/auth';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 import { Camera, CookingPot, Package } from '@phosphor-icons/react';
+import { GUEST_DEMO_ENABLED } from '@/lib/demoMode';
 
 export default function Home() {
   const router = useRouter();
@@ -62,19 +63,32 @@ export default function Home() {
             </Link>
           ) : (
             <>
+              {GUEST_DEMO_ENABLED && (
+                <Link href="/dashboard">
+                  <Button size="lg" variant="primary" glow className="w-full sm:w-auto font-fraunces hover:-translate-y-0.5">
+                    Explore Demo
+                  </Button>
+                </Link>
+              )}
               <Link href="/register">
-                <Button size="lg" variant="primary" className="w-full sm:w-auto font-fraunces">
+                <Button size="lg" variant={GUEST_DEMO_ENABLED ? 'outline' : 'primary'} className="w-full sm:w-auto font-fraunces hover:-translate-y-0.5">
                   Join the Kitchen
                 </Button>
               </Link>
               <Link href="/login">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto font-fraunces">
+                <Button size="lg" variant={GUEST_DEMO_ENABLED ? 'ghost' : 'outline'} className="w-full sm:w-auto font-fraunces hover:-translate-y-0.5">
                   Sign In
                 </Button>
               </Link>
             </>
           )}
         </div>
+
+        {GUEST_DEMO_ENABLED && !isAuthenticated && (
+          <p className="mt-4 text-sm text-charcoal/55 animate-fade-in">
+            Browse instantly in demo mode. Sign in when you want to use live AI features.
+          </p>
+        )}
 
         {/* Features */}
         <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">

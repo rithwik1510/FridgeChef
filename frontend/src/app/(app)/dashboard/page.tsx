@@ -9,21 +9,36 @@ import type { Scan, Recipe } from '@/types/api';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { DemoModeBanner } from '@/components/ui/DemoModeBanner';
 import { Camera, ForkKnife, Package, ArrowRight, Clock, ChefHat } from '@phosphor-icons/react';
 import { useToast } from '@/components/ui/Toast';
 import { useSeasonalSurprise } from '@/hooks/useSeasonalSurprise';
+import { useAuthStore } from '@/store/auth';
+import { demoRecipes, demoScans } from '@/lib/demoData';
+import { GUEST_DEMO_ENABLED } from '@/lib/demoMode';
 import Link from 'next/link';
 
 export default function DashboardPage() {
   const router = useRouter();
   const { addToast } = useToast();
   const { greeting, Icon, iconColor, iconBgColor, suggestion } = useSeasonalSurprise();
+  const { isAuthenticated, hasHydrated, isLoading: isAuthLoading } = useAuthStore();
   const [recentScans, setRecentScans] = useState<Scan[]>([]);
   const [recentRecipes, setRecentRecipes] = useState<Recipe[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const isGuestDemo = GUEST_DEMO_ENABLED && hasHydrated && !isAuthLoading && !isAuthenticated;
 
   useEffect(() => {
+    if (!hasHydrated) return;
+
     const loadData = async () => {
+      if (isGuestDemo) {
+        setRecentScans(demoScans.slice(0, DASHBOARD_PREVIEW_COUNT));
+        setRecentRecipes(demoRecipes.slice(0, DASHBOARD_PREVIEW_COUNT));
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const [scans, recipes] = await Promise.all([
           scansApi.list(DASHBOARD_PREVIEW_COUNT, 0),
@@ -47,7 +62,20 @@ export default function DashboardPage() {
     };
 
     loadData();
-  }, []);
+  }, [hasHydrated, isGuestDemo, addToast]);
+
+  const handleScanAction = () => {
+    if (isGuestDemo) {
+      addToast({
+        type: 'info',
+        title: 'Sign in to use live AI scanning',
+        message: 'You are currently viewing a read-only guest demo.',
+      });
+      router.push('/login?redirect=/scan');
+      return;
+    }
+    router.push('/scan');
+  };
 
   return (
     <div className="space-y-8">
@@ -61,17 +89,24 @@ export default function DashboardPage() {
           {suggestion || 'What would you like to cook today?'}
         </p>
 
-        <Link href="/scan">
-          <Button
-            size="lg"
-            variant="primary"
-            iconLeft={<Camera size={22} weight="bold" />}
-            glow
-          >
-            Scan Your Fridge
-          </Button>
-        </Link>
+        <Button
+          size="lg"
+          variant="primary"
+          iconLeft={<Camera size={22} weight="bold" />}
+          glow
+          onClick={handleScanAction}
+        >
+          {isGuestDemo ? 'Try Live Scan (Sign In)' : 'Scan Your Fridge'}
+        </Button>
       </div>
+
+      {isGuestDemo && (
+        <DemoModeBanner
+          message="Browse sample scans and recipes instantly. Sign in when you want live AI fridge scanning."
+          ctaLabel="Sign In For Live Mode"
+          ctaHref="/login?redirect=/scan"
+        />
+      )}
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -79,7 +114,8 @@ export default function DashboardPage() {
           variant="elevated"
           hover
           compact
-          onClick={() => router.push('/scan')}
+          onClick={handleScanAction}
+          className="card-shine animate-scale-in"
         >
           <div className="flex items-start gap-4">
             <div className="p-3 bg-terracotta/10 rounded-xl">
@@ -99,6 +135,8 @@ export default function DashboardPage() {
           hover
           compact
           onClick={() => router.push('/recipes')}
+          className="card-shine animate-scale-in"
+          style={{ animationDelay: '40ms' }}
         >
           <div className="flex items-start gap-4">
             <div className="p-3 bg-sage/10 rounded-xl">
@@ -118,6 +156,8 @@ export default function DashboardPage() {
           hover
           compact
           onClick={() => router.push('/pantry')}
+          className="card-shine animate-scale-in"
+          style={{ animationDelay: '80ms' }}
         >
           <div className="flex items-start gap-4">
             <div className="p-3 bg-butter/10 rounded-xl">
@@ -153,7 +193,8 @@ export default function DashboardPage() {
                     key={scan.id}
                     hover
                     compact
-                    onClick={() => router.push(`/scan/${scan.id}`)}
+                    onClick={handleScanAction}
+                    className="card-shine"
                   >
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-terracotta/10 rounded-lg">
@@ -192,6 +233,7 @@ export default function DashboardPage() {
                     hover
                     compact
                     onClick={() => router.push(`/recipes/${recipe.id}`)}
+                    className="card-shine"
                   >
                     <h3 className="text-lg font-semibold mb-1">{recipe.title}</h3>
                     <p className="text-sm text-charcoal/70 mb-3 line-clamp-2">
@@ -223,7 +265,7 @@ export default function DashboardPage() {
         <Card variant="elevated">
           <EmptyState
             variant="no-scans"
-            onAction={() => router.push('/scan')}
+            onAction={handleScanAction}
           />
         </Card>
       )}

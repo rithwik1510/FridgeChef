@@ -8,10 +8,14 @@ import { RecipeFilters, type RecipeFilterValues } from '@/components/recipe/Reci
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { DemoModeBanner } from '@/components/ui/DemoModeBanner';
 import { Heart } from '@phosphor-icons/react';
 import { useToast } from '@/components/ui/Toast';
 import { RECIPES_PAGE_SIZE } from '@/lib/constants';
 import type { Recipe } from '@/types/api';
+import { useAuthStore } from '@/store/auth';
+import { demoRecipes } from '@/lib/demoData';
+import { GUEST_DEMO_ENABLED } from '@/lib/demoMode';
 
 const DEFAULT_FILTERS: RecipeFilterValues = {
   search: '',
@@ -24,6 +28,7 @@ const DEFAULT_FILTERS: RecipeFilterValues = {
 export default function RecipesPage() {
   const router = useRouter();
   const { addToast } = useToast();
+  const { isAuthenticated, hasHydrated, isLoading: isAuthLoading } = useAuthStore();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
   const [filters, setFilters] = useState<RecipeFilterValues>(DEFAULT_FILTERS);
@@ -31,6 +36,49 @@ export default function RecipesPage() {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isGuestDemo = GUEST_DEMO_ENABLED && hasHydrated && !isAuthLoading && !isAuthenticated;
+
+  const getFilteredDemoRecipes = useCallback((activeFilters: RecipeFilterValues) => {
+    let filtered = [...demoRecipes];
+
+    if (showFavoritesOnly) {
+      filtered = filtered.filter((recipe) => recipe.is_favorite);
+    }
+
+    if (activeFilters.search) {
+      const search = activeFilters.search.toLowerCase();
+      filtered = filtered.filter(
+        (recipe) =>
+          recipe.title.toLowerCase().includes(search) ||
+          recipe.description?.toLowerCase().includes(search)
+      );
+    }
+
+    if (activeFilters.difficulty) {
+      filtered = filtered.filter((recipe) => recipe.difficulty === activeFilters.difficulty);
+    }
+
+    if (activeFilters.max_cook_time !== undefined) {
+      filtered = filtered.filter((recipe) => (recipe.cook_time ?? 0) <= activeFilters.max_cook_time!);
+    }
+
+    filtered.sort((a, b) => {
+      const direction = activeFilters.sort_order === 'asc' ? 1 : -1;
+
+      if (activeFilters.sort_by === 'title') {
+        return direction * a.title.localeCompare(b.title);
+      }
+      if (activeFilters.sort_by === 'cook_time') {
+        return direction * ((a.cook_time ?? 0) - (b.cook_time ?? 0));
+      }
+      if (activeFilters.sort_by === 'times_made') {
+        return direction * ((a.times_made ?? 0) - (b.times_made ?? 0));
+      }
+      return direction * (new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+    });
+
+    return filtered;
+  }, [showFavoritesOnly]);
 
   const loadRecipes = useCallback(async (reset = true, currentFilters?: RecipeFilterValues) => {
     const activeFilters = currentFilters ?? filters;
@@ -38,6 +86,23 @@ export default function RecipesPage() {
       setIsLoading(true);
     } else {
       setIsLoadingMore(true);
+    }
+
+    if (isGuestDemo) {
+      const filtered = getFilteredDemoRecipes(activeFilters);
+      const offset = reset ? 0 : recipes.length;
+      const nextPage = filtered.slice(offset, offset + RECIPES_PAGE_SIZE);
+
+      if (reset) {
+        setRecipes(nextPage);
+      } else {
+        setRecipes((prev) => [...prev, ...nextPage]);
+      }
+
+      setHasMore(offset + nextPage.length < filtered.length);
+      setIsLoading(false);
+      setIsLoadingMore(false);
+      return;
     }
 
     try {
@@ -68,13 +133,14 @@ export default function RecipesPage() {
       setIsLoading(false);
       setIsLoadingMore(false);
     }
-  }, [showFavoritesOnly, recipes.length, addToast, filters]);
+  }, [showFavoritesOnly, recipes.length, addToast, filters, isGuestDemo, getFilteredDemoRecipes]);
 
   // Reload on favorites toggle or non-search filter changes
   useEffect(() => {
+    if (!hasHydrated) return;
     loadRecipes(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showFavoritesOnly, filters.difficulty, filters.max_cook_time, filters.sort_by, filters.sort_order]);
+  }, [hasHydrated, showFavoritesOnly, filters.difficulty, filters.max_cook_time, filters.sort_by, filters.sort_order, isGuestDemo]);
 
   const handleFiltersChange = (newFilters: RecipeFilterValues) => {
     setFilters(newFilters);
@@ -111,6 +177,14 @@ export default function RecipesPage() {
       {/* Search & Filters */}
       <RecipeFilters filters={filters} onChange={handleFiltersChange} />
 
+      {isGuestDemo && (
+        <DemoModeBanner
+          message="These recipes are polished sample data for recruiters. Sign in to generate and save your own."
+          ctaLabel="Sign In To Cook Live"
+          ctaHref="/login?redirect=/scan"
+        />
+      )}
+
       {/* Recipe Grid */}
       {isLoading ? (
         <div className="flex items-center justify-center py-12">
@@ -123,12 +197,17 @@ export default function RecipesPage() {
       ) : recipes.length > 0 ? (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {recipes.map((recipe) => (
-              <RecipeCard
+            {recipes.map((recipe, index) => (
+              <div
                 key={recipe.id}
-                recipe={recipe}
-                onClick={() => router.push(`/recipes/${recipe.id}`)}
-              />
+                className="animate-scale-in"
+                style={{ animationDelay: `${Math.min(index, 6) * 35}ms` }}
+              >
+                <RecipeCard
+                  recipe={recipe}
+                  onClick={() => router.push(`/recipes/${recipe.id}`)}
+                />
+              </div>
             ))}
           </div>
 
@@ -149,7 +228,7 @@ export default function RecipesPage() {
         <Card variant="elevated">
           <EmptyState
             variant={showFavoritesOnly ? 'no-favorites' : 'no-recipes'}
-            onAction={showFavoritesOnly ? undefined : () => router.push('/scan')}
+            onAction={showFavoritesOnly ? undefined : () => router.push(isGuestDemo ? '/login?redirect=/scan' : '/scan')}
           />
         </Card>
       )}

@@ -9,6 +9,9 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useToast } from '@/components/ui/Toast';
 import { Check, Trash, ListChecks, Warning, X } from '@phosphor-icons/react';
 import type { ShoppingList, ShoppingListItem } from '@/types/api';
+import { useAuthStore } from '@/store/auth';
+import { demoShoppingLists } from '@/lib/demoData';
+import { GUEST_DEMO_ENABLED } from '@/lib/demoMode';
 
 interface ShoppingListItemWithIndex extends ShoppingListItem {
   index: number;
@@ -16,16 +19,26 @@ interface ShoppingListItemWithIndex extends ShoppingListItem {
 
 export default function ShoppingListsPage() {
   const { addToast } = useToast();
+  const { isAuthenticated, hasHydrated, isLoading: isAuthLoading } = useAuthStore();
+  const isGuestDemo = GUEST_DEMO_ENABLED && hasHydrated && !isAuthLoading && !isAuthenticated;
   const [lists, setLists] = useState<ShoppingList[]>([]);
   const [selectedList, setSelectedList] = useState<ShoppingList | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!hasHydrated) return;
     loadLists();
-  }, []);
+  }, [hasHydrated, isGuestDemo]);
 
   const loadLists = async () => {
+    if (isGuestDemo) {
+      setLists(demoShoppingLists);
+      setSelectedList(demoShoppingLists[0] || null);
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const data = await listsApi.list();
       setLists(data);
@@ -53,6 +66,13 @@ export default function ShoppingListsPage() {
       return item;
     });
 
+    if (isGuestDemo) {
+      const updated = { ...selectedList, items: updatedItems };
+      setSelectedList(updated);
+      setLists(lists.map((list) => list.id === updated.id ? updated : list));
+      return;
+    }
+
     try {
       const updated = await listsApi.update(selectedList.id, updatedItems);
       setSelectedList(updated);
@@ -63,6 +83,16 @@ export default function ShoppingListsPage() {
   };
 
   const handleDeleteList = async (listId: string) => {
+    if (isGuestDemo) {
+      addToast({
+        type: 'info',
+        title: 'Sign in to delete lists',
+        message: 'Guest demo mode keeps list data read-only.',
+      });
+      setDeleteConfirm(null);
+      return;
+    }
+
     try {
       await listsApi.delete(listId);
       const newLists = lists.filter(list => list.id !== listId);
@@ -95,6 +125,14 @@ export default function ShoppingListsPage() {
           {lists.length} list{lists.length !== 1 ? 's' : ''}
         </p>
       </div>
+
+      {isGuestDemo && (
+        <Card variant="glass" className="border border-terracotta/20">
+          <p className="text-sm text-charcoal/80 text-center mb-0">
+            Guest demo mode: list data is sample content. Sign in to create and sync your own lists.
+          </p>
+        </Card>
+      )}
 
       {isLoading ? (
         <div className="flex items-center justify-center py-12">

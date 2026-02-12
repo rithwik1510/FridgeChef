@@ -10,6 +10,7 @@ import { useAuthStore } from '@/store/auth';
 import { isHttpError } from '@/lib/errors';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { GUEST_DEMO_ENABLED } from '@/lib/demoMode';
 import { ChefHat } from '@phosphor-icons/react';
 
 const loginSchema = z.object({
@@ -23,6 +24,7 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get('redirect') || '/dashboard';
+  const showBackToDemo = GUEST_DEMO_ENABLED && redirectUrl !== '/dashboard';
   const { login } = useAuthStore();
   const [error, setError] = useState<string | null>(null);
 
@@ -103,6 +105,17 @@ function LoginForm() {
           Forgot your password?
         </Link>
       </div>
+
+      {showBackToDemo && (
+        <div className="mt-3 text-center">
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center text-sm font-medium text-terracotta/90 hover:text-terracotta-dark transition-colors"
+          >
+            ← Back to Demo
+          </Link>
+        </div>
+      )}
 
       {/* Footer */}
       <div className="mt-6 text-center text-charcoal/60">

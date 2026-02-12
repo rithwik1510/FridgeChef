@@ -13,12 +13,17 @@ import { Heart, Clock, ChefHat, ShoppingCart, Check, Package } from '@phosphor-i
 import { formatTime } from '@/lib/utils';
 import { scaleIngredientAmount } from '@/lib/recipeScaling';
 import { useToast } from '@/components/ui/Toast';
+import { useAuthStore } from '@/store/auth';
+import { demoPantryItems, demoRecipes } from '@/lib/demoData';
+import { GUEST_DEMO_ENABLED } from '@/lib/demoMode';
 
 export default function RecipeDetailPage() {
   const router = useRouter();
   const params = useParams();
   const recipeId = params?.id as string;
   const { addToast } = useToast();
+  const { isAuthenticated, hasHydrated, isLoading: isAuthLoading } = useAuthStore();
+  const isGuestDemo = GUEST_DEMO_ENABLED && hasHydrated && !isAuthLoading && !isAuthenticated;
 
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [pantryItems, setPantryItems] = useState<PantryItem[]>([]);
@@ -41,13 +46,19 @@ export default function RecipeDetailPage() {
   }, [recipe?.ingredients, scalingRatio]);
 
   useEffect(() => {
+    if (!hasHydrated) return;
     if (recipeId) {
       loadRecipe();
       loadPantry();
     }
-  }, [recipeId]);
+  }, [recipeId, hasHydrated, isGuestDemo]);
 
   const loadPantry = async () => {
+    if (isGuestDemo) {
+      setPantryItems(demoPantryItems);
+      return;
+    }
+
     try {
       const response = await pantryApi.list();
       setPantryItems(response.items);
@@ -66,6 +77,24 @@ export default function RecipeDetailPage() {
   };
 
   const loadRecipe = async () => {
+    if (isGuestDemo) {
+      const sampleRecipe = demoRecipes.find((item) => item.id === recipeId);
+      if (!sampleRecipe) {
+        addToast({
+          type: 'info',
+          title: 'Demo recipe not found',
+          message: 'Showing available demo recipes instead.',
+        });
+        router.push('/recipes');
+        setIsLoading(false);
+        return;
+      }
+      setRecipe(sampleRecipe);
+      setCurrentServings(sampleRecipe.servings || 2);
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const data = await recipesApi.get(recipeId);
       setRecipe(data);
@@ -83,6 +112,16 @@ export default function RecipeDetailPage() {
   };
 
   const handleToggleFavorite = async () => {
+    if (isGuestDemo) {
+      addToast({
+        type: 'info',
+        title: 'Sign in to save favorites',
+        message: 'You are currently viewing a read-only guest demo.',
+      });
+      router.push(`/login?redirect=/recipes/${recipeId}`);
+      return;
+    }
+
     setIsFavoriting(true);
     try {
       const updated = await recipesApi.toggleFavorite(recipeId);
@@ -104,6 +143,16 @@ export default function RecipeDetailPage() {
   };
 
   const handleMade = async () => {
+    if (isGuestDemo) {
+      addToast({
+        type: 'info',
+        title: 'Sign in to track progress',
+        message: 'Marking recipes as made is available after login.',
+      });
+      router.push(`/login?redirect=/recipes/${recipeId}`);
+      return;
+    }
+
     try {
       const updated = await recipesApi.incrementMade(recipeId);
       setRecipe(updated);
@@ -123,6 +172,17 @@ export default function RecipeDetailPage() {
 
   const handleCreateShoppingList = async () => {
     if (!recipe) return;
+
+    if (isGuestDemo) {
+      addToast({
+        type: 'info',
+        title: 'Sign in to create shopping lists',
+        message: 'Guest mode is read-only for recruiter-friendly browsing.',
+      });
+      router.push(`/login?redirect=/recipes/${recipeId}`);
+      return;
+    }
+
     setIsCreatingList(true);
     try {
       await listsApi.create(`Shopping for: ${recipe.title}`, recipeId);
@@ -178,6 +238,14 @@ export default function RecipeDetailPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
+      {isGuestDemo && (
+        <Card variant="glass" className="border border-terracotta/20">
+          <p className="text-sm text-charcoal/80 text-center mb-0">
+            Guest demo mode: this recipe is interactive for preview, but saving actions require sign-in.
+          </p>
+        </Card>
+      )}
+
       {/* Header */}
       <div>
         <div className="flex justify-between items-start gap-4 mb-4">

@@ -16,6 +16,8 @@ import { Input } from '@/components/ui/Input';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { useToast } from '@/components/ui/Toast';
 import { useAuthStore } from '@/store/auth';
+import { demoPantryItems } from '@/lib/demoData';
+import { GUEST_DEMO_ENABLED } from '@/lib/demoMode';
 import {
   Package,
   Plus,
@@ -67,15 +69,18 @@ export default function PantryPage() {
   const router = useRouter();
   const { addToast } = useToast();
   const { isAuthenticated, hasHydrated, isLoading: authLoading } = useAuthStore();
+  const isGuestDemo = GUEST_DEMO_ENABLED && hasHydrated && !authLoading && !isAuthenticated;
 
   // ALL hooks must be declared before any conditional returns
-  const { data: pantryData, isLoading } = usePantry(hasHydrated && isAuthenticated);
+  const { data: pantryData, isLoading } = usePantry(hasHydrated && isAuthenticated && !isGuestDemo);
   const addMutation = useAddPantryItem();
   const updateMutation = useUpdatePantryItem();
   const deleteMutation = useDeletePantryItem();
   const clearMutation = useClearPantry();
 
-  const items = useMemo(() => pantryData?.items ?? [], [pantryData?.items]);
+  const items = useMemo(() => (
+    isGuestDemo ? demoPantryItems : (pantryData?.items ?? [])
+  ), [isGuestDemo, pantryData?.items]);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -89,14 +94,28 @@ export default function PantryPage() {
   const [formCategory, setFormCategory] = useState('Other');
   const [formExpiry, setFormExpiry] = useState('');
 
+  const promptGuestSignIn = (feature: string) => {
+    addToast({
+      type: 'info',
+      title: `Sign in to ${feature}`,
+      message: 'You are currently viewing a read-only guest demo.',
+    });
+    router.push('/login?redirect=/pantry');
+  };
+
   // Redirect to login if not authenticated
   useEffect(() => {
-    if (hasHydrated && !authLoading && !isAuthenticated) {
+    if (hasHydrated && !authLoading && !isAuthenticated && !isGuestDemo) {
       router.push('/login?redirect=/pantry');
     }
-  }, [hasHydrated, authLoading, isAuthenticated, router]);
+  }, [hasHydrated, authLoading, isAuthenticated, isGuestDemo, router]);
 
   const handleAddItem = async () => {
+    if (isGuestDemo) {
+      promptGuestSignIn('add pantry items');
+      return;
+    }
+
     if (!formName.trim()) {
       addToast({ type: 'warning', title: 'Please enter an ingredient name' });
       return;
@@ -118,6 +137,11 @@ export default function PantryPage() {
   };
 
   const handleUpdateItem = async () => {
+    if (isGuestDemo) {
+      promptGuestSignIn('update pantry items');
+      return;
+    }
+
     if (!editingItem || !formName.trim()) return;
 
     try {
@@ -139,6 +163,11 @@ export default function PantryPage() {
   };
 
   const handleDeleteItem = async (itemId: string) => {
+    if (isGuestDemo) {
+      promptGuestSignIn('remove pantry items');
+      return;
+    }
+
     try {
       await deleteMutation.mutateAsync(itemId);
       addToast({ type: 'success', title: 'Item removed' });
@@ -148,10 +177,20 @@ export default function PantryPage() {
   };
 
   const handleClearPantry = () => {
+    if (isGuestDemo) {
+      promptGuestSignIn('clear pantry');
+      return;
+    }
+
     setShowClearConfirm(true);
   };
 
   const executeClearPantry = async () => {
+    if (isGuestDemo) {
+      promptGuestSignIn('clear pantry');
+      return;
+    }
+
     try {
       await clearMutation.mutateAsync();
       setShowClearConfirm(false);
@@ -162,6 +201,11 @@ export default function PantryPage() {
   };
 
   const openEditModal = (item: PantryItem) => {
+    if (isGuestDemo) {
+      promptGuestSignIn('edit pantry items');
+      return;
+    }
+
     setEditingItem(item);
     setFormName(item.name);
     setFormQuantity(item.quantity);
@@ -209,7 +253,7 @@ export default function PantryPage() {
   }, [selectedCategory, filteredItems, groupedItems]);
 
   // Show nothing while checking auth or if not authenticated
-  if (!hasHydrated || authLoading || !isAuthenticated) {
+  if (!hasHydrated || authLoading || (!isAuthenticated && !isGuestDemo)) {
     return null;
   }
 
@@ -226,20 +270,34 @@ export default function PantryPage() {
         <div className="flex gap-2">
           <Button
             variant="secondary"
-            onClick={() => router.push('/scan')}
+            onClick={() => router.push(isGuestDemo ? '/login?redirect=/scan' : '/scan')}
             iconLeft={<Camera size={18} weight="bold" />}
           >
             Scan to Add
           </Button>
           <Button
             variant="primary"
-            onClick={() => setShowAddModal(true)}
+            onClick={() => {
+              if (isGuestDemo) {
+                promptGuestSignIn('add pantry items');
+                return;
+              }
+              setShowAddModal(true);
+            }}
             iconLeft={<Plus size={18} weight="bold" />}
           >
             Add Item
           </Button>
         </div>
       </div>
+
+      {isGuestDemo && (
+        <Card variant="glass" className="border border-terracotta/20">
+          <p className="text-sm text-charcoal/80 text-center mb-0">
+            Guest demo mode: pantry data is sample inventory for preview only.
+          </p>
+        </Card>
+      )}
 
       {/* Search and Filter */}
       <div className="flex flex-col sm:flex-row gap-3">
@@ -292,7 +350,7 @@ export default function PantryPage() {
         <Card variant="elevated">
           <EmptyState
             variant="no-pantry"
-            onAction={() => router.push('/scan')}
+            onAction={() => router.push(isGuestDemo ? '/login?redirect=/scan' : '/scan')}
           />
         </Card>
       ) : filteredItems.length === 0 ? (
