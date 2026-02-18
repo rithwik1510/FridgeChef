@@ -1,0 +1,67 @@
+╔════════════════════════════════════════════════════════════╗
+║                  FridgeChef - Quick Start                  ║
+╔════════════════════════════════════════════════════════════╗
+
+📌 IMPORTANT: Read This First!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔧 FIRST TIME ONLY (Run Once):
+   └─ Double-click: FIRST_TIME_SETUP.bat
+   └─ Enter your Groq API Key when prompted
+   └─ Wait for setup to complete
+   └─ ⚠️ NEVER RUN THIS AGAIN!
+
+🚀 EVERY TIME YOU START THE APP:
+   └─ Double-click: START_APP.bat
+   └─ Two windows will open (Backend + Frontend)
+   └─ Wait 10-15 seconds for startup
+   └─ Open browser: http://localhost:3000
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔴 Common Mistakes to Avoid:
+
+   ❌ DON'T run FIRST_TIME_SETUP.bat every time
+      → Only run it ONCE when you first set up the project
+
+   ❌ DON'T delete the backend/.env file
+      → This file stores your API key permanently
+
+   ❌ DON'T close the backend/frontend windows
+      → Keep them running while using the app
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🆘 Troubleshooting:
+
+   Problem: "Backend not configured" error
+   Solution: Run FIRST_TIME_SETUP.bat once
+
+   Problem: Backend won't start
+   Solution: Make sure backend/.env exists and has:
+            - SECRET_KEY=...
+            - GROQ_API_KEY=...
+
+   Problem: Frontend can't connect
+   Solution: Make sure backend is running first (port 8000)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Your Configuration is Saved!
+
+After running FIRST_TIME_SETUP.bat once, your settings are
+permanently saved in backend/.env
+
+You will NEVER need to enter the API key again unless you:
+  - Delete the backend/.env file
+  - Want to use a different API key
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 TL;DR - Just Remember This:
+
+   1️⃣ First time?     → Run FIRST_TIME_SETUP.bat
+   2️⃣ Starting app?   → Run START_APP.bat
+   3️⃣ That's it! 🎉
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
